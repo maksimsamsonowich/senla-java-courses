@@ -1,1 +1,2 @@
 # SenlaJavaCourses
+Samsonovich Maxim
