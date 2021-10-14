@@ -543,7 +543,47 @@ https://www.pgexercises.com/questions/aggregates/
 			on booking.facid = fac.facid
 			group by fac.name
 			) as getClassify
-	order by classify, name;   
+	order by classify, name   
 
 21. Calculate the payback time for each facility
+
+	select 	name, 
+		initialoutlay / (monthlyrevenue - monthlymaintenance) as rtime 
+		from 
+			(select
+		 		fac.name as name, 
+				fac.initialoutlay as initialoutlay,
+				fac.monthlymaintenance as monthlymaintenance,
+				sum(case
+					when memid = 0
+					then slots * fac.guestcost
+					else slots * fac.membercost
+					end) / 3 as monthlyrevenue
+			from
+		 		cd.bookings booking
+				inner join cd.facilities fac
+					on booking.facid = fac.facid
+			group by fac.facid
+			) as getRepaytime
+	order by name 
+
 22. Calculate a rolling average of total revenue
+
+	select
+		datacreator.date,
+		(select sum(case
+				when memid = 0
+				then slots * fac.guestcost
+				else slots * fac.membercost
+				end) as rev
+	
+		from cd.bookings booking
+			inner join cd.facilities fac
+				on booking.facid = fac.facid
+			where booking.starttime > datacreator.date - interval '14 days'
+				and booking.starttime < datacreator.date + interval '1 day') / 15 as revenue
+		from
+			(select 
+	 			cast(generate_series(timestamp '2012-08-01',
+							'2012-08-31','1 day') as date) as date) as datacreator
+	order by datacreator.date;
