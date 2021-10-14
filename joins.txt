@@ -1,0 +1,139 @@
+https://www.pgexercises.com/questions/joins/
+
+1. Retrieve the start times of members' bookings
+
+	SELECT 
+		booking.starttime 
+	FROM
+		cd.bookings booking
+	inner join cd.members members
+		on members.memid = booking.memid
+	WHERE 
+		members.firstname='David' 
+		and members.surname='Farrell';  
+
+
+2. Work out the start times of bookings for tennis courts
+
+	SELECT 
+		bookings.starttime as start,
+		facilities.name as name
+	FROM
+		cd.facilities facilities
+		inner join cd.bookings bookings
+			on facilities.facid = bookings.facid
+	WHERE 
+		facilities.name in ('Tennis Court 1', 'Tennis Court 2') and
+		bookings.starttime >= '2012-09-21' and
+		bookings.starttime < '2012-09-22'
+	order by bookings.starttime;   
+
+3. Produce a list of all members who have recommended another member
+
+	SELECT distinct
+		recs.firstname as firstname,
+		rec.surname as surname
+	FROM
+		cd.members members
+		inner join cd.members rec
+			on rec.memid = members.recommendedby
+	order by surname, firstname; 
+
+4. Produce a list of all members, along with their recommender
+
+	SELECT 
+		mems.firstname as memfname,
+		mems.surname as memsname,
+		recs.firstname as recfname,
+		recs.surname as recsname
+	FROM
+		cd.members mems
+		left outer join cd.members recs
+			on recs.memid = mems.recommendedby
+	order by memsname, memfname;    
+
+5. Produce a list of all members who have used a tennis court
+
+	SELECT distinct
+		mems.firstname || ' ' || mems.surname as member, fac.name as facil
+	FROM
+		cd.members mems
+		inner join cd.bookings bookings
+			on mems.memid = bookings.memid
+		inner join cd.facilities fac
+			on bookings.facid = fac.facid
+	WHERE
+		fac.name in ('Tennis Court 2','Tennis Court 1')
+	order by member, facil
+
+6. Produce a list of costly bookings
+
+	select
+		mems.firstname || ' ' || mems.surname as member,
+		fac.name as name,
+	
+		case
+			when mems.memid = 0 
+		then
+			booking.slots * fac.guestcost
+		else
+			booking.slots * fac.membercost
+		end as cost
+	
+	from
+		cd.members mems
+		inner join cd.bookings booking
+			on mems.memid = booking.memid
+		inner join cd.facilities fac
+			on booking.facid = fac.facid
+	where
+		booking.starttime >= '2012-09-14' and
+		booking.starttime < '2012-09-15' and
+		((mems.memid = 0 and booking.slots * fac.guestcost > 30) or
+		(mems.memid != 0 and booking.slots * fac.membercost > 30))
+	
+	order by cost
+
+7. Produce a list of all members, along with their recommender, using no joins.
+
+	select distinct
+		firstname || ' ' || surname as member,
+		(select 
+			rec.firstname || ' ' || rec.surname
+		from
+			cd.members rec
+		where
+			rec.memid = mems.recommendedby)
+	from
+		cd.members mems
+	order by member
+
+8. Produce a list of costly bookings, using a subquery
+
+	select
+		member, name, cost
+	from 
+		(select 
+  			mems.firstname || ' ' || mems.surname as member,
+			fac.name as name,
+	
+			case
+				when mems.memid = 0 
+			then
+				booking.slots * fac.guestcost
+			else
+				booking.slots * fac.membercost
+			end as cost
+	
+		from
+			cd.members mems
+			inner join cd.bookings booking
+				on mems.memid = booking.memid
+			inner join cd.facilities fac
+				on booking.facid = fac.facid
+		where
+			booking.starttime >= '2012-09-14' and
+			booking.starttime < '2012-09-15'
+  		) as result
+  	where cost > 30
+	order by cost
