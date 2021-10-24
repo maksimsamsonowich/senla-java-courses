@@ -40,21 +40,36 @@
     <changeSet id="homework-2-artists_ganres" author="Maksim Samsonowich">
         <sqlFile encoding="utf8" path="./sql/08.create-artists_ganres-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
-
-    <changeSet id="homework-2-user-index" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/09.create-user-id-index.sql" relativeToChangelogFile="true"/>
+<changeSet id="homework-2-user-index" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/09.create-user-login-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-artists-index" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/10.create-artists-id-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-artists_ganres_index" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/10.create-artists_ganres-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-tickets-index" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/11.create-tickets-id-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-measures_artists_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/11.create-measures_artists_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-measures-index" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/12.create-measures-id-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-measures_locations_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/12.create-measures_locations_id-index.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-measures_events_program_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/13.create-measures_events_program-index.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-tickets_measure_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/14.create-tickets_measure_id-index.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-tickets_user_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/15.create-tickets_user_id-index.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-artists_user_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/16.create-artists_users_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 </databaseChangeLog> 
