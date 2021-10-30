@@ -7,7 +7,7 @@ import com.github.di.annotations.Component;
 @Component(name = "service.service")
 public class Service implements IService {
 
-    @Autowire
+    @Autowire(name = "idatabase")
     private IDatabase iDatabase;
 
     @Override

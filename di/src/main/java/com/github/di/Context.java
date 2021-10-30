@@ -6,8 +6,8 @@ public class Context {
 
     HashMap<String, Object> objects = new HashMap<>();
 
-    public <T> T getObject(Class<T> someClass){
-        return (T) objects.get(someClass);
+    public Object getObject(String className){
+        return objects.get(className);
     }
 
 

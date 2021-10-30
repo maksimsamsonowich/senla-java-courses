@@ -7,7 +7,7 @@ import com.github.service.IService;
 @Component(name = "controller.controller")
 public class Controller implements IController {
 
-    @Autowire
+    @Autowire(name = "iservice")
     private IService iService;
 
     @Override
