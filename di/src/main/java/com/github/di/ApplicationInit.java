@@ -8,26 +8,27 @@ import org.reflections.Reflections;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class ApplicationInit {
 
-    public static Context init(Class<?> applicationClass) throws InstantiationException, IllegalAccessException, IOException {
+    public static Context init(Class<?> applicationClass) throws InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException {
         Context contextToReturn = new Context();
 
-        contextToReturn.objects = getObjects(contextToReturn.objects, applicationClass);
+        getObjects(contextToReturn.objects, applicationClass);
 
         return contextToReturn;
     }
 
 
     private static HashMap<String, Object> getObjects(HashMap<String, Object> container, Class<?> someClass) throws IOException, IllegalAccessException,
-            InstantiationException {
+            InstantiationException, NoSuchMethodException, InvocationTargetException {
 
         if (someClass.isAnnotationPresent(Component.class)) {
             Component comp = someClass.getAnnotation(Component.class);
 
-            Object someNewInstance = someClass.newInstance();
+            Object someNewInstance = someClass.getDeclaredConstructor().newInstance();
 
             for (Field field : someClass.getDeclaredFields()){
 
@@ -49,7 +50,7 @@ public class ApplicationInit {
                             if (clazz.isInterface())
                                 continue;
 
-                            Object reference = clazz.newInstance();
+                            Object reference = clazz.getDeclaredConstructor().newInstance();
 
                             field.setAccessible(true);
                             field.set(someNewInstance, reference);

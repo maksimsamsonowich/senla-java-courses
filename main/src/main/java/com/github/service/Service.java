@@ -15,4 +15,5 @@ public class Service implements IService {
         return iDatabase.getSomething();
     }
 
+    public Service() {}
 }
