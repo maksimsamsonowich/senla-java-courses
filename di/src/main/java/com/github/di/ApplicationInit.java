@@ -3,14 +3,14 @@ package com.github.di;
 import com.github.di.annotations.Autowire;
 import com.github.di.annotations.Component;
 import com.github.di.annotations.Value;
+import org.reflections.Reflections;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 
 public class ApplicationInit {
 
@@ -22,12 +22,14 @@ public class ApplicationInit {
         return contextToReturn;
     }
 
+
     private static HashMap<String, Object> getObjects(HashMap<String, Object> container, Class<?> someClass) throws IOException, IllegalAccessException,
             InstantiationException {
 
         if (someClass.isAnnotationPresent(Component.class)) {
             Component comp = someClass.getAnnotation(Component.class);
-            Object someNewInstance = (Object) someClass.newInstance();
+
+            Object someNewInstance = someClass.newInstance();
 
             for (Field field : someClass.getDeclaredFields()){
 
@@ -42,15 +44,28 @@ public class ApplicationInit {
 
                 if (field.isAnnotationPresent(Autowire.class)) {
                     Autowire autowire = field.getAnnotation(Autowire.class);
-                    container.put(autowire.name(), (Object)field.getType().newInstance());
-                    container = getObjects(container, field.getType());
+
+                    if (field.getType().isInterface()){
+
+                        for (Class<?> clazz : new Reflections("com.github").getSubTypesOf(field.getType())) {
+                            if (clazz.isInterface())
+                                continue;
+
+                            Object reference = clazz.newInstance();
+
+                            field.setAccessible(true);
+                            field.set(someNewInstance, reference);
+                            container.put(autowire.name(), reference);
+                            getObjects(container, clazz);
+                        }
+                    }
                 }
             }
 
             container.put(comp.name(), someNewInstance);
-
         }
         return container;
     }
+
 
 }
