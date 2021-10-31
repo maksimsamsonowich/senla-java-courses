@@ -6,10 +6,8 @@ import com.github.di.annotations.Value;
 import org.reflections.Reflections;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.*;
 
 public class ApplicationInit {
