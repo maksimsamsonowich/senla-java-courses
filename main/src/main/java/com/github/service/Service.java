@@ -4,10 +4,10 @@ import com.github.dao.IDatabase;
 import com.github.di.annotations.Autowire;
 import com.github.di.annotations.Component;
 
-@Component(name = "service.service")
+@Component
 public class Service implements IService {
 
-    @Autowire(name = "idatabase")
+    @Autowire
     private IDatabase iDatabase;
 
     @Override

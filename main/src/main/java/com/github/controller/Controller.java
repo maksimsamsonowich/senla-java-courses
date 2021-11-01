@@ -4,10 +4,10 @@ import com.github.di.annotations.Autowire;
 import com.github.di.annotations.Component;
 import com.github.service.IService;
 
-@Component(name = "controller.controller")
+@Component
 public class Controller implements IController {
 
-    @Autowire(name = "iservice")
+    @Autowire
     private IService iService;
 
     @Override

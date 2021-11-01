@@ -3,7 +3,7 @@ package com.github.dao;
 import com.github.di.annotations.Component;
 import com.github.di.annotations.Value;
 
-@Component(name = "dao.database")
+@Component
 public class Database implements IDatabase {
 
     @Value("param.value")

@@ -13,58 +13,73 @@ import java.util.*;
 
 public class ApplicationInit {
 
-    public static Context init(Class<?> applicationClass) throws InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, InvocationTargetException {
-        Context contextToReturn = new Context();
+    public static Context init(Class<?> applicationClass) throws InstantiationException, IllegalAccessException, IOException,
+            NoSuchMethodException, InvocationTargetException {
+        Context context = new Context();
 
-        getObjects(contextToReturn.objects, applicationClass);
+        getObjects(context.objects, applicationClass);
 
-        return contextToReturn;
+        return context;
     }
 
+    private static Object getRealization(Class<?> someClass) throws NoSuchMethodException, InvocationTargetException,
+            InstantiationException, IllegalAccessException {
+
+        for (Class<?> clazz : new Reflections("com.github").getSubTypesOf(someClass)) {
+
+            return clazz.getDeclaredConstructor().newInstance();
+        }
+
+        return null;
+    }
 
     private static HashMap<String, Object> getObjects(HashMap<String, Object> container, Class<?> someClass) throws IOException, IllegalAccessException,
             InstantiationException, NoSuchMethodException, InvocationTargetException {
 
-        if (someClass.isAnnotationPresent(Component.class)) {
-            Component comp = someClass.getAnnotation(Component.class);
+        Object someInstance;
+        if (container.containsKey(someClass.getName()))
+            someInstance = container.get(someClass.getName());
+        else if (someClass.isInterface())
+            someInstance = getRealization(someClass);
+        else
+            someInstance = someClass.getDeclaredConstructor().newInstance();
 
-            Object someNewInstance = someClass.getDeclaredConstructor().newInstance();
+        if (someInstance.getClass().isAnnotationPresent(Component.class)) {
 
-            for (Field field : someClass.getDeclaredFields()){
+            for (Field field : someInstance.getClass().getDeclaredFields()){
 
                 if (field.isAnnotationPresent(Value.class)) {
-                    Properties property = new Properties();
-                    property.load(new FileInputStream("main/src/main/resources/application.properties"));
+                    Value value = field.getAnnotation(Value.class);
 
                     field.setAccessible(true);
-                    Value value = field.getAnnotation(Value.class);
-                    field.set(someNewInstance, property.getProperty(value.value()));
+                    field.set(someInstance, getPropertiesValue(value.value()));
                 }
 
                 if (field.isAnnotationPresent(Autowire.class)) {
-                    Autowire autowire = field.getAnnotation(Autowire.class);
 
                     if (field.getType().isInterface()){
+                        Object reference = getRealization(field.getType());
 
-                        for (Class<?> clazz : new Reflections("com.github").getSubTypesOf(field.getType())) {
-                            if (clazz.isInterface())
-                                continue;
+                        field.setAccessible(true);
+                        field.set(someInstance, reference);
 
-                            Object reference = clazz.getDeclaredConstructor().newInstance();
-
-                            field.setAccessible(true);
-                            field.set(someNewInstance, reference);
-                            container.put(autowire.name(), reference);
-                            getObjects(container, clazz);
-                        }
+                        container.put(reference.getClass().getName(), reference);
+                        getObjects(container, reference.getClass());
                     }
                 }
             }
 
-            container.put(comp.name(), someNewInstance);
+            container.put(someInstance.getClass().getName(), someInstance);
         }
+
         return container;
     }
 
+    private static String getPropertiesValue(String signature) throws IOException {
+        Properties property = new Properties();
+        property.load(new FileInputStream("main/src/main/resources/application.properties"));
+
+        return property.getProperty(signature);
+    }
 
 }
