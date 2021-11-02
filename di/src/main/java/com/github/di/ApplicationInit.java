@@ -7,7 +7,7 @@ import com.github.di.exceptions.NoSuchImplementation;
 
 public class ApplicationInit {
 
-    public static Context init(Class<?> applicationClass) throws NoAccessException, NewInstanceCreationException, NoSuchFileException, NoSuchImplementation {
+    public static Context init(Class<?> applicationClass) {
         return new Context(applicationClass);
     }
 }

@@ -11,7 +11,7 @@ public class PropertieScanner {
 
     private final String propertiesPath = "main/src/main/resources/application.properties";
 
-    protected <T> T getPropertiesValue(String annSignature) throws NoSuchFileException {
+    protected <T> T getPropertiesValue(String annSignature) {
         Properties property = new Properties();
         try {
             property.load(new FileInputStream(propertiesPath));

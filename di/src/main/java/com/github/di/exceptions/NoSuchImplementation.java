@@ -1,6 +1,6 @@
 package com.github.di.exceptions;
 
-public class NoSuchImplementation extends Exception {
+public class NoSuchImplementation extends RuntimeException {
 
     public NoSuchImplementation(String errorMessage, Throwable err) {
         super(errorMessage, err);

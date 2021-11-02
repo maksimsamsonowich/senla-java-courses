@@ -18,7 +18,7 @@ public class ClassReader {
         this.foundClasses = new HashSet<>();
     }
 
-    public Set<Class<?>> findClasses(Class<?> startClass) throws NoSuchFileException, NoAccessException {
+    public void findClasses(Class<?> startClass) {
         String directory = getDirectory(startClass);
         File file = new File(directory);
 
@@ -33,8 +33,6 @@ public class ClassReader {
         } catch (ClassNotFoundException e) {
             throw new NoAccessException("There no access to class");
         }
-
-        return foundClasses;
     }
 
     private String getDirectory(Class<?> someClass) {
@@ -57,7 +55,7 @@ public class ClassReader {
         }
     }
 
-    public Class<?> getImplementation(Class<?> someClass) throws NoSuchImplementation {
+    public Class<?> getImplementation(Class<?> someClass) {
         for (Class<?> clazz : foundClasses) {
             if (someClass.isAssignableFrom(clazz)) {
                 return clazz;

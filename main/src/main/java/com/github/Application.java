@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Application {
 
-    public static void main(String[] args) throws IOException, IllegalAccessException, NewInstanceCreationException, NoSuchImplementation {
+    public static void main(String[] args) {
 
         Context context = ApplicationInit.init(IController.class);
         IController object = (Controller) context.getBean(Controller.class.getName());

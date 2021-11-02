@@ -2,7 +2,7 @@ package com.github.di.exceptions;
 
 import java.io.IOException;
 
-public class NoSuchFileException extends IOException {
+public class NoSuchFileException extends RuntimeException {
     public NoSuchFileException(String errorMessage, Throwable err){
         super(errorMessage, err);
     }

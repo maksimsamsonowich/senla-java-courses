@@ -22,22 +22,17 @@ public class Context {
         return beanContainer.get(className);
     }
 
-    public Context(Class<?> applicationClass) throws NoAccessException, NewInstanceCreationException, NoSuchFileException, NoSuchImplementation {
+    public Context(Class<?> applicationClass) {
         beanContainer = new HashMap<>();
         this.classReader = new ClassReader();
         classReader.findClasses(applicationClass);
         get(applicationClass);
     }
 
-    private void get(Class<?> someClass) throws NoSuchFileException, NoSuchImplementation, NewInstanceCreationException, NoAccessException {
+    private void get(Class<?> someClass) {
 
         Object instance;
-
-        try {
-            instance = getInstance(someClass);
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
-            throw new NewInstanceCreationException("There some error while creation new instance");
-        }
+        instance = getInstance(someClass);
 
         if (instance.getClass().isAnnotationPresent(Component.class)) {
 
@@ -83,12 +78,16 @@ public class Context {
 
     }
 
-    private Object getInstance(Class<?> someClass) throws NoSuchImplementation, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (beanContainer.containsKey(someClass.getName()))
-            return beanContainer.get(someClass.getName());
-        else if (someClass.isInterface())
-            return Objects.requireNonNull(classReader.getImplementation(someClass).getDeclaredConstructor().newInstance());
-        else
-            return someClass.getDeclaredConstructor().newInstance();
+    private Object getInstance(Class<?> someClass) {
+        try {
+            if (beanContainer.containsKey(someClass.getName()))
+                return beanContainer.get(someClass.getName());
+            else if (someClass.isInterface())
+                return Objects.requireNonNull(classReader.getImplementation(someClass).getDeclaredConstructor().newInstance());
+            else
+                return someClass.getDeclaredConstructor().newInstance();
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException ex) {
+            throw new NoSuchImplementation("Some error with crating an instance.");
+        }
     }
 }
