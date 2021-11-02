@@ -27,8 +27,7 @@ public class PropertiesScanner {
     }
 
     private void getReader() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream(propertiesPath);
-        try {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(propertiesPath)) {
             this.properties.load(is);
         } catch (IOException ex) {
             throw new NoSuchFileException("Cannot find the file specified", ex);
