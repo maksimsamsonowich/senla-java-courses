@@ -9,10 +9,12 @@ import java.util.Properties;
 
 public class PropertieScanner {
 
+    private final String propertiesPath = "main/src/main/resources/application.properties";
+
     protected <T> T getPropertiesValue(String annSignature) throws NoSuchFileException {
         Properties property = new Properties();
         try {
-            property.load(new FileInputStream("main/src/main/resources/application.properties"));
+            property.load(new FileInputStream(propertiesPath));
         } catch (IOException ex) {
             throw new NoSuchFileException("Cannot find the file specified", ex);
         }
