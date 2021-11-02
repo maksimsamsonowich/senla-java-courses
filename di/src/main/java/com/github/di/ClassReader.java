@@ -3,7 +3,6 @@ package com.github.di;
 import com.github.di.exceptions.NoAccessException;
 import com.github.di.exceptions.NoSuchFileException;
 import com.github.di.exceptions.NoSuchImplementation;
-import org.reflections.Reflections;
 
 import java.io.File;
 import java.util.HashSet;

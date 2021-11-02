@@ -7,7 +7,6 @@ import com.github.di.exceptions.NewInstanceCreationException;
 import com.github.di.exceptions.NoAccessException;
 import com.github.di.exceptions.NoSuchFileException;
 import com.github.di.exceptions.NoSuchImplementation;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
