@@ -59,6 +59,7 @@ public class ApplicationInit {
                         }
 
                         field.setAccessible(true);
+
                         try {
                             field.set(instance, reference);
                         } catch (IllegalAccessException ex) {
