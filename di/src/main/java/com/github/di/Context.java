@@ -5,7 +5,6 @@ import com.github.di.annotations.Component;
 import com.github.di.annotations.Value;
 import com.github.di.exceptions.NewInstanceCreationException;
 import com.github.di.exceptions.NoAccessException;
-import com.github.di.exceptions.NoSuchFileException;
 import com.github.di.exceptions.NoSuchImplementation;
 
 import java.lang.reflect.Field;
@@ -39,7 +38,7 @@ public class Context {
             for (Field field : instance.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Value.class)) {
                     Value valueAnn = field.getAnnotation(Value.class);
-                    PropertieScanner propertiesWork = new PropertieScanner();
+                    PropertiesScanner propertiesWork = new PropertiesScanner();
 
                     field.setAccessible(true);
                     try {
