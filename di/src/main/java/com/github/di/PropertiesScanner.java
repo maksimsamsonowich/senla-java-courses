@@ -10,22 +10,29 @@ import java.util.Properties;
 public class PropertiesScanner {
 
     private final String propertiesPath = "application.properties";
+    private Properties properties;
+
+    public PropertiesScanner() {
+        getReader();
+    }
 
     protected <T> T getPropertiesValue(String annSignature) {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties");
-        Properties property = new Properties();
-        try {
-            property.load(is);
-        } catch (IOException ex) {
-            throw new NoSuchFileException("Cannot find the file specified", ex);
-        }
-
-        Object value = property.getProperty(annSignature);
+        Object value = properties.getProperty(annSignature);
 
         if (Objects.nonNull(value))
             return (T) value;
         else
             throw new NoSuchFileException("There is no such properties");
+    }
+
+    private void getReader() {
+        InputStream is = getClass().getClassLoader().getResourceAsStream(propertiesPath);
+        this.properties = new Properties();
+        try {
+            this.properties.load(is);
+        } catch (IOException ex) {
+            throw new NoSuchFileException("Cannot find the file specified", ex);
+        }
     }
 
 }
