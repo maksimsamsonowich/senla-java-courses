@@ -10,9 +10,10 @@ import java.util.Properties;
 public class PropertiesScanner {
 
     private final String propertiesPath = "application.properties";
-    private Properties properties;
+    private final Properties properties;
 
     public PropertiesScanner() {
+        properties = new Properties();
         getReader();
     }
 
@@ -27,7 +28,6 @@ public class PropertiesScanner {
 
     private void getReader() {
         InputStream is = getClass().getClassLoader().getResourceAsStream(propertiesPath);
-        this.properties = new Properties();
         try {
             this.properties.load(is);
         } catch (IOException ex) {
