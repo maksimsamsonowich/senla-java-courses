@@ -56,12 +56,9 @@ public class ClassReader {
     }
 
     public Class<?> getImplementation(Class<?> someClass) {
-        for (Class<?> clazz : foundClasses) {
-            if (someClass.isAssignableFrom(clazz)) {
-                return clazz;
-            }
-        }
-
-        throw new NoSuchImplementation("There is no implementation for " + someClass.getName() + "interface");
+        return foundClasses.stream()
+                .filter(someClass::isAssignableFrom)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchImplementation("There is no implementation for " + someClass.getName() + "interface"));
     }
 }
