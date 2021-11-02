@@ -14,6 +14,4 @@ public class Service implements IService {
     public String getSomething(){
         return iDatabase.getSomething();
     }
-
-    public Service() {}
 }

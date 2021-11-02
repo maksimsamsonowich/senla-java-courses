@@ -3,6 +3,10 @@ package com.github.di;
 import com.github.di.annotations.Autowire;
 import com.github.di.annotations.Component;
 import com.github.di.annotations.Value;
+import com.github.di.exceptions.NewInstanceCreationException;
+import com.github.di.exceptions.NoAccessException;
+import com.github.di.exceptions.NoSuchFileException;
+import com.github.di.exceptions.NoSuchImplementation;
 import org.reflections.Reflections;
 
 import java.io.FileInputStream;
@@ -13,73 +17,90 @@ import java.util.*;
 
 public class ApplicationInit {
 
-    public static Context init(Class<?> applicationClass) throws InstantiationException, IllegalAccessException, IOException,
-            NoSuchMethodException, InvocationTargetException {
-        Context context = new Context();
+    static HashMap<String, Object> tempContainer = new HashMap<>();
 
-        getObjects(context.objects, applicationClass);
-
-        return context;
+    public static Context init(Class<?> applicationClass) throws NoAccessException, NewInstanceCreationException, NoSuchFileException, NoSuchImplementation {
+        get(applicationClass);
+        return new Context(tempContainer);
     }
 
-    private static Object getRealization(Class<?> someClass) throws NoSuchMethodException, InvocationTargetException,
-            InstantiationException, IllegalAccessException {
+    public static void get(Class<?> someClass) throws NoSuchFileException, NoSuchImplementation, NewInstanceCreationException, NoAccessException {
 
-        for (Class<?> clazz : new Reflections("com.github").getSubTypesOf(someClass)) {
+        Object instance;
 
-            return clazz.getDeclaredConstructor().newInstance();
+        try {
+            instance = getInstance(someClass);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+            throw new NewInstanceCreationException("There some error while creation new instance");
         }
 
-        return null;
-    }
+        if (instance.getClass().isAnnotationPresent(Component.class)) {
 
-    private static HashMap<String, Object> getObjects(HashMap<String, Object> container, Class<?> someClass) throws IOException, IllegalAccessException,
-            InstantiationException, NoSuchMethodException, InvocationTargetException {
-
-        Object someInstance;
-        if (container.containsKey(someClass.getName()))
-            someInstance = container.get(someClass.getName());
-        else if (someClass.isInterface())
-            someInstance = getRealization(someClass);
-        else
-            someInstance = someClass.getDeclaredConstructor().newInstance();
-
-        if (someInstance.getClass().isAnnotationPresent(Component.class)) {
-
-            for (Field field : someInstance.getClass().getDeclaredFields()){
-
+            for (Field field : instance.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Value.class)) {
-                    Value value = field.getAnnotation(Value.class);
+                    Value valueAnn = field.getAnnotation(Value.class);
 
                     field.setAccessible(true);
-                    field.set(someInstance, getPropertiesValue(value.value()));
+                    try {
+                        field.set(instance, getPropertiesValue(valueAnn.value()));
+                    } catch (IllegalAccessException ex) {
+                        throw new NoAccessException("There is no access to " + field.getName());
+                    }
                 }
 
                 if (field.isAnnotationPresent(Autowire.class)) {
-
                     if (field.getType().isInterface()){
-                        Object reference = getRealization(field.getType());
+
+                        Object reference;
+                        try {
+                            reference = getImplementation(field.getType()).getDeclaredConstructor().newInstance();
+                        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+                            throw new NewInstanceCreationException("There some error while creation new instance");
+                        }
 
                         field.setAccessible(true);
-                        field.set(someInstance, reference);
+                        try {
+                            field.set(instance, reference);
+                        } catch (IllegalAccessException ex) {
+                            throw new NoAccessException("There is no access to " + field.getName());
+                        }
 
-                        container.put(reference.getClass().getName(), reference);
-                        getObjects(container, reference.getClass());
+                        tempContainer.put(reference.getClass().getName(), reference);
+                        get(reference.getClass());
                     }
                 }
             }
 
-            container.put(someInstance.getClass().getName(), someInstance);
+            tempContainer.put(instance.getClass().getName(), instance);
         }
 
-        return container;
     }
 
-    private static String getPropertiesValue(String signature) throws IOException {
-        Properties property = new Properties();
-        property.load(new FileInputStream("main/src/main/resources/application.properties"));
+    private static Object getInstance(Class<?> someClass) throws NoSuchImplementation, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (tempContainer.containsKey(someClass.getName()))
+            return tempContainer.get(someClass.getName());
+        else if (someClass.isInterface())
+            return Objects.requireNonNull(getImplementation(someClass).getDeclaredConstructor().newInstance());
+        else
+            return someClass.getDeclaredConstructor().newInstance();
+    }
 
-        return property.getProperty(signature);
+    private static Class<?> getImplementation(Class<?> someClass) throws NoSuchImplementation {
+        for (Class<?> someClazz : new Reflections("com.github").getSubTypesOf(someClass))
+            return someClazz;
+
+        throw new NoSuchImplementation("There is no implementations for " + someClass.getName() + " interface");
+    }
+
+    private static String getPropertiesValue(String annSignature) throws NoSuchFileException {
+        Properties property = new Properties();
+        try {
+            property.load(new FileInputStream("main/src/main/resources/application.properties"));
+        } catch (IOException ex) {
+            throw new NoSuchFileException("Cannot find the file specified", ex);
+        }
+
+        return property.getProperty(annSignature);
     }
 
 }

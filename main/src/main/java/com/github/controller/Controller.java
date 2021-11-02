@@ -14,6 +14,4 @@ public class Controller implements IController {
     public String getSomething() {
         return iService.getSomething();
     }
-
-    public Controller(){}
 }

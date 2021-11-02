@@ -13,9 +13,4 @@ public class Database implements IDatabase {
     public String getSomething(){
         return something;
     }
-
-    public Database(){
-
-    }
-
 }

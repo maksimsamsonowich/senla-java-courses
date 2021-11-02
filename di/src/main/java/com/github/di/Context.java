@@ -10,5 +10,9 @@ public class Context {
         return objects.get(className);
     }
 
+    public Context(HashMap<String, Object> temp) {
+        this.objects = temp;
+    }
 
+    public Context(){}
 }
