@@ -12,7 +12,6 @@ import java.util.Set;
 public class ClassReader {
 
     private final String CLASS_EXTENSION = ".class";
-    private String packageName = "";
     private final Set<Class<?>> foundClasses;
 
     public ClassReader() {
