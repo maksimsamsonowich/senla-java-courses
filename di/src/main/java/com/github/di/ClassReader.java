@@ -36,6 +36,7 @@ public class ClassReader {
     }
 
     private String getDirectory(Class<?> someClass) {
+
         return someClass.getProtectionDomain().getCodeSource().getLocation().getFile();
     }
 
