@@ -48,13 +48,12 @@ public class ClassReader {
                 scanDirectory(innerFile, path);
             }
         }
-        if (!file.getName().endsWith(CLASS_EXTENSION)) {
-            return;
-        }
-        String className = path + file.getName().replaceAll(CLASS_EXTENSION, "");
-        Class<?> clazz = Class.forName(className);
-        if (!clazz.isInterface()) {
-            foundClasses.add(Class.forName(className));
+        if (file.getName().endsWith(CLASS_EXTENSION)) {
+            String className = path + file.getName().replaceAll(CLASS_EXTENSION, "");
+            Class<?> clazz = Class.forName(className);
+            if (!clazz.isInterface()) {
+                foundClasses.add(Class.forName(className));
+            }
         }
     }
 
