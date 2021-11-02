@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertiesWork {
+public class PropertieScanner {
 
     protected String getPropertiesValue(String annSignature) throws NoSuchFileException {
         Properties property = new Properties();

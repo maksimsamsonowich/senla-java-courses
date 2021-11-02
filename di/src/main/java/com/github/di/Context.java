@@ -44,7 +44,7 @@ public class Context {
             for (Field field : instance.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Value.class)) {
                     Value valueAnn = field.getAnnotation(Value.class);
-                    PropertiesWork propertiesWork = new PropertiesWork();
+                    PropertieScanner propertiesWork = new PropertieScanner();
 
                     field.setAccessible(true);
                     try {
