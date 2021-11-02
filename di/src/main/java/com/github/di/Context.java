@@ -15,14 +15,15 @@ import java.util.Objects;
 
 public class Context {
 
-    ClassReader classReader;
-    HashMap<String, Object> beanContainer = new HashMap<>();
+    private final ClassReader classReader;
+    private final HashMap<String, Object> beanContainer;
 
     public Object getBean(String className){
         return beanContainer.get(className);
     }
 
     public Context(Class<?> applicationClass) throws NoAccessException, NewInstanceCreationException, NoSuchFileException, NoSuchImplementation {
+        beanContainer = new HashMap<>();
         this.classReader = new ClassReader();
         classReader.findClasses(applicationClass);
         get(applicationClass);
