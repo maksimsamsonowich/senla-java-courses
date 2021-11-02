@@ -28,7 +28,7 @@ public class ClassReader {
 
         try {
             for (File someFile : Objects.requireNonNull(file.listFiles())) {
-                scanDirectiory(someFile, "");
+                scanDirectory(someFile, "");
             }
         } catch (ClassNotFoundException e) {
             throw new NoAccessException("There no access to class");
@@ -41,11 +41,11 @@ public class ClassReader {
         return someClass.getProtectionDomain().getCodeSource().getLocation().getFile();
     }
 
-    private void scanDirectiory(File file, String path) throws ClassNotFoundException {
+    private void scanDirectory(File file, String path) throws ClassNotFoundException {
         if (file.isDirectory()) {
             path += file.getName() + ".";
             for (File innerFile : Objects.requireNonNull(file.listFiles())) {
-                scanDirectiory(innerFile, path);
+                scanDirectory(innerFile, path);
             }
         }
         if (!file.getName().endsWith(CLASS_EXTENSION)) {
