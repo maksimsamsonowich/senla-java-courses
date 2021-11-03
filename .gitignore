@@ -5,6 +5,10 @@
 *.iml
 .idea
 
+# Maven
+log/
+target/
+
 # Log file
 *.log
 
