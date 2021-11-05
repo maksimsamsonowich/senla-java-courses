@@ -1,27 +1,39 @@
-package com.github.dto;
+package com.github.dao;
 
-import com.github.dao.IDatabase;
 import com.github.entity.User;
 import com.github.exceptions.NoSuchUserException;
 import com.github.exceptions.WrongPasswordException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
-public class UserDTO implements IUserDTO {
+@Repository
+public class UserDao implements IUserDao {
 
-    private final IDatabase iDatabase;
+    @Value("param.value")
+    private String something;
 
-    public UserDTO(IDatabase iDatabase) {
-        this.iDatabase = iDatabase;
+    private List<User> users;
+
+    @Override
+    public String getSomething(){
+        return something;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return users;
     }
 
     @Override
     public void deleteUser(String login, String password) {
         if (getAccess(login, password))
-            iDatabase.getUsers().remove(getEntity(login));
+            users.remove(getEntity(login));
         else
             throw new WrongPasswordException("Wrong password");
 
@@ -49,11 +61,11 @@ public class UserDTO implements IUserDTO {
 
     @Override
     public void createUser(String login, String password, String email) {
-        iDatabase.getUsers().add(new User(login, password, email));
+        //users.add(new User(login, password, email));
     }
 
     private User getEntity(String login) {
-        return iDatabase.getUsers().stream()
+        return users.stream()
                 .filter(user -> Objects.equals(user.getLogin(), login))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchUserException("There is no users with " + login + " login."));
@@ -62,5 +74,4 @@ public class UserDTO implements IUserDTO {
     private boolean getAccess(String login, String password) {
         return Objects.equals(getEntity(login).getPassword(), password);
     }
-
 }

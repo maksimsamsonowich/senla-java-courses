@@ -1,8 +1,13 @@
-package com.github.dto;
+package com.github.dao;
 
 import com.github.entity.User;
 
-public interface IUserDTO {
+import java.util.List;
+
+public interface IUserDao {
+
+    String getSomething();
+    List<User> getUsers();
 
     void deleteUser(String login, String password);
 
@@ -12,5 +17,4 @@ public interface IUserDTO {
 
     String getEmail(String login);
     void createUser(String login, String password, String email);
-
 }
