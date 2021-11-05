@@ -2,8 +2,10 @@ package com.github;
 
 import com.github.controller.Controller;
 
+import com.github.dao.UserDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
+import com.github.mappers.JsonMapper;
 import com.github.mappers.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -22,6 +24,11 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 public class Application {
 
     @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration()
@@ -32,24 +39,19 @@ public class Application {
         return mapper;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
         Controller bean = applicationContext.getBean(Controller.class);
         System.out.println(bean.getSomething());
 
-        ObjectMapper mapper = new ObjectMapper();
+
         String forDeserialize = "{\"login\":\"motzisudo\",\"password\":\"motzisudo\",\"email\":\"motzisudo@mail.ru\"}";
-        StringReader reader = new StringReader(forDeserialize);
-        User user = mapper.readValue(reader, User.class);
+        JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
 
-        UserDto dto = new UserDto();
+        applicationContext.getBean(UserDao.class).createUser(jsonMapper.toEntity(forDeserialize, User.class));
 
-        UserMapper userMapper = applicationContext.getBean(UserMapper.class);
-
-        dto = userMapper.toDto(user);
-
-        System.out.println(reader);
+        System.out.println(applicationContext.getBean(UserDao.class).getEmail("motzisudo"));
     }
 
 }

@@ -16,5 +16,5 @@ public interface IUserDao {
     void updateEmail(String login, String email);
 
     String getEmail(String login);
-    void createUser(String login, String password, String email);
+    void createUser(User user);
 }

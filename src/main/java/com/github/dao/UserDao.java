@@ -4,10 +4,12 @@ import com.github.entity.User;
 import com.github.exceptions.NoSuchUserException;
 import com.github.exceptions.WrongPasswordException;
 import com.github.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +21,10 @@ public class UserDao implements IUserDao {
     private String something;
 
     private List<User> users;
+
+    public UserDao() {
+        users = new ArrayList<>();
+    }
 
     @Override
     public String getSomething(){
@@ -60,8 +66,8 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public void createUser(String login, String password, String email) {
-        //users.add(new User(login, password, email));
+    public void createUser(User user) {
+        users.add(user);
     }
 
     private User getEntity(String login) {
