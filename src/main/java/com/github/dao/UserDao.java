@@ -1,68 +1,19 @@
 package com.github.dao;
 
 import com.github.entity.User;
-import com.github.exceptions.NoSuchUserException;
-import com.github.exceptions.WrongPasswordException;
-import com.github.mappers.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.github.exceptions.user.NoSuchUserException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
-@Repository
 public class UserDao implements IUserDao {
 
-    @Value("param.value")
-    private String something;
-
-    private List<User> users;
+    private final Set<User> users;
 
     public UserDao() {
-        users = new ArrayList<>();
-    }
-
-    @Override
-    public String getSomething(){
-        return something;
-    }
-
-    @Override
-    public List<User> getUsers() {
-        return users;
-    }
-
-    @Override
-    public void deleteUser(String login, String password) {
-        if (getAccess(login, password))
-            users.remove(getEntity(login));
-        else
-            throw new WrongPasswordException("Wrong password");
-
-    }
-
-    @Override
-    public void updateLogin(String login, String newLogin) {
-        getEntity(login).setLogin(newLogin);
-    }
-
-    @Override
-    public void updatePassword(String login, String password) {
-        getEntity(login).setPassword(password);
-    }
-
-    @Override
-    public void updateEmail(String login, String email) {
-        getEntity(login).setEmail(email);
-    }
-
-    @Override
-    public String getEmail(String login) {
-        return getEntity(login).getEmail();
+        this.users = new HashSet<>();
     }
 
     @Override
@@ -70,14 +21,27 @@ public class UserDao implements IUserDao {
         users.add(user);
     }
 
-    private User getEntity(String login) {
-        return users.stream()
-                .filter(user -> Objects.equals(user.getLogin(), login))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchUserException("There is no users with " + login + " login."));
+    @Override
+    public User readUser(User user) {
+        return getEntity(user);
     }
 
-    private boolean getAccess(String login, String password) {
-        return Objects.equals(getEntity(login).getPassword(), password);
+    @Override
+    public User updateUserEmail(User user, String email) {
+        User someone = getEntity(user);
+        someone.setEmail(email);
+        return someone;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        users.remove(getEntity(user));
+    }
+
+    private User getEntity(User usr) {
+        return users.stream()
+                .filter(user -> user.equals(usr))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchUserException("There is no such user;"));
     }
 }

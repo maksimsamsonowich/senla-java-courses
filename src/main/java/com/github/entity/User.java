@@ -1,44 +1,29 @@
 package com.github.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@JsonAutoDetect
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class User {
 
-    private String login, password, email;
+    private int id;
+    private String login;
+    private String password;
+    private String email;
 
-    User(@JsonProperty(value="login") String login,
-         @JsonProperty(value="password") String password,
-         @JsonProperty(value="email") String email) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-    }
-
-    public User() {}
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+        User user = (User) object;
+        return id == user.getId() && login.equals(user.getLogin()) &&
+                password.equals(user.getPassword()) && email.equals(user.getEmail());
     }
 }

@@ -1,4 +1,4 @@
-package com.github.exceptions;
+package com.github.exceptions.user;
 
 public class NoSuchUserException extends RuntimeException {
 
