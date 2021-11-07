@@ -18,12 +18,12 @@ public class EventDto {
     private String description;
 
     @JsonProperty(value = "ageLimit")
-    private short ageLimit;
+    private int ageLimit;
 
     @JsonProperty(value = "occupiedPlace")
-    private short occupiedPlace;
+    private int occupiedPlace;
 
-    EventDto(int id, String title, String description, short ageLimit, short occupiedPlace) {
+    EventDto(int id, String title, String description, int ageLimit, int occupiedPlace) {
         this.id = id;
         this.title = title;
         this.description = description;

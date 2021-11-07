@@ -4,9 +4,9 @@ import com.github.dto.UserDto;
 
 public interface IUserController {
 
-    void createUser(String jsonObject);
-    UserDto readUser(String jsonObject);
-    UserDto updateUserEmail(String jsonObjectr, String email);
-    void deleteUser(String jsonObject);
+    void createUser(UserDto userDto);
+    UserDto readUser(UserDto userDto);
+    UserDto updateUserEmail(UserDto userDto, String email);
+    void deleteUser(UserDto userDto);
 
 }

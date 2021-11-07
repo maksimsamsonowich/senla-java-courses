@@ -9,30 +9,28 @@ import org.springframework.stereotype.Component;
 public class UserController implements IUserController {
 
     private final IUserService iUserService;
-    private final JsonMapper jsonMapper;
 
-    public UserController(IUserService iUserService, JsonMapper jsonMapper) {
+    public UserController(IUserService iUserService) {
         this.iUserService = iUserService;
-        this.jsonMapper = jsonMapper;
     }
 
     @Override
-    public void createUser(String jsonObject) {
-        iUserService.createUser(jsonMapper.toEntity(jsonObject, UserDto.class));
+    public void createUser(UserDto userDto) {
+        iUserService.createUser(userDto);
     }
 
     @Override
-    public UserDto readUser(String jsonObject) {
-        return iUserService.readUser(jsonMapper.toEntity(jsonObject, UserDto.class));
+    public UserDto readUser(UserDto userDto) {
+        return iUserService.readUser(userDto);
     }
 
     @Override
-    public UserDto updateUserEmail(String jsonObject, String email) {
-        return iUserService.updateUserEmail(jsonMapper.toEntity(jsonObject, UserDto.class), email);
+    public UserDto updateUserEmail(UserDto userDto, String email) {
+        return iUserService.updateUserEmail(userDto, email);
     }
 
     @Override
-    public void deleteUser(String jsonObject) {
-        iUserService.deleteUser(jsonMapper.toEntity(jsonObject, UserDto.class));
+    public void deleteUser(UserDto userDto) {
+        iUserService.deleteUser(userDto);
     }
 }

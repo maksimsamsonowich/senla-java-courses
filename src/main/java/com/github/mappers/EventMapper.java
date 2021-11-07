@@ -11,8 +11,11 @@ import java.util.Objects;
 @Component
 public class EventMapper {
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
+
+    public EventMapper(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public Event toEntity(EventDto eventDto) {
         return Objects.isNull(eventDto) ? null : mapper.map(eventDto, Event.class);
