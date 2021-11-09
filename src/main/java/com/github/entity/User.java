@@ -1,6 +1,9 @@
 package com.github.entity;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,6 +16,11 @@ public class User {
     private String login;
     private String password;
     private String email;
+
+    private Set<Ticket> tickets;
+
+    @Value("param.value")
+    private String someField;
 
     @Override
     public boolean equals(Object object) {

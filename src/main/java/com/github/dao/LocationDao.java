@@ -9,40 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class LocationDao implements ILocationDao {
+public class LocationDao extends Dao<Location> {
 
-    private Set<Location> locations;
-
-    public LocationDao() {
-        this.locations = new HashSet<>();
+    public LocationDao(Set<Location> locations) {
+        super(locations);
     }
 
     @Override
-    public void createLocation(Location location) {
-        locations.add(location);
-    }
-
-    @Override
-    public Location readLocation(Location location) {
-        return getEntity(location);
-    }
-
-    @Override
-    public Location updateLocationAddress(Location location, String newAddress) {
-        Location somePlace = getEntity(location);
-        somePlace.setAddress(newAddress);
-        return somePlace;
-    }
-
-    @Override
-    public void deleteLocation(Location location) {
-        locations.remove(getEntity(location));
-    }
-
-    private Location getEntity(Location location) {
-        return locations.stream()
-                .filter(location::equals)
-                .findFirst()
-                .orElseThrow(() -> new NoSuchLocationException("There is no such location;"));
+    public Location update(Location location, String newAddress) {
+        Location loca = super.update(location);
+        loca.setAddress(newAddress);
+        return loca;
     }
 }

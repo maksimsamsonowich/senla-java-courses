@@ -2,6 +2,8 @@ package com.github.entity;
 
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,6 +13,8 @@ public class Artist {
 
     private int id;
     private String nickname;
-    // user-id
+
+    private Set<Genre> genres;
+    private Set<Event> events;
 
 }

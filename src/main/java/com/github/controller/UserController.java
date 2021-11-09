@@ -6,7 +6,7 @@ import com.github.service.IUserService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserController implements IUserController {
+public class UserController {
 
     private final IUserService iUserService;
 
@@ -14,22 +14,18 @@ public class UserController implements IUserController {
         this.iUserService = iUserService;
     }
 
-    @Override
     public void createUser(UserDto userDto) {
         iUserService.createUser(userDto);
     }
 
-    @Override
     public UserDto readUser(UserDto userDto) {
         return iUserService.readUser(userDto);
     }
 
-    @Override
     public UserDto updateUserEmail(UserDto userDto, String email) {
         return iUserService.updateUserEmail(userDto, email);
     }
 
-    @Override
     public void deleteUser(UserDto userDto) {
         iUserService.deleteUser(userDto);
     }

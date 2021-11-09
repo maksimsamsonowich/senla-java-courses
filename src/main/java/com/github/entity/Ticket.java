@@ -2,6 +2,8 @@ package com.github.entity;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,6 +11,9 @@ import lombok.*;
 @ToString
 public class Ticket {
 
-    // user-id | event-id | order-date
+    private int id;
+    private Date orderDate;
 
+    private Event event;
+    private User owner;
 }
