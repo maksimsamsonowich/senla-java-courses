@@ -1,11 +1,8 @@
 package com.github.dao;
 
-import com.github.dto.LocationDto;
 import com.github.entity.Location;
-import com.github.exceptions.location.NoSuchLocationException;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Component

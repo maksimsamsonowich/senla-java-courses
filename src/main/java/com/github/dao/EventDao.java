@@ -1,12 +1,9 @@
 package com.github.dao;
 
 import com.github.entity.Event;
-import com.github.entity.User;
-import com.github.exceptions.event.NoSuchEventException;
-import com.github.exceptions.user.NoSuchUserException;
+
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Component
