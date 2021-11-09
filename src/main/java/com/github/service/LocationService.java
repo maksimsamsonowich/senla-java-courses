@@ -3,38 +3,38 @@ package com.github.service;
 import com.github.dao.IDao;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
-import com.github.mappers.LocationMapper;
+import com.github.mapper.IMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LocationService implements ILocationService {
 
-    private final LocationMapper locationMapper;
+    private final IMapper<LocationDto, Location> locationMapper;
     private final IDao<Location> iLocationDao;
 
-    public LocationService(LocationMapper locationMapper, IDao<Location> iLocationDao) {
+    public LocationService(IMapper<LocationDto, Location> locationMapper, IDao<Location> iLocationDao) {
         this.locationMapper = locationMapper;
         this.iLocationDao = iLocationDao;
     }
 
     @Override
     public void createLocation(LocationDto locationDto) {
-        iLocationDao.create(locationMapper.toEntity(locationDto));
+        iLocationDao.create(locationMapper.toEntity(locationDto, Location.class));
     }
 
     @Override
     public LocationDto readLocation(LocationDto locationDto) {
-        return locationMapper.toDto(iLocationDao.read(locationMapper.toEntity(locationDto)));
+        return locationMapper.toDto(iLocationDao.read(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
     }
 
     @Override
     public LocationDto updateLocationAddress(LocationDto locationDto, String newAddress) {
-        return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto), newAddress));
+        return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class), newAddress), LocationDto.class);
     }
 
     @Override
     public void deleteLocation(LocationDto locationDto) {
-        iLocationDao.delete(locationMapper.toEntity(locationDto));
+        iLocationDao.delete(locationMapper.toEntity(locationDto, Location.class));
     }
 
 }

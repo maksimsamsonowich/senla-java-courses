@@ -5,7 +5,7 @@ import com.github.controller.UserController;
 import com.github.dto.EventDto;
 import com.github.dto.UserDto;
 
-import com.github.mappers.JsonMapper;
+import com.github.mapper.JsonMapper;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

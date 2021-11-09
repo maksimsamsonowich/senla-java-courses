@@ -1,7 +1,6 @@
 package com.github.controller;
 
 import com.github.dto.UserDto;
-import com.github.mappers.JsonMapper;
 import com.github.service.IUserService;
 import org.springframework.stereotype.Component;
 

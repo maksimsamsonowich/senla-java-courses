@@ -1,4 +1,4 @@
-package com.github.mappers;
+package com.github.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.exceptions.NoSuchEntityException;
@@ -18,6 +18,7 @@ public class JsonMapper {
         this.objectMapper = objectMapper;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T toEntity(String jsonString, Class<?> someClass) {
         StringReader reader = new StringReader(jsonString);
         try {
