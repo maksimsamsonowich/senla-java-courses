@@ -5,8 +5,10 @@ import com.github.dto.LocationDto;
 import com.github.entity.Location;
 import com.github.mapper.IMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Component
+@Service
 public class LocationService implements ILocationService {
 
     private final IMapper<LocationDto, Location> locationMapper;

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-@Component
 public abstract class Dao<T> implements IDao<T> {
 
     private final Set<T> someData;

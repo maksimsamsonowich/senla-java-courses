@@ -5,8 +5,10 @@ import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.IMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Component
+@Service
 public class UserService implements IUserService {
 
     private final IDao<User> iUserDao;

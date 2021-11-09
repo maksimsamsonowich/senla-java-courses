@@ -7,8 +7,10 @@ import com.github.entity.Event;
 
 import com.github.mapper.IMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Component
+@Service
 public class EventService implements IEventService {
 
     private final IDao<Event> iEventDao;
