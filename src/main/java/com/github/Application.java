@@ -23,8 +23,6 @@ public class Application {
         String firstEntity = "{\"id\":\"1\",\"login\":\"motzisudo\",\"password\":\"motzisudo\",\"email\":\"motzisudo@mail.ru\"}";
         String secondEntity = "{\"id\":\"2\",\"login\":\"ne-motzisudo\",\"password\":\"odusiztom\",\"email\":\"anyonebutnotmotzisudo@mail.ru\"}";
 
-
-
         UserDto firstUser = jsonMapper.toEntity(firstEntity, UserDto.class);
         UserDto secondUser = jsonMapper.toEntity(secondEntity, UserDto.class);
 
@@ -54,7 +52,6 @@ public class Application {
         iEventController.deleteEvent(secondEvent);
         firstEvent = iEventController.updateEventDescription(firstEvent, "Who Shot Cupid?");
         System.out.println(jsonMapper.toJson(iEventController.readEvent(firstEvent)));
-
     }
 
 }

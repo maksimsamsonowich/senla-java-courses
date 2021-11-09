@@ -2,6 +2,7 @@ package com.github.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.exceptions.NoSuchEntityException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,6 +12,9 @@ import java.util.Objects;
 
 @Component
 public class JsonMapper {
+
+    @Value("${error.message.param}")
+    private String ERROR_MESSAGE;
 
     private final ObjectMapper objectMapper;
 
@@ -24,7 +28,7 @@ public class JsonMapper {
         try {
             return Objects.isNull(someClass) ? null : (T) objectMapper.readValue(reader, someClass);
         } catch (IOException ex) {
-            throw new NoSuchEntityException("There is no entity with such constructor;");
+            throw new NoSuchEntityException(ERROR_MESSAGE);
         }
     }
     

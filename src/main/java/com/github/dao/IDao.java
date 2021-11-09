@@ -10,4 +10,5 @@ public interface IDao<T> {
 
     void delete(T object);
 
+
 }

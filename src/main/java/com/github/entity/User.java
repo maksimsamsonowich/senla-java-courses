@@ -19,9 +19,6 @@ public class User {
 
     private Set<Ticket> tickets;
 
-    @Value("param.value")
-    private String someField;
-
     @Override
     public boolean equals(Object object) {
         if (this == object){
