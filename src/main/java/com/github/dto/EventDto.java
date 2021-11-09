@@ -2,10 +2,16 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonAutoDetect
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class EventDto {
 
     @JsonProperty(value = "id")
@@ -23,11 +29,4 @@ public class EventDto {
     @JsonProperty(value = "occupiedPlace")
     private int occupiedPlace;
 
-    EventDto(int id, String title, String description, int ageLimit, int occupiedPlace) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.ageLimit = ageLimit;
-        this.occupiedPlace = occupiedPlace;
-    }
 }

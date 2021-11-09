@@ -16,14 +16,7 @@ public class Location {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object){
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()){
-            return false;
-        }
         Location location = (Location) object;
-        return id == location.getId() && institutionName.equals(location.getInstitutionName())
-                && address.equals(location.getAddress()) && capacity == location.getCapacity();
+        return id == location.getId();
     }
 }

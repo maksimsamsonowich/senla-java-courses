@@ -8,7 +8,7 @@ public interface ILocationService {
 
     LocationDto readLocation(LocationDto locationDto);
 
-    LocationDto updateLocationAddress(LocationDto locationDto, String newAddress);
+    LocationDto update(LocationDto locationDto);
 
     void deleteLocation(LocationDto locationDto);
 

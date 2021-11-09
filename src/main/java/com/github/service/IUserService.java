@@ -8,7 +8,7 @@ public interface IUserService {
 
     UserDto readUser(UserDto user);
 
-    UserDto updateUserEmail(UserDto user, String email);
+    UserDto update(UserDto user);
 
     void deleteUser(UserDto user);
 

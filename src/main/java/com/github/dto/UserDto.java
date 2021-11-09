@@ -2,10 +2,16 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonAutoDetect
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserDto {
 
     @JsonProperty(value = "id")
@@ -20,10 +26,4 @@ public class UserDto {
     @JsonProperty(value = "email")
     private String email;
 
-    UserDto(int id, String login, String password, String email) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-    }
 }

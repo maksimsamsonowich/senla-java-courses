@@ -30,8 +30,8 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventDto updateEventDescription(EventDto eventDto, String newDescription) {
-        return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class), newDescription), EventDto.class);
+    public EventDto update(EventDto eventDto) {
+        return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
     @Override

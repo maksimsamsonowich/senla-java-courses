@@ -33,7 +33,12 @@ public class Application {
 
         System.out.println(jsonMapper.toJson(userController.readUser(firstUser)));
         userController.deleteUser(secondUser);
-        firstUser = userController.updateUserEmail(firstUser, "json@gmail.com");
+
+        firstUser.setEmail("json@mail.ru");
+        firstUser.setLogin("json");
+        firstUser.setPassword("json");
+
+        firstUser = userController.update(firstUser);
         System.out.println(jsonMapper.toJson(userController.readUser(firstUser)));
 
         String eventEntity = "{\"id\":\"1\",\"title\":\"Death Race For Love\",\"description\":\"Flaws and sins\",\"ageLimit\":\"18\",\"occupiedPlace\":\"48\"}";
@@ -50,7 +55,14 @@ public class Application {
         System.out.println(jsonMapper.toJson(iEventController.readEvent(firstEvent)));
 
         iEventController.deleteEvent(secondEvent);
-        firstEvent = iEventController.updateEventDescription(firstEvent, "Who Shot Cupid?");
+
+        firstEvent.setAgeLimit(21);
+        firstEvent.setDescription("Who Shot Cupid?");
+        firstEvent.setTitle("Goodbye & Good Riddance");
+        firstEvent.setOccupiedPlace(60);
+
+        firstEvent = iEventController.updateEventDescription(firstEvent);
+
         System.out.println(jsonMapper.toJson(iEventController.readEvent(firstEvent)));
     }
 

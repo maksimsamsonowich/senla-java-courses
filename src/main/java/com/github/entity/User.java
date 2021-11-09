@@ -1,7 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
+
 
 import java.util.Set;
 
@@ -21,14 +21,7 @@ public class User {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object){
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()){
-            return false;
-        }
         User user = (User) object;
-        return id == user.getId() && login.equals(user.getLogin()) &&
-                password.equals(user.getPassword()) && email.equals(user.getEmail());
+        return id == user.getId();
     }
 }

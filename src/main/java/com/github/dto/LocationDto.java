@@ -2,10 +2,16 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonAutoDetect
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class LocationDto {
 
     @JsonProperty(value = "id")
@@ -20,10 +26,4 @@ public class LocationDto {
     @JsonProperty(value = "capacity")
     private int capacity;
 
-    LocationDto(int id, String institutionName, String address, int capacity) {
-        this.id = id;
-        this.institutionName = institutionName;
-        this.address = address;
-        this.capacity = capacity;
-    }
 }

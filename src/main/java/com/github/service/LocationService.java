@@ -28,8 +28,8 @@ public class LocationService implements ILocationService {
     }
 
     @Override
-    public LocationDto updateLocationAddress(LocationDto locationDto, String newAddress) {
-        return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class), newAddress), LocationDto.class);
+    public LocationDto update(LocationDto locationDto) {
+        return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
     }
 
     @Override

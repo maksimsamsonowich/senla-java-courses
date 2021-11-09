@@ -13,9 +13,11 @@ public class LocationDao extends Dao<Location> {
     }
 
     @Override
-    public Location update(Location location, String newAddress) {
+    public Location update(Location location) {
         Location loca = super.update(location);
-        loca.setAddress(newAddress);
+        loca.setAddress(location.getAddress());
+        loca.setCapacity(location.getCapacity());
+        loca.setInstitutionName(loca.getInstitutionName());
         return loca;
     }
 }

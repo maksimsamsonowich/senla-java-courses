@@ -29,8 +29,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto updateUserEmail(UserDto userDto, String email) {
-        return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class), email), UserDto.class);
+    public UserDto update(UserDto userDto) {
+        return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override

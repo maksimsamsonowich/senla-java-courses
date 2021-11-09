@@ -21,8 +21,8 @@ public class EventController{
         return iEventService.readEvent(eventDto);
     }
 
-    public EventDto updateEventDescription(EventDto eventDto, String newDescription) {
-        return iEventService.updateEventDescription(eventDto, newDescription);
+    public EventDto updateEventDescription(EventDto eventDto) {
+        return iEventService.update(eventDto);
     }
 
     public void deleteEvent(EventDto eventDto) {

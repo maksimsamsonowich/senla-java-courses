@@ -22,8 +22,8 @@ public class LocationController {
         return iLocationService.readLocation(locationDto);
     }
 
-    public LocationDto updateLocationAddress(LocationDto locationDto, String newAddress) {
-        return iLocationService.updateLocationAddress(locationDto, newAddress);
+    public LocationDto updateLocationAddress(LocationDto locationDto) {
+        return iLocationService.update(locationDto);
     }
 
     public void deleteLocation(LocationDto locationDto) {

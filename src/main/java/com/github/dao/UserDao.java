@@ -13,9 +13,11 @@ public class UserDao extends Dao<User> {
     }
 
     @Override
-    public User update(User user, String email) {
+    public User update(User user) {
         User someone = super.update(user);
-        someone.setEmail(email);
+        someone.setEmail(user.getEmail());
+        someone.setPassword(user.getPassword());
+        someone.setLogin(user.getLogin());
         return someone;
     }
 

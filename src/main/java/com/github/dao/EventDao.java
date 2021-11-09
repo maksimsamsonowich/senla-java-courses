@@ -14,9 +14,13 @@ public class EventDao extends Dao<Event> {
     }
 
     @Override
-    public Event update(Event event, String description) {
+    public Event update(Event event) {
         Event someEvent = super.update(event);
-        someEvent.setDescription(description);
+        someEvent.setDescription(event.getDescription());
+        someEvent.setTitle(event.getTitle());
+        someEvent.setAgeLimit(event.getAgeLimit());
+        someEvent.setEventOrganizer(event.getEventOrganizer());
+        someEvent.setOccupiedPlace(event.getOccupiedPlace());
         return someEvent;
     }
 }

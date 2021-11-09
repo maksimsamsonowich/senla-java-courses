@@ -21,8 +21,8 @@ public class UserController {
         return iUserService.readUser(userDto);
     }
 
-    public UserDto updateUserEmail(UserDto userDto, String email) {
-        return iUserService.updateUserEmail(userDto, email);
+    public UserDto update(UserDto userDto) {
+        return iUserService.update(userDto);
     }
 
     public void deleteUser(UserDto userDto) {

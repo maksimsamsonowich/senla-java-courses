@@ -9,7 +9,7 @@ public interface IEventService {
 
     EventDto readEvent(EventDto eventDto);
 
-    EventDto updateEventDescription(EventDto eventDto, String newDescription);
+    EventDto update(EventDto eventDto);
 
     void deleteEvent(EventDto eventDto);
 }

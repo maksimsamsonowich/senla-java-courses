@@ -6,7 +6,7 @@ public interface IDao<T> {
 
     T read(T object);
 
-    T update(T object, String value);
+    T update(T object);
 
     void delete(T object);
 
