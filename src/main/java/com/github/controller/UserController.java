@@ -1,0 +1,31 @@
+package com.github.controller;
+
+import com.github.dto.UserDto;
+import com.github.service.IUserService;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserController {
+
+    private final IUserService iUserService;
+
+    public UserController(IUserService iUserService) {
+        this.iUserService = iUserService;
+    }
+
+    public void createUser(UserDto userDto) {
+        iUserService.createUser(userDto);
+    }
+
+    public UserDto readUser(UserDto userDto) {
+        return iUserService.readUser(userDto);
+    }
+
+    public UserDto update(UserDto userDto) {
+        return iUserService.update(userDto);
+    }
+
+    public void deleteUser(UserDto userDto) {
+        iUserService.deleteUser(userDto);
+    }
+}
