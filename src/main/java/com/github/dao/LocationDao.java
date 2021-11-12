@@ -30,56 +30,22 @@ public class LocationDao {
 
     @Transaction
     public void create(Location location) {
-        try(PreparedStatement preparedStatement = connectionHolder
-                .getConnection()
-                .prepareStatement("insert into locations ( id, title, address, capacity ) values ( " + location.getId() + ", '" + location.getTitle() + "', '" + location.getAddress() + "', " + location.getCapacity() + " )")) {
-            preparedStatement.execute();
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
+        execute("insert into locations ( id, title, address, capacity ) values ( " + location.getId() + ", '" + location.getTitle() + "', '" + location.getAddress() + "', " + location.getCapacity() + " )");
     }
 
     public Location read(Location location) {
-        return getEntity(location);
+        return executeForResult("select * from locations where id = " + location.getId());
     }
 
     public Location update(Location location) {
-        Location someLocation = getEntity(location);
-        someLocation.setAddress(location.getAddress());
-        someLocation.setCapacity(location.getCapacity());
-        updateLocation(someLocation);
-        return someLocation;
+        execute("update locations SET title = '" + location.getTitle() + "', address = '" + location.getAddress() + "', capacity = " + location.getCapacity() + " where id = " + location.getId());
+        return location;
     }
 
-    @Transaction
     public void delete(Location location) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement("delete from locations where id = " + location.getId())) {
-            preparedStatement.execute();
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
+        execute("delete from locations where id = " + location.getId());
     }
 
-    @Transaction
-    private Location getEntity(Location location) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement("select * from locations where id = " + location.getId())) {
-            return Objects.requireNonNull(locationMapper(preparedStatement.executeQuery()));
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
-
-    @Transaction
-    private void updateLocation(Location location) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement("update locations SET title = '" + location.getTitle() + "', address = '" + location.getAddress() + "', capacity = " + location.getCapacity() + " where id = " + location.getId())) {
-            preparedStatement.execute();
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
 
     private Location locationMapper(ResultSet resultSet) throws SQLException {
         resultSet.next();
@@ -87,5 +53,25 @@ public class LocationDao {
                 resultSet.getString("title"),
                 resultSet.getString("address"),
                 resultSet.getInt("capacity"));
+    }
+
+    @Transaction
+    private void execute(String sqlQuery) {
+        try (PreparedStatement preparedStatement = connectionHolder
+                .getConnection().prepareStatement(sqlQuery)) {
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            throw new DatabaseAccessException(ERROR_MESSAGE);
+        }
+    }
+
+    @Transaction
+    private Location executeForResult(String sqlQuery) {
+        try (PreparedStatement preparedStatement = connectionHolder
+                .getConnection().prepareStatement(sqlQuery)) {
+            return Objects.requireNonNull(locationMapper(preparedStatement.executeQuery()));
+        } catch (SQLException ex) {
+            throw new DatabaseAccessException(ERROR_MESSAGE);
+        }
     }
 }
