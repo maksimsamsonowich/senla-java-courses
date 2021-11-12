@@ -4,21 +4,18 @@ import com.github.dao.IDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.IMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Component
 @Service
+@AllArgsConstructor
 public class UserService implements IUserService {
 
     private final IDao<User> iUserDao;
 
     private final IMapper<UserDto, User> userMapper;
-
-    public UserService(IDao<User> iUserDao, IMapper<UserDto, User> userMapper) {
-        this.iUserDao = iUserDao;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public void createUser(UserDto userDto) {

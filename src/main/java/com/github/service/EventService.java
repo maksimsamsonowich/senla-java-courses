@@ -6,20 +6,18 @@ import com.github.dto.EventDto;
 import com.github.entity.Event;
 
 import com.github.mapper.IMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Component
 @Service
+@AllArgsConstructor
 public class EventService implements IEventService {
 
     private final IDao<Event> iEventDao;
-    private final IMapper<EventDto, Event> eventMapper;
 
-    public EventService(IDao<Event> iEventDao, IMapper<EventDto, Event> eventMapper) {
-        this.iEventDao = iEventDao;
-        this.eventMapper = eventMapper;
-    }
+    private final IMapper<EventDto, Event> eventMapper;
 
     @Override
     public void createEvent(EventDto eventDto) {

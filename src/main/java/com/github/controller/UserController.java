@@ -2,16 +2,14 @@ package com.github.controller;
 
 import com.github.dto.UserDto;
 import com.github.service.IUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class UserController {
 
     private final IUserService iUserService;
-
-    public UserController(IUserService iUserService) {
-        this.iUserService = iUserService;
-    }
 
     public void createUser(UserDto userDto) {
         iUserService.createUser(userDto);

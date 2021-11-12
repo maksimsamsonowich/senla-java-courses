@@ -26,7 +26,7 @@ public class DatabaseConfig {
     @SneakyThrows
     public ConnectionHolder connectionHolder() {
         return new ConnectionHolder(
-                DriverManager.getConnection(url)
+                DriverManager.getConnection(url, username, password)
         );
     }
 }

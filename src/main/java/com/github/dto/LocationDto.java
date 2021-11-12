@@ -17,8 +17,8 @@ public class LocationDto {
     @JsonProperty(value = "id")
     private int id;
 
-    @JsonProperty(value = "institutionName")
-    private String institutionName;
+    @JsonProperty(value = "title")
+    private String title;
 
     @JsonProperty(value = "address")
     private String address;

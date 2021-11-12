@@ -1,17 +1,15 @@
 package com.github.mapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
+@AllArgsConstructor
 public class Mapper<T, W> implements IMapper<T, W> {
 
     private final ModelMapper mapper;
-
-    public Mapper(ModelMapper mapper) {
-        this.mapper = mapper;
-    }
 
     @Override
     @SuppressWarnings("unchecked")
