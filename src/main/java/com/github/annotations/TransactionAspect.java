@@ -17,10 +17,7 @@ public class TransactionAspect {
 
     private ConnectionHolder connectionHolder;
 
-    @Pointcut("@annotation(Transaction)")
-    public void callAtTransaction() { }
-
-    @Around("callAtTransaction()")
+    @Around("@annotation(Transaction)")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         final Connection connection = connectionHolder.getConnection();
         try {

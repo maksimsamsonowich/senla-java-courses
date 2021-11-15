@@ -47,14 +47,6 @@ public class LocationDao {
     }
 
 
-    private Location locationMapper(ResultSet resultSet) throws SQLException {
-        resultSet.next();
-        return new Location(resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getString("address"),
-                resultSet.getInt("capacity"));
-    }
-
     @Transaction
     private void execute(String sqlQuery) {
         try (PreparedStatement preparedStatement = connectionHolder
@@ -73,5 +65,13 @@ public class LocationDao {
         } catch (SQLException ex) {
             throw new DatabaseAccessException(ERROR_MESSAGE);
         }
+    }
+
+    private Location locationMapper(ResultSet resultSet) throws SQLException {
+        resultSet.next();
+        return new Location(resultSet.getInt("id"),
+                resultSet.getString("title"),
+                resultSet.getString("address"),
+                resultSet.getInt("capacity"));
     }
 }
