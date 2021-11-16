@@ -15,7 +15,7 @@ import java.sql.Connection;
 @AllArgsConstructor
 public class TransactionAspect {
 
-    private ConnectionHolder connectionHolder;
+    private final ConnectionHolder connectionHolder;
 
     @Around("@annotation(Transaction)")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {

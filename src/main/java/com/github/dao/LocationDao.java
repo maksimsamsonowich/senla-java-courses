@@ -4,10 +4,7 @@ import com.github.annotations.Transaction;
 import com.github.database.ConnectionHolder;
 import com.github.entity.Location;
 import com.github.exceptions.database.DatabaseAccessException;
-import com.github.mapper.IMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -15,14 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-@Component
 @Repository
 public class LocationDao {
 
     @Value("${database.access.error.message}")
     private String ERROR_MESSAGE;
 
-    private ConnectionHolder connectionHolder;
+    private final ConnectionHolder connectionHolder;
 
     public LocationDao(ConnectionHolder connectionHolder) {
         this.connectionHolder = connectionHolder;
@@ -30,20 +26,24 @@ public class LocationDao {
 
     @Transaction
     public void create(Location location) {
-        execute("insert into locations ( id, title, address, capacity ) values ( " + location.getId() + ", '" + location.getTitle() + "', '" + location.getAddress() + "', " + location.getCapacity() + " )");
+        execute(String.format("insert into locations ( id, title, address, capacity ) values ( %d, '%s', '%s', %d )",
+                location.getId(), location.getTitle(), location.getAddress(), location.getCapacity()));
     }
 
     public Location read(Location location) {
-        return executeForResult("select * from locations where id = " + location.getId());
+        return executeForResult(String.format("select * from locations where id = %d",
+                location.getId()));
     }
 
     public Location update(Location location) {
-        execute("update locations SET title = '" + location.getTitle() + "', address = '" + location.getAddress() + "', capacity = " + location.getCapacity() + " where id = " + location.getId());
+        execute(String.format("update locations SET title = '%s', address = '%s', capacity = %d where id = %d",
+                location.getTitle(), location.getAddress(), location.getCapacity(), location.getId()));
         return location;
     }
 
     public void delete(Location location) {
-        execute("delete from locations where id = " + location.getId());
+        execute(String.format("delete from locations where id = %d",
+                location.getId()));
     }
 
 

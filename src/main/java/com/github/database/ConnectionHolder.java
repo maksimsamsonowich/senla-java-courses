@@ -1,5 +1,6 @@
 package com.github.database;
 
+import com.github.exceptions.database.DatabaseCloseConnectionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 
 @Getter
@@ -16,9 +18,12 @@ public class ConnectionHolder {
 
     private final Connection connection;
 
-    @SneakyThrows
     @PreDestroy
     protected void releaseConnection() {
-        connection.close();
+        try {
+            connection.close();
+        } catch (SQLException exception) {
+            throw new DatabaseCloseConnectionException("Something went wrong :/");
+        }
     }
 }
