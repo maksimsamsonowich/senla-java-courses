@@ -10,8 +10,11 @@ import lombok.*;
 public class Location {
 
     private int id;
-    private String institutionName;
+
+    private String title;
+
     private String address;
+
     private int capacity;
 
     @Override

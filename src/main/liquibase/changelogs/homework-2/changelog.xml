@@ -73,4 +73,8 @@
         <sqlFile encoding="utf8" path="./sql/16.create-artists_users_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="homework-5-insert_data_into_locations" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/17.location-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog> 

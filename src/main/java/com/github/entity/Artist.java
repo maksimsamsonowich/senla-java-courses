@@ -12,9 +12,11 @@ import java.util.Set;
 public class Artist {
 
     private int id;
+
     private String nickname;
 
     private Set<Genre> genres;
+
     private Set<Event> events;
 
 }

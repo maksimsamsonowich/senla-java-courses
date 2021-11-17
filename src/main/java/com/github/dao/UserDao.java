@@ -20,5 +20,4 @@ public class UserDao extends Dao<User> {
         someone.setLogin(user.getLogin());
         return someone;
     }
-
 }

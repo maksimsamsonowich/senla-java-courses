@@ -2,16 +2,14 @@ package com.github.controller;
 
 import com.github.dto.EventDto;
 import com.github.service.IEventService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class EventController{
 
     private final IEventService iEventService;
-
-    public EventController(IEventService iEventService) {
-        this.iEventService = iEventService;
-    }
 
     public void createEvent(EventDto eventDto) {
         iEventService.createEvent(eventDto);

@@ -13,8 +13,11 @@ import java.util.Date;
 public class EventProgram {
 
     private int id;
+
     private Time continuance;
+
     private Date date;
+
     private double price;
 
 }

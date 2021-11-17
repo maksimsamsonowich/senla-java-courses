@@ -14,12 +14,15 @@ public class Event {
     private int id;
 
     private String title;
+
     private String description;
 
     private short ageLimit;
+
     private short occupiedPlace;
 
     private Set<Ticket> tickets;
+
     private Artist eventOrganizer;
 
     @Override

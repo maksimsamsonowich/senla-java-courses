@@ -22,7 +22,7 @@ public class LocationController {
         return iLocationService.readLocation(locationDto);
     }
 
-    public LocationDto updateLocationAddress(LocationDto locationDto) {
+    public LocationDto updateLocation(LocationDto locationDto) {
         return iLocationService.update(locationDto);
     }
 
