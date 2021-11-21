@@ -1,16 +1,20 @@
 package com.github.dao;
 
-import com.github.annotations.Transaction;
-import com.github.database.ConnectionHolder;
 import com.github.entity.Location;
-import com.github.exceptions.database.DatabaseAccessException;
+import com.github.exceptions.location.NoSuchLocationException;
+import com.github.metamodels.Location_;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Objects;
+
 
 @Repository
 public class LocationDao {
@@ -18,60 +22,34 @@ public class LocationDao {
     @Value("${database.access.error.message}")
     private String ERROR_MESSAGE;
 
-    private final ConnectionHolder connectionHolder;
+    private final CriteriaBuilder criteriaBuilder;
+    private EntityManager entityManager;
 
-    public LocationDao(ConnectionHolder connectionHolder) {
-        this.connectionHolder = connectionHolder;
+    public LocationDao(LocalContainerEntityManagerFactoryBean entityManager) {
+        criteriaBuilder = entityManager.getObject().getCriteriaBuilder();
+        this.entityManager = entityManager.getNativeEntityManagerFactory().createEntityManager();
     }
 
-    @Transaction
-    public void create(Location location) {
-        execute(String.format("insert into locations ( id, title, address, capacity ) values ( %d, '%s', '%s', %d )",
-                location.getId(), location.getTitle(), location.getAddress(), location.getCapacity()));
-    }
-
-    public Location read(Location location) {
-        return executeForResult(String.format("select * from locations where id = %d",
-                location.getId()));
-    }
-
+    @Transactional(propagation = Propagation.REQUIRED)
     public Location update(Location location) {
-        execute(String.format("update locations SET title = '%s', address = '%s', capacity = %d where id = %d",
-                location.getTitle(), location.getAddress(), location.getCapacity(), location.getId()));
+        entityManager.getTransaction().begin();
+        if (Objects.nonNull(entityManager.find(Location.class, location.getId()))){
+            entityManager.merge(location);
+        }
+        entityManager.getTransaction().commit();
         return location;
     }
 
-    public void delete(Location location) {
-        execute(String.format("delete from locations where id = %d",
-                location.getId()));
+    @Transactional
+    public Location read(Location location) {
+        CriteriaQuery<Location> criteriaQuery = criteriaBuilder.createQuery(Location.class);
+        Root<Location> locationRoot = criteriaQuery.from(Location.class);
+        criteriaQuery.select(locationRoot)
+                .where(criteriaBuilder.equal(locationRoot.get(Location_.ID), location.getId()));;
+        return entityManager.createQuery(criteriaQuery)
+                .getResultList().stream()
+                .findFirst()
+                .orElseThrow(() -> new NoSuchLocationException(ERROR_MESSAGE));
     }
 
-
-    @Transaction
-    private void execute(String sqlQuery) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement(sqlQuery)) {
-            preparedStatement.execute();
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
-
-    @Transaction
-    private Location executeForResult(String sqlQuery) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement(sqlQuery)) {
-            return Objects.requireNonNull(locationMapper(preparedStatement.executeQuery()));
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
-
-    private Location locationMapper(ResultSet resultSet) throws SQLException {
-        resultSet.next();
-        return new Location(resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getString("address"),
-                resultSet.getInt("capacity"));
-    }
 }

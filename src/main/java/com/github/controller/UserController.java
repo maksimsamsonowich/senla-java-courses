@@ -1,7 +1,7 @@
 package com.github.controller;
 
 import com.github.dto.UserDto;
-import com.github.service.IUserService;
+import com.github.service.api.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,5 @@
 package com.github.mapper;
+import com.github.mapper.api.IMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

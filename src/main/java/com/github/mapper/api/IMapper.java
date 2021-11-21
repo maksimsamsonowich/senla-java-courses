@@ -1,4 +1,4 @@
-package com.github.mapper;
+package com.github.mapper.api;
 
 public interface IMapper<T, W> {
 

@@ -2,7 +2,7 @@ package com.github.controller;
 
 
 import com.github.dto.LocationDto;
-import com.github.service.ILocationService;
+import com.github.service.api.ILocationService;
 import org.springframework.stereotype.Component;
 
 @Component

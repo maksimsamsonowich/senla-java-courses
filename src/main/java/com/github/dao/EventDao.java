@@ -2,25 +2,32 @@ package com.github.dao;
 
 import com.github.entity.Event;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
-public class EventDao extends Dao<Event> {
+@AllArgsConstructor
+public class EventDao implements IAbstractDao<Event> {
 
-    public EventDao(Set<Event> events) {
-        super(events);
+    @Override
+    public void create(Event object) {
+
     }
 
     @Override
-    public Event update(Event event) {
-        Event someEvent = super.update(event);
-        someEvent.setDescription(event.getDescription());
-        someEvent.setTitle(event.getTitle());
-        someEvent.setAgeLimit(event.getAgeLimit());
-        someEvent.setEventOrganizer(event.getEventOrganizer());
-        someEvent.setOccupiedPlace(event.getOccupiedPlace());
-        return someEvent;
+    public Event read(Event object) {
+        return null;
+    }
+
+    @Override
+    public Event update(Event object) {
+        return null;
+    }
+
+    @Override
+    public void delete(Event object) {
+
     }
 }

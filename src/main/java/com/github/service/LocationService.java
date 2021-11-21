@@ -1,10 +1,10 @@
 package com.github.service;
 
-import com.github.dao.IDao;
 import com.github.dao.LocationDao;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
-import com.github.mapper.IMapper;
+import com.github.mapper.api.IMapper;
+import com.github.service.api.ILocationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class LocationService implements ILocationService {
 
     @Override
     public void createLocation(LocationDto locationDto) {
-        iLocationDao.create(locationMapper.toEntity(locationDto, Location.class));
+        //iLocationDao.create(locationMapper.toEntity(locationDto, Location.class));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LocationService implements ILocationService {
 
     @Override
     public void deleteLocation(LocationDto locationDto) {
-        iLocationDao.delete(locationMapper.toEntity(locationDto, Location.class));
+        //iLocationDao.delete(locationMapper.toEntity(locationDto, Location.class));
     }
 
 }

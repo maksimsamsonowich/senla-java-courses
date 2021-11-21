@@ -1,9 +1,10 @@
 package com.github.service;
 
-import com.github.dao.IDao;
+import com.github.dao.IAbstractDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
-import com.github.mapper.IMapper;
+import com.github.mapper.api.IMapper;
+import com.github.service.api.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserService implements IUserService {
 
-    private final IDao<User> iUserDao;
+    private final IAbstractDao<User> iUserDao;
 
     private final IMapper<UserDto, User> userMapper;
 

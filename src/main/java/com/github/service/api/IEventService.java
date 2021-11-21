@@ -1,4 +1,4 @@
-package com.github.service;
+package com.github.service.api;
 
 import com.github.dto.EventDto;
 import com.github.entity.Event;

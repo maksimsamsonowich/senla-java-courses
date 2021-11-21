@@ -1,23 +1,32 @@
 package com.github.dao;
 
 import com.github.entity.User;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
-public class UserDao extends Dao<User> {
+@AllArgsConstructor
+public class UserDao implements IAbstractDao<User> {
 
-    public UserDao(Set<User> users) {
-        super(users);
+    @Override
+    public void create(User object) {
+
     }
 
     @Override
-    public User update(User user) {
-        User someone = super.update(user);
-        someone.setEmail(user.getEmail());
-        someone.setPassword(user.getPassword());
-        someone.setLogin(user.getLogin());
-        return someone;
+    public User read(User object) {
+        return null;
+    }
+
+    @Override
+    public User update(User object) {
+        return null;
+    }
+
+    @Override
+    public void delete(User object) {
+
     }
 }

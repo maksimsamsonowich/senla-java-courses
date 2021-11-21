@@ -13,14 +13,25 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
-@PropertySource("classpath:application.properties")
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 
     @Value("${login}")
@@ -37,6 +48,9 @@ public class ApplicationConfig {
 
     @Value("${changeLogFile}")
     private String changeLogFile;
+
+    @Value("${packagesToScan}")
+    private String packagesToScan;
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -88,4 +102,21 @@ public class ApplicationConfig {
 
         return liquibase;
     }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource());
+        entityManagerFactoryBean.setPackagesToScan(packagesToScan);
+        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        return entityManagerFactoryBean;
+    }
+
+    @Bean
+    public JpaTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(localContainerEntityManagerFactoryBean().getObject());
+        return transactionManager;
+    }
+
 }

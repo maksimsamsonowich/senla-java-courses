@@ -1,11 +1,12 @@
 package com.github.service;
 
-import com.github.dao.IDao;
+import com.github.dao.IAbstractDao;
 import com.github.dto.EventDto;
 
 import com.github.entity.Event;
 
-import com.github.mapper.IMapper;
+import com.github.mapper.api.IMapper;
+import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EventService implements IEventService {
 
-    private final IDao<Event> iEventDao;
+    private final IAbstractDao<Event> iEventDao;
 
     private final IMapper<EventDto, Event> eventMapper;
 

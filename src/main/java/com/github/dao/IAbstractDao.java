@@ -1,6 +1,6 @@
 package com.github.dao;
 
-public interface IDao<T> {
+public interface IAbstractDao<T> {
 
     void create(T object);
 
@@ -9,6 +9,5 @@ public interface IDao<T> {
     T update(T object);
 
     void delete(T object);
-
 
 }

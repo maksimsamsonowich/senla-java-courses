@@ -1,4 +1,4 @@
-package com.github.service;
+package com.github.service.api;
 
 import com.github.dto.LocationDto;
 

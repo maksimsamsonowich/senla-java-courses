@@ -1,7 +1,7 @@
 package com.github.controller;
 
 import com.github.dto.EventDto;
-import com.github.service.IEventService;
+import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

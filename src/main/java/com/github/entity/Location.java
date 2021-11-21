@@ -2,13 +2,22 @@ package com.github.entity;
 
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Set;
+
+@Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Table(name = "locations")
 public class Location {
 
+    @Id
     private int id;
 
     private String title;
@@ -16,6 +25,9 @@ public class Location {
     private String address;
 
     private int capacity;
+
+    @OneToMany(mappedBy = "location")
+    private Set<Event> events;
 
     @Override
     public boolean equals(Object object) {
