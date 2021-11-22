@@ -1,11 +1,11 @@
 package com.github.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.database.ConnectionHolder;
 import liquibase.integration.spring.SpringLiquibase;
-import lombok.SneakyThrows;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +14,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
@@ -52,6 +49,9 @@ public class ApplicationConfig {
     @Value("${packagesToScan}")
     private String packagesToScan;
 
+    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.MySQLDialect'}}")
+    private Map<String, String> hibernateAdditionalProperties;
+
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
@@ -74,49 +74,38 @@ public class ApplicationConfig {
     }
 
     @Bean
-    @SneakyThrows
-    public ConnectionHolder connectionHolder() {
-        return new ConnectionHolder(
-                dataSource().getConnection()
-        );
-    }
-
-    @Bean
     public DataSource dataSource()  {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        return dataSource;
+        return new DriverManagerDataSource(url, username, password);
     }
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
 
         liquibase.setChangeLog(changeLogFile);
-        liquibase.setDataSource(dataSource());
+        liquibase.setDataSource(dataSource);
 
         return liquibase;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPackagesToScan(packagesToScan);
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        return entityManagerFactoryBean;
+    public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
     @Bean
-    public JpaTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(localContainerEntityManagerFactoryBean().getObject());
-        return transactionManager;
+    public FactoryBean<EntityManagerFactory> entityManagerFactory(DataSource dataSource) {
+        final LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean =
+                new LocalContainerEntityManagerFactoryBean();
+        localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
+        localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        localContainerEntityManagerFactoryBean.setDataSource(dataSource);
+        localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
+        return localContainerEntityManagerFactoryBean;
     }
 
+    @Bean
+    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+        return entityManagerFactory.createEntityManager();
+    }
 }

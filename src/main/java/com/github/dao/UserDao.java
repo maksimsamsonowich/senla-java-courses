@@ -3,30 +3,15 @@ package com.github.dao;
 import com.github.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.Set;
 
-@Component
-@AllArgsConstructor
-public class UserDao implements IAbstractDao<User> {
+@Repository
+public class UserDao extends AbstractDao<User>  {
 
-    @Override
-    public void create(User object) {
-
-    }
-
-    @Override
-    public User read(User object) {
-        return null;
-    }
-
-    @Override
-    public User update(User object) {
-        return null;
-    }
-
-    @Override
-    public void delete(User object) {
-
+    public UserDao(EntityManager entityManager) {
+        super(entityManager, User.class);
     }
 }

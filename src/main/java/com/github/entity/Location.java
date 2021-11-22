@@ -2,10 +2,7 @@ package com.github.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -15,6 +12,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "locations")
+@NamedEntityGraph(
+        name = "location-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "events", subgraph = "events-sub-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "events-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("eventProgram"),
+                                @NamedAttributeNode("location"),
+                                @NamedAttributeNode("eventOrganizer")
+                        }
+                )
+        }
+)
 public class Location {
 
     @Id

@@ -4,30 +4,16 @@ import com.github.entity.Event;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.Set;
 
-@Component
-@AllArgsConstructor
-public class EventDao implements IAbstractDao<Event> {
+@Repository
+public class EventDao extends AbstractDao<Event> {
 
-    @Override
-    public void create(Event object) {
-
+    public EventDao(EntityManager entityManager) {
+        super(entityManager, Event.class);
     }
 
-    @Override
-    public Event read(Event object) {
-        return null;
-    }
-
-    @Override
-    public Event update(Event object) {
-        return null;
-    }
-
-    @Override
-    public void delete(Event object) {
-
-    }
 }

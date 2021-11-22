@@ -25,20 +25,20 @@
         <sqlFile encoding="utf8" path="./sql/04.create-locations-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-measures" author="Maksim Samsonowich">
+    <changeSet id="homework-2-events" author="Maksim Samsonowich">
         <sqlFile encoding="utf8" path="./sql/05.create-events_program-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-locations" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/06.create-measures-table.sql" relativeToChangelogFile="true"/>
+        <sqlFile encoding="utf8" path="./sql/06.create-events-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-events_pogram" author="Maksim Samsonowich">
+    <changeSet id="homework-2-events_program" author="Maksim Samsonowich">
         <sqlFile encoding="utf8" path="./sql/07.create-tickets-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-artists_ganres" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/08.create-artists_ganres-table.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-artists_genres" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/08.create-artists_genres-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-user-index" author="Maksim Samsonowich">
@@ -49,20 +49,20 @@
         <sqlFile encoding="utf8" path="./sql/10.create-artists_ganres-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-measures_artists_id" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/11.create-measures_artists_id-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-events_artists_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/11.create-events_artists_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-measures_locations_id" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/12.create-measures_locations_id-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-events_locations_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/12.create-events_locations_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-measures_events_program_id" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/13.create-measures_events_program-index.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-events_events_program_id" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/13.create-events_events_program-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-tickets_measure_id" author="Maksim Samsonowich">
-        <sqlFile encoding="utf8" path="./sql/14.create-tickets_measure_id-index.sql" relativeToChangelogFile="true"/>
+        <sqlFile encoding="utf8" path="./sql/14.create-tickets_events_id-index.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-tickets_user_id" author="Maksim Samsonowich">
@@ -77,4 +77,19 @@
         <sqlFile encoding="utf8" path="./sql/17.location-table-data-insert.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet id="homework-6-insert_data_into_event_program" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/18.events_program-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-5-insert_data_into_users" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/19.user-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-6-insert_data_into_artists" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/20.artists-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-6-insert_data_into_events" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/21.events-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog> 

@@ -13,6 +13,24 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "measures")
+@NamedEntityGraph(
+        name = "event-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("tickets"),
+                @NamedAttributeNode("eventProgram"),
+                @NamedAttributeNode("location"),
+                @NamedAttributeNode(value = "eventOrganizer", subgraph = "artist-sub-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "artist-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("cardOwner"),
+                                @NamedAttributeNode("genres")
+                        }
+                )
+        }
+)
 public class Event {
 
     @Id

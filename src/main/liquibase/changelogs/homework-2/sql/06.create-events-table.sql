@@ -1,4 +1,4 @@
-CREATE TABLE measures (
+CREATE TABLE events (
     id integer NOT NULL,
     title varchar(255) not null,
     artists_id integer NOT NULL,

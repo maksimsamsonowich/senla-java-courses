@@ -2,12 +2,12 @@ package com.github.dao;
 
 public interface IAbstractDao<T> {
 
-    void create(T object);
+    T create(T entity);
 
-    T read(T object);
+    T read(int id);
 
-    T update(T object);
+    T update(T entity);
 
-    void delete(T object);
+    void delete(T entity);
 
 }
