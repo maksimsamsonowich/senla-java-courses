@@ -13,6 +13,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.lang.reflect.Type;
 
 @Repository
 public class LocationDao extends AbstractDao<Location>  {
@@ -28,16 +29,16 @@ public class LocationDao extends AbstractDao<Location>  {
     }
 
     public Location getLocationByEvent(Event event) {
-        EntityGraph entityGraph = getEntityManager().getEntityGraph("event-entity-graph");
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("event-entity-graph");
 
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
 
         Root<Event> root = criteriaQuery.from(Event.class);
 
         criteriaQuery.where(criteriaBuilder.equal(root.get(Event_.ID), event.getId()));
 
-        TypedQuery<Event> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        TypedQuery<Event> typedQuery = entityManager.createQuery(criteriaQuery);
         typedQuery.setHint("javax.persistence.fetchgraph", entityGraph);
 
         return typedQuery.getSingleResult().getLocation();

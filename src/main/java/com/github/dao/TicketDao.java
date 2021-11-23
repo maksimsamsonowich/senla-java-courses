@@ -32,14 +32,14 @@ public class TicketDao extends AbstractDao<Ticket> {
         criteriaQuery.select(rootEvent);
         criteriaQuery.where(criteriaBuilder.equal(rootEvent.get(Event_.ID), event.getId()));
 
-        TypedQuery<Event> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        TypedQuery<Event> typedQuery = entityManager.createQuery(criteriaQuery);
 
         return typedQuery.getSingleResult().getTickets();
     }
 
     public Set<Ticket> getTicketsByUser(User user) {
         String queryString = "select t from Ticket t join fetch t.owner own join fetch t.eventHolding eh where t.id = :id";
-        TypedQuery<Ticket> query = getEntityManager().createQuery(queryString, Ticket.class);
+        TypedQuery<Ticket> query = entityManager.createQuery(queryString, Ticket.class);
         query.setParameter("id", user.getId());
 
         return new HashSet<>(query.getResultList());

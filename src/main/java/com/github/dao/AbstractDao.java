@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
 public abstract class AbstractDao<T> implements IAbstractDao<T> {
 
     @PersistenceContext
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
 
     private final Class<T> entityClass;
 
@@ -37,9 +37,5 @@ public abstract class AbstractDao<T> implements IAbstractDao<T> {
         entityManager.remove(entity);
     }
 
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
 
 }

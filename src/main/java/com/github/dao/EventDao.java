@@ -32,16 +32,16 @@ public class EventDao extends AbstractDao<Event> {
     }
 
     public Set<Event> getSubEntityByEntity(Location location) {
-        EntityGraph entityGraph = getEntityManager().getEntityGraph("location-entity-graph");
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("location-entity-graph");
 
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Location> criteriaQuery = criteriaBuilder.createQuery(Location.class);
 
         Root<Location> root = criteriaQuery.from(Location.class);
 
         criteriaQuery.where(criteriaBuilder.equal(root.get(Location_.ID), location.getId()));
 
-        TypedQuery<Location> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        TypedQuery<Location> typedQuery = entityManager.createQuery(criteriaQuery);
         typedQuery.setHint("javax.persistence.fetchgraph", entityGraph);
 
         return typedQuery.getSingleResult().getEvents();
