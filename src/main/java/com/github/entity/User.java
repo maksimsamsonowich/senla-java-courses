@@ -11,7 +11,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Table(name = "users")
+@NamedEntityGraph(
+        name = "user-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("artistCard"),
+                @NamedAttributeNode("tickets")
+        }
+)
 public class User {
 
     @Id
@@ -41,4 +48,24 @@ public class User {
         User user = (User) object;
         return id == user.getId();
     }
+
+    public String toString() {
+        return String.format(
+                "User [id=%d," +
+                        "login=%s," +
+                        "password=%s," +
+                        "email=%s," +
+                        "phoneNumber=%s," +
+                        "firstName=%s," +
+                        "surname=%s]",
+                id,
+                login,
+                password,
+                email,
+                phoneNumber,
+                firstName,
+                surname
+        );
+    }
+
 }

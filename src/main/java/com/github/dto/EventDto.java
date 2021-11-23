@@ -2,10 +2,15 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.entity.Artist;
+import com.github.entity.EventProgram;
+import com.github.entity.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 @JsonAutoDetect
 @NoArgsConstructor
@@ -28,5 +33,14 @@ public class EventDto {
 
     @JsonProperty(value = "occupiedPlace")
     private int occupiedPlace;
+
+    @JsonProperty(value = "date")
+    private Date date;
+
+    @JsonProperty(value = "eventOrganizer")
+    private ArtistDto eventOrganizer;
+
+    @JsonProperty(value = "eventProgram")
+    private EventProgramDto eventProgram;
 
 }

@@ -1,5 +1,7 @@
 package com.github.entity;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,4 +18,8 @@ public class ArtistsGenres {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
+
+    public String toString() {
+        return "";
+    }
 }

@@ -9,10 +9,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "measures")
+@Table(name = "events")
 @NamedEntityGraph(
         name = "event-entity-graph",
         attributeNodes = {
@@ -51,7 +50,7 @@ public class Event {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "eventHolding", fetch = FetchType.LAZY)
     private Set<Ticket> tickets;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,6 +69,23 @@ public class Event {
     public boolean equals(Object object) {
         Event event = (Event) object;
         return id == event.getId();
+    }
+
+    public String toString() {
+        return String.format(
+                "Event [id=%d, " +
+                        "title=%s, " +
+                        "description=%s, " +
+                        "ageLimit=%d, " +
+                        "occupiedPlace=%d, " +
+                        "date=%s]",
+                id,
+                title,
+                description,
+                ageLimit,
+                occupiedPlace,
+                date
+        );
     }
 
 }

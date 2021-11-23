@@ -37,6 +37,7 @@ public abstract class AbstractDao<T> implements IAbstractDao<T> {
         entityManager.remove(entity);
     }
 
+
     public EntityManager getEntityManager() {
         return entityManager;
     }

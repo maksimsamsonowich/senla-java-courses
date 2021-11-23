@@ -1,7 +1,9 @@
 package com.github.controller;
 
 
+import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
+import com.github.entity.Event;
 import com.github.service.api.ILocationService;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,10 @@ public class LocationController {
 
     public void deleteLocation(LocationDto locationDto) {
         iLocationService.deleteLocation(locationDto);
+    }
+
+    public LocationDto getEventLocation(EventDto eventDto) {
+        return iLocationService.getEventLocation(eventDto);
     }
 }
 

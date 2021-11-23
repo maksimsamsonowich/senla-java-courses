@@ -1,18 +1,22 @@
 package com.github.dao;
 
+import com.github.entity.Event;
 import com.github.entity.Location;
 
 import com.github.exceptions.location.NoSuchLocationException;
+import com.github.metamodels.Event_;
 import com.github.metamodels.Location_;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
@@ -28,19 +32,20 @@ public class LocationDao extends AbstractDao<Location>  {
         criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public Location nothing(Location location) {
-        CriteriaQuery<Location> criteriaQuery = criteriaBuilder.createQuery(Location.class);
-        Root<Location> locationRoot = criteriaQuery.from(Location.class);
-        criteriaQuery.select(locationRoot);
+    public Location getLocationByEvent(Event event) {
+        EntityGraph entityGraph = getEntityManager().getEntityGraph("event-entity-graph");
 
-        TypedQuery<Location> query = getEntityManager().createQuery(criteriaQuery);
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
 
-        List<Location> locationList = query.getResultList();
+        Root<Event> root = criteriaQuery.from(Event.class);
 
-        return getEntityManager().createQuery(criteriaQuery)
-                .getResultList().stream()
-                .findFirst()
-                .orElseThrow(() -> new NoSuchLocationException(ERROR_MESSAGE));
+        criteriaQuery.where(criteriaBuilder.equal(root.get(Event_.ID), event.getId()));
+
+        TypedQuery<Event> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        typedQuery.setHint("javax.persistence.fetchgraph", entityGraph);
+
+        return typedQuery.getSingleResult().getLocation();
     }
 
 }

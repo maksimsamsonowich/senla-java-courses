@@ -8,9 +8,28 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "artists")
+@NamedEntityGraph(
+        name = "artists-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("genres"),
+                @NamedAttributeNode("cardOwner"),
+                @NamedAttributeNode(value = "events", subgraph = "event-sub-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "event-sub-graph",
+                        attributeNodes = {
+                                @NamedAttributeNode("tickets"),
+                                @NamedAttributeNode("eventProgram"),
+                                @NamedAttributeNode("location")
+                        }
+                )
+        }
+
+)
 public class Artist {
 
     @Id
@@ -26,11 +45,21 @@ public class Artist {
     )
     private Set<Genre> genres;
 
-    @OneToMany(mappedBy = "eventOrganizer")
+    @OneToMany(mappedBy = "eventOrganizer", fetch = FetchType.LAZY)
     private Set<Event> events;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User cardOwner;
+
+
+    public String toString() {
+        return String.format(
+                "Artist [id=%d, " +
+                        "nickname=%s]",
+                id,
+                nickname
+        );
+    }
 
 }

@@ -14,4 +14,5 @@ public class UserDao extends AbstractDao<User>  {
     public UserDao(EntityManager entityManager) {
         super(entityManager, User.class);
     }
+
 }

@@ -92,4 +92,8 @@
     <changeSet id="homework-6-insert_data_into_events" author="Maksim Samsonowich">
         <sqlFile encoding="utf8" path="./sql/21.events-table-data-insert.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="homework-6-insert_data_into_tickets" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/22.tickets-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog> 

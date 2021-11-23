@@ -1,4 +1,5 @@
 CREATE TABLE tickets (
+    id integer not null,
     user_id integer NOT NULL,
     event_id integer NOT NULL,
     order_date date NOT NULL,

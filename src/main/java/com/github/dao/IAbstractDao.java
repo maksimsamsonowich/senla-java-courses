@@ -1,5 +1,7 @@
 package com.github.dao;
 
+import java.util.List;
+
 public interface IAbstractDao<T> {
 
     T create(T entity);
