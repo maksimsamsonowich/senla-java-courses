@@ -1,6 +1,5 @@
 package com.github.service;
 
-import com.github.dao.IAbstractDao;
 import com.github.dao.LocationDao;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
@@ -12,8 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Service
 @Component

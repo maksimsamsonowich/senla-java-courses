@@ -1,14 +1,9 @@
 package com.github;
 
 import com.github.controller.EventController;
-import com.github.controller.LocationController;
-import com.github.controller.UserController;
-import com.github.dao.LocationDao;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.dto.UserDto;
 
-import com.github.exceptions.location.NoSuchLocationException;
 import com.github.mapper.JsonMapper;
 
 import org.springframework.context.ApplicationContext;
