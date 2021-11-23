@@ -3,12 +3,10 @@ package com.github.dao;
 import com.github.entity.Event;
 
 import com.github.entity.Location;
-import com.github.exceptions.event.NoSuchEventException;
-import com.github.exceptions.location.NoSuchLocationException;
-import com.github.metamodels.Location_;
-import lombok.AllArgsConstructor;
+import com.github.entity.Location_;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;
@@ -17,9 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Set;
 
 @Repository

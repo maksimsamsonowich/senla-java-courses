@@ -5,6 +5,7 @@ import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 import com.github.entity.Event;
 import com.github.entity.Location;
+import com.github.entity.Ticket;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.ILocationService;
 import lombok.AllArgsConstructor;

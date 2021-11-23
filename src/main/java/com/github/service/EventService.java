@@ -12,6 +12,7 @@ import com.github.entity.Event;
 
 import com.github.entity.EventProgram;
 import com.github.entity.Location;
+import com.github.exceptions.NoSuchEntityException;
 import com.github.mapper.Mapper;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.IEventService;
@@ -71,7 +72,7 @@ public class EventService implements IEventService {
                             events.stream()
                             .filter((entity) -> entity.getId() == eventDto.getId())
                             .findFirst()
-                            .orElse(null)
+                            .orElseThrow(() -> new NoSuchEntityException("There is no such entity"))
                             .getEventOrganizer(),
                              ArtistDto.class)
             );
@@ -81,7 +82,7 @@ public class EventService implements IEventService {
                             events.stream()
                                     .filter((entity) -> entity.getId() == eventDto.getId())
                                     .findFirst()
-                                    .orElse(null)
+                                    .orElseThrow(() -> new NoSuchEntityException("There is no such entity"))
                                     .getEventProgram(),
                                     EventProgramDto.class)
             );

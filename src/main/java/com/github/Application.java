@@ -1,9 +1,14 @@
 package com.github;
 
 import com.github.controller.EventController;
+import com.github.controller.TicketController;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 
+import com.github.dto.TicketDto;
+import com.github.dto.UserDto;
+import com.github.entity.Event;
+import com.github.entity.Ticket;
 import com.github.mapper.JsonMapper;
 
 import org.springframework.context.ApplicationContext;
@@ -21,14 +26,24 @@ public class Application {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
         JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
 
-        String firstLocation = "{\"id\":\"1\",\"title\":\"Heart\",\"address\":\"г.Гродно, ул.Кабяка, д.112\",\"capacity\":\"60\"}";
-        //String secondLocation = "{\"id\":\"2\",\"title\":\"Art House\",\"address\":\"г.Гродно, ул.Ожешко, д.9\",\"capacity\":\"45\"}";
+        String firstLocation = "{\"id\":\"1\",\"title\":\"1\",\"description\":\"1\",\"ageLimit\":\"1\",\"occupiedPlace\":\"1\",\"date\":\"1\"}";
 
-        LocationDto firstDto = jsonMapper.toEntity(firstLocation, LocationDto.class);
-        //LocationDto secondDto = jsonMapper.toEntity(secondLocation, LocationDto.class);
+        EventDto event = jsonMapper.toEntity(firstLocation, EventDto.class);
 
-        EventController eventController = applicationContext.getBean(EventController.class);
-        Set<EventDto> events = eventController.getEventsByLocation(firstDto);
+        TicketController ticketController = applicationContext.getBean(TicketController.class);
+
+        Set<TicketDto> tickets = ticketController.getEventTickets(event);
+
+        System.out.println("1");
+
+
+        String secondEntity = "{\"id\":\"1\",\"login\":\"1\",\"password\":\"1\",\"email\":\"1\",\"phoneNumber\":\"1\",\"firstName\":\"1\",\"surname\":\"1\"}";
+
+        UserDto userDto = jsonMapper.toEntity(secondEntity, UserDto.class);
+
+        Set<TicketDto> tkts = ticketController.getUserTickets(userDto);
+
+        System.out.println("1234");
 
     }
 

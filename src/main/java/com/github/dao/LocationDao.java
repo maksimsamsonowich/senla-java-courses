@@ -1,9 +1,9 @@
 package com.github.dao;
 
 import com.github.entity.Event;
+import com.github.entity.Event_;
 import com.github.entity.Location;
 
-import com.github.metamodels.Event_;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 

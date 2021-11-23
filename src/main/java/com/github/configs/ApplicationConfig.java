@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
 import java.util.Map;
 import java.util.Properties;
@@ -110,6 +111,11 @@ public class ApplicationConfig {
     @Bean
     public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
         return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    public CriteriaBuilder criteriaBuilder(EntityManager entityManager) {
+        return entityManager.getCriteriaBuilder();
     }
 
     Properties additionalProperties() {

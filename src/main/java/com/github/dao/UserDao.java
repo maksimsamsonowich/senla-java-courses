@@ -1,5 +1,6 @@
 package com.github.dao;
 
+import com.github.entity.Ticket;
 import com.github.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
