@@ -42,9 +42,7 @@ public class TicketDao extends AbstractDao<Ticket> {
         TypedQuery<Ticket> query = getEntityManager().createQuery(queryString, Ticket.class);
         query.setParameter("id", user.getId());
 
-        Set<Ticket> retSet = new HashSet<>(query.getResultList());
-
-        return retSet;
+        return new HashSet<>(query.getResultList());
     }
 
 }

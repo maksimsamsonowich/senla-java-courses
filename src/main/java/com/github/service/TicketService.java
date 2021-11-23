@@ -2,14 +2,12 @@ package com.github.service;
 
 import com.github.dao.TicketDao;
 import com.github.dao.UserDao;
-import com.github.dto.EventDto;
-import com.github.dto.LocationDto;
-import com.github.dto.TicketDto;
-import com.github.dto.UserDto;
+import com.github.dto.*;
 import com.github.entity.Event;
 import com.github.entity.Location;
 import com.github.entity.Ticket;
 import com.github.entity.User;
+import com.github.exceptions.NoSuchEntityException;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.ITicketService;
 import lombok.AllArgsConstructor;
@@ -62,5 +60,6 @@ public class TicketService implements ITicketService {
     public Set<TicketDto> getUserTickets(UserDto userDto) {
         return ticketMapper.setToDto(iTicketDao.getTicketsByUser(userMapper.toEntity(userDto, User.class)), Ticket.class);
     }
+
 
 }
