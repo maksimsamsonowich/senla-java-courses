@@ -5,7 +5,6 @@ import com.github.entity.Event;
 import com.github.entity.Location;
 import com.github.entity.Location_;
 
-import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,20 +20,16 @@ import java.util.Set;
 @Repository
 public class EventDao extends AbstractDao<Event> {
 
-    @Value("${event.error.message}")
-    private String ERROR_MESSAGE;
-
-    private CriteriaBuilder criteriaBuilder;
+    private final CriteriaBuilder criteriaBuilder;
 
     public EventDao(EntityManager entityManager) {
         super(entityManager, Event.class);
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public Set<Event> getSubEntityByEntity(Location location) {
+    public Set<Event> getEventsByLocation(Location location) {
         EntityGraph<?> entityGraph = entityManager.getEntityGraph("location-entity-graph");
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Location> criteriaQuery = criteriaBuilder.createQuery(Location.class);
 
         Root<Location> root = criteriaQuery.from(Location.class);
