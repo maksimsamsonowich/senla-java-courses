@@ -1,77 +1,47 @@
 package com.github.dao;
 
-import com.github.annotations.Transaction;
-import com.github.database.ConnectionHolder;
+import com.github.entity.Event;
+import com.github.entity.Event_;
 import com.github.entity.Location;
-import com.github.exceptions.database.DatabaseAccessException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.lang.reflect.Type;
 
 @Repository
-public class LocationDao {
+public class LocationDao extends AbstractDao<Location>  {
 
     @Value("${database.access.error.message}")
     private String ERROR_MESSAGE;
 
-    private final ConnectionHolder connectionHolder;
+    private final CriteriaBuilder criteriaBuilder;
 
-    public LocationDao(ConnectionHolder connectionHolder) {
-        this.connectionHolder = connectionHolder;
+    public LocationDao(EntityManager entityManager) {
+        super(entityManager, Location.class);
+        criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    @Transaction
-    public void create(Location location) {
-        execute(String.format("insert into locations ( id, title, address, capacity ) values ( %d, '%s', '%s', %d )",
-                location.getId(), location.getTitle(), location.getAddress(), location.getCapacity()));
+    public Location getLocationByEvent(Event event) {
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("event-entity-graph");
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
+
+        Root<Event> root = criteriaQuery.from(Event.class);
+
+        criteriaQuery.where(criteriaBuilder.equal(root.get(Event_.ID), event.getId()));
+
+        TypedQuery<Event> typedQuery = entityManager.createQuery(criteriaQuery);
+        typedQuery.setHint("javax.persistence.fetchgraph", entityGraph);
+
+        return typedQuery.getSingleResult().getLocation();
     }
 
-    public Location read(Location location) {
-        return executeForResult(String.format("select * from locations where id = %d",
-                location.getId()));
-    }
-
-    public Location update(Location location) {
-        execute(String.format("update locations SET title = '%s', address = '%s', capacity = %d where id = %d",
-                location.getTitle(), location.getAddress(), location.getCapacity(), location.getId()));
-        return location;
-    }
-
-    public void delete(Location location) {
-        execute(String.format("delete from locations where id = %d",
-                location.getId()));
-    }
-
-
-    @Transaction
-    private void execute(String sqlQuery) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement(sqlQuery)) {
-            preparedStatement.execute();
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
-
-    @Transaction
-    private Location executeForResult(String sqlQuery) {
-        try (PreparedStatement preparedStatement = connectionHolder
-                .getConnection().prepareStatement(sqlQuery)) {
-            return Objects.requireNonNull(locationMapper(preparedStatement.executeQuery()));
-        } catch (SQLException ex) {
-            throw new DatabaseAccessException(ERROR_MESSAGE);
-        }
-    }
-
-    private Location locationMapper(ResultSet resultSet) throws SQLException {
-        resultSet.next();
-        return new Location(resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getString("address"),
-                resultSet.getInt("capacity"));
-    }
 }

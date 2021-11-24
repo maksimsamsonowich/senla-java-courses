@@ -3,30 +3,31 @@ package com.github.dto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.entity.Event;
+import com.github.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.Date;
 
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class LocationDto {
+public class TicketDto {
 
     @JsonProperty(value = "id")
     private int id;
 
-    @JsonProperty(value = "title")
-    private String title;
+    @JsonProperty(value = "orderDate")
+    private Date orderDate;
 
-    @JsonProperty(value = "address")
-    private String address;
+    @JsonProperty(value = "event")
+    private Event eventHolding;
 
-    @JsonProperty(value = "capacity")
-    private int capacity;
+    @JsonProperty(value = "owner")
+    private User owner;
 
 }

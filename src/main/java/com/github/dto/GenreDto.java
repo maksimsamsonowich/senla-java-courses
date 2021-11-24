@@ -2,7 +2,7 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.entity.Event;
+import com.github.entity.Artist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +15,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LocationDto {
+public class GenreDto {
 
     @JsonProperty(value = "id")
     private int id;
 
-    @JsonProperty(value = "title")
-    private String title;
-
-    @JsonProperty(value = "address")
-    private String address;
-
-    @JsonProperty(value = "capacity")
-    private int capacity;
+    @JsonProperty(value = "name")
+    private String name;
 
 }

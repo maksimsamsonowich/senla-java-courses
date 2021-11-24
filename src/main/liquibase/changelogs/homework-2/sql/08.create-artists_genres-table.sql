@@ -1,4 +1,4 @@
-CREATE TABLE artists_ganres (
+CREATE TABLE artists_genres (
     artists_id integer NOT NULL,
     genres_id integer NOT NULL,
     primary key (artists_id, genres_id),

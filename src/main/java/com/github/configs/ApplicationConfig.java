@@ -1,11 +1,12 @@
 package com.github.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.database.ConnectionHolder;
 import liquibase.integration.spring.SpringLiquibase;
-import lombok.SneakyThrows;
+import org.hibernate.cfg.Environment;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +14,24 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
-@PropertySource("classpath:application.properties")
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 
     @Value("${login}")
@@ -37,6 +48,12 @@ public class ApplicationConfig {
 
     @Value("${changeLogFile}")
     private String changeLogFile;
+
+    @Value("${packagesToScan}")
+    private String packagesToScan;
+
+    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.MySQLDialect'}}")
+    private Map<String, String> hibernateAdditionalProperties;
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -60,32 +77,51 @@ public class ApplicationConfig {
     }
 
     @Bean
-    @SneakyThrows
-    public ConnectionHolder connectionHolder() {
-        return new ConnectionHolder(
-                dataSource().getConnection()
-        );
-    }
-
-    @Bean
     public DataSource dataSource()  {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        return dataSource;
+        return new DriverManagerDataSource(url, username, password);
     }
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
 
         liquibase.setChangeLog(changeLogFile);
-        liquibase.setDataSource(dataSource());
+        liquibase.setDataSource(dataSource);
 
         return liquibase;
+    }
+
+    @Bean
+    public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+
+    @Bean
+    public FactoryBean<EntityManagerFactory> entityManagerFactory(DataSource dataSource) {
+        final LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean =
+                new LocalContainerEntityManagerFactoryBean();
+        localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
+        localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        localContainerEntityManagerFactoryBean.setDataSource(dataSource);
+        //localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
+        localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
+        return localContainerEntityManagerFactoryBean;
+    }
+
+    @Bean
+    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    public CriteriaBuilder criteriaBuilder(EntityManager entityManager) {
+        return entityManager.getCriteriaBuilder();
+    }
+
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
+        properties.put(Environment.SHOW_SQL, "true");
+        return properties;
     }
 }

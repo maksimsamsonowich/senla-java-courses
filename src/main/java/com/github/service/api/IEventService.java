@@ -1,7 +1,10 @@
-package com.github.service;
+package com.github.service.api;
 
 import com.github.dto.EventDto;
+import com.github.dto.LocationDto;
 import com.github.entity.Event;
+
+import java.util.Set;
 
 public interface IEventService {
 
@@ -12,4 +15,7 @@ public interface IEventService {
     EventDto update(EventDto eventDto);
 
     void deleteEvent(EventDto eventDto);
+
+    Set<EventDto> getEventsByLocation(LocationDto locationDto);
+
 }

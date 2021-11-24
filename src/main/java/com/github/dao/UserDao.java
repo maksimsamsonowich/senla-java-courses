@@ -1,23 +1,19 @@
 package com.github.dao;
 
+import com.github.entity.Ticket;
 import com.github.entity.User;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.Set;
 
-@Component
-public class UserDao extends Dao<User> {
+@Repository
+public class UserDao extends AbstractDao<User>  {
 
-    public UserDao(Set<User> users) {
-        super(users);
+    public UserDao(EntityManager entityManager) {
+        super(entityManager, User.class);
     }
 
-    @Override
-    public User update(User user) {
-        User someone = super.update(user);
-        someone.setEmail(user.getEmail());
-        someone.setPassword(user.getPassword());
-        someone.setLogin(user.getLogin());
-        return someone;
-    }
 }

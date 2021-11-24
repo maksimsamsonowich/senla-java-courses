@@ -1,5 +1,6 @@
-package com.github.service;
+package com.github.service.api;
 
+import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 
 public interface ILocationService {
@@ -11,5 +12,7 @@ public interface ILocationService {
     LocationDto update(LocationDto locationDto);
 
     void deleteLocation(LocationDto locationDto);
+
+    LocationDto getEventLocation(EventDto eventDto);
 
 }
