@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@Component
 @RestController
 @AllArgsConstructor
 @RequestMapping("/events")
@@ -18,7 +17,12 @@ public class EventController{
 
     private final IEventService iEventService;
 
-    @PostMapping("/register/")
+    @GetMapping("/hello")
+    public String hello() {
+        return "hoolo";
+    }
+    
+    @PostMapping("/register")
     public void createEvent(@RequestBody EventDto eventDto) {
         iEventService.createEvent(eventDto);
     }

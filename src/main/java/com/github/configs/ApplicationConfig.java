@@ -78,7 +78,15 @@ public class ApplicationConfig {
 
     @Bean
     public DataSource dataSource()  {
-        return new DriverManagerDataSource(url, username, password);
+        DriverManagerDataSource dataSource
+                = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+
+        return dataSource;
     }
 
     @Bean

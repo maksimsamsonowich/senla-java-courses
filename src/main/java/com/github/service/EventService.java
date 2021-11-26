@@ -28,7 +28,6 @@ public class EventService implements IEventService {
     private final EventDao iEventDao;
 
     private final IMapper<EventDto, Event> eventMapper;
-    private final IMapper<LocationDto, Location> locationMapper;
     private final IMapper<ArtistDto, Artist> artistMapper;
     private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
 
