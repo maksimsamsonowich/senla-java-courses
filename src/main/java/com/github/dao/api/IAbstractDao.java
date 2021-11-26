@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.dao.api;
 
 public interface IAbstractDao<T> {
 

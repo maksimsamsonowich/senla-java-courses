@@ -1,6 +1,6 @@
 package com.github.service;
 
-import com.github.dao.IAbstractDao;
+import com.github.dao.api.IAbstractDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.api.IMapper;

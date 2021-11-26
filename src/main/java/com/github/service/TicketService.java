@@ -1,13 +1,10 @@
 package com.github.service;
 
 import com.github.dao.TicketDao;
-import com.github.dao.UserDao;
 import com.github.dto.*;
 import com.github.entity.Event;
-import com.github.entity.Location;
 import com.github.entity.Ticket;
 import com.github.entity.User;
-import com.github.exceptions.NoSuchEntityException;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.ITicketService;
 import lombok.AllArgsConstructor;

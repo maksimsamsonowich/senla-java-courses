@@ -1,10 +1,12 @@
 package com.github.dao;
 
+import com.github.dao.api.IAbstractDao;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Repository
 @AllArgsConstructor
@@ -12,6 +14,8 @@ public abstract class AbstractDao<T> implements IAbstractDao<T> {
 
     @PersistenceContext
     protected final EntityManager entityManager;
+
+    protected final CriteriaBuilder criteriaBuilder;
 
     private final Class<T> entityClass;
 

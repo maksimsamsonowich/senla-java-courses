@@ -1,7 +1,6 @@
 package com.github.service;
 
 import com.github.dao.EventDao;
-import com.github.dao.IAbstractDao;
 import com.github.dto.ArtistDto;
 import com.github.dto.EventDto;
 
@@ -12,16 +11,13 @@ import com.github.entity.Event;
 
 import com.github.entity.EventProgram;
 import com.github.entity.Location;
-import com.github.exceptions.NoSuchEntityException;
-import com.github.mapper.Mapper;
+import com.github.exceptions.entities.NoSuchEntityException;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -59,14 +55,13 @@ public class EventService implements IEventService {
     @Override
     @Transactional(readOnly = true)
     public Set<EventDto> getEventsByLocation(LocationDto locationDto) {
-        return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(locationMapper.toEntity(locationDto, Location.class)));
+        return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(locationDto.getId()));
     }
 
     private Set<EventDto> convertSetOfEntitiesToDto(Set<Event> events) {
         Set<EventDto> retSet = eventMapper.setToDto(events, EventDto.class);
 
         for (EventDto eventDto : retSet) {
-
             eventDto.setEventOrganizer(
                     artistMapper.toDto(
                             events.stream()
@@ -76,7 +71,6 @@ public class EventService implements IEventService {
                             .getEventOrganizer(),
                              ArtistDto.class)
             );
-
             eventDto.setEventProgram(
                     eventProgramMapper.toDto(
                             events.stream()

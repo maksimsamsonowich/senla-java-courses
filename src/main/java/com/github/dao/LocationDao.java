@@ -4,7 +4,6 @@ import com.github.entity.Event;
 import com.github.entity.Event_;
 import com.github.entity.Location;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;
@@ -13,19 +12,12 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.Type;
 
 @Repository
 public class LocationDao extends AbstractDao<Location>  {
 
-    @Value("${database.access.error.message}")
-    private String ERROR_MESSAGE;
-
-    private final CriteriaBuilder criteriaBuilder;
-
-    public LocationDao(EntityManager entityManager) {
-        super(entityManager, Location.class);
-        criteriaBuilder = entityManager.getCriteriaBuilder();
+    public LocationDao(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
+        super(entityManager, criteriaBuilder, Location.class);
     }
 
     public Location getLocationByEvent(Event event) {

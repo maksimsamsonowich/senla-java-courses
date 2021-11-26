@@ -8,16 +8,14 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -28,9 +26,11 @@ import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
+@EnableWebMvc
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
+@ComponentScan(basePackages = {"com.github"})
 @PropertySource("classpath:application.properties")
 public class ApplicationConfig {
 

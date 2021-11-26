@@ -18,11 +18,8 @@ import java.util.Set;
 @Repository
 public class TicketDao extends AbstractDao<Ticket> {
 
-    private final CriteriaBuilder criteriaBuilder;
-
-    public TicketDao(CriteriaBuilder criteriaBuilder, EntityManager entityManager) {
-        super(entityManager, Ticket.class);
-        this.criteriaBuilder = criteriaBuilder;
+    public TicketDao(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
+        super(entityManager, criteriaBuilder, Ticket.class);
     }
 
     public Set<Ticket> getEventTickets(Event event){
