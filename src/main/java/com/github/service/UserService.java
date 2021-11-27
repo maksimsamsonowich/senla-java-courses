@@ -27,8 +27,8 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserDto readUser(UserDto userDto) {
-        return userMapper.toDto(iUserDao.read(userMapper.toEntity(userDto, User.class).getId()), UserDto.class);
+    public UserDto readUser(Integer id) {
+        return userMapper.toDto(iUserDao.read(id), UserDto.class);
     }
 
     @Override

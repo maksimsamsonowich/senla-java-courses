@@ -1,4 +1,4 @@
-package com.github.configs;
+package com.github.configs.root;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import liquibase.integration.spring.SpringLiquibase;
@@ -26,7 +26,6 @@ import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
-@EnableWebMvc
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement

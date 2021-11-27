@@ -6,7 +6,7 @@ public interface IUserService {
 
     void createUser(UserDto user);
 
-    UserDto readUser(UserDto user);
+    UserDto readUser(Integer id);
 
     UserDto update(UserDto user);
 

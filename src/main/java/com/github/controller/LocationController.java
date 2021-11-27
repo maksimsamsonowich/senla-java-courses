@@ -1,39 +1,42 @@
 package com.github.controller;
 
-
-import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.entity.Event;
 import com.github.service.api.ILocationService;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
-@Component
+@RestController
+@AllArgsConstructor
+@RequestMapping("/location")
 public class LocationController {
 
     private ILocationService iLocationService;
 
-    public LocationController(ILocationService iLocationService) {
-        this.iLocationService = iLocationService;
-    }
-
-    public void createLocation(LocationDto locationDto) {
+    @PostMapping("/register/")
+    public void createLocation(@RequestBody LocationDto locationDto) {
         iLocationService.createLocation(locationDto);
     }
 
-    public LocationDto readLocation(LocationDto locationDto) {
-        return iLocationService.readLocation(locationDto);
+    @GetMapping("/view/{id}/")
+    public LocationDto readLocation(@PathVariable Integer id) {
+        return iLocationService.readLocation(id);
     }
 
-    public LocationDto updateLocation(LocationDto locationDto) {
+    @PutMapping("/edit/{id}/")
+    public LocationDto updateLocation(@PathVariable Integer id,
+                                      @RequestBody LocationDto locationDto) {
         return iLocationService.update(locationDto);
     }
 
-    public void deleteLocation(LocationDto locationDto) {
+    @DeleteMapping("/delete/{id}/")
+    public void deleteLocation(@PathVariable Integer id,
+                               @RequestBody LocationDto locationDto) {
         iLocationService.deleteLocation(locationDto);
     }
 
-    public LocationDto getEventLocation(EventDto eventDto) {
-        return iLocationService.getEventLocation(eventDto);
+    @GetMapping("/event/{id}")
+    public LocationDto getEventLocation(@PathVariable Integer id) {
+        return iLocationService.getEventLocation(id);
     }
 }
 

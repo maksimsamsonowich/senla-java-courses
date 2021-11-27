@@ -5,7 +5,6 @@ import com.github.entity.Event;
 import com.github.entity.Location;
 import com.github.entity.Location_;
 
-
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;

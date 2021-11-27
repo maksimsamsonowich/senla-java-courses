@@ -11,11 +11,11 @@ import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class UserDto {
 
     @JsonProperty(value = "id")

@@ -4,41 +4,48 @@ import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
 import com.github.dto.UserDto;
 import com.github.service.api.ITicketService;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@Component
+@RestController
+@AllArgsConstructor
+@RequestMapping("/ticket/")
 public class TicketController {
 
     private ITicketService iTicketService;
 
-    public TicketController(ITicketService iTicketService) {
-        this.iTicketService = iTicketService;
-    }
-
-    public void createLocation(TicketDto ticketDto) {
+    @PostMapping("/register/")
+    public void createLocation(@RequestBody TicketDto ticketDto) {
         iTicketService.createTicket(ticketDto);
     }
 
-    public TicketDto readLocation(TicketDto ticketDto) {
-        return iTicketService.readTicket(ticketDto);
+    @GetMapping("/view/{id}/")
+    public TicketDto readLocation(@PathVariable Integer id) {
+        return iTicketService.readTicket(id);
     }
 
-    public TicketDto updateLocation(TicketDto ticketDto) {
+    @PutMapping("/edit/{id}/")
+    public TicketDto updateLocation(@PathVariable Integer id,
+                                    @RequestBody TicketDto ticketDto) {
         return iTicketService.update(ticketDto);
     }
 
-    public void deleteLocation(TicketDto ticketDto) {
+    @DeleteMapping("/delete/{id}/")
+    public void deleteLocation(@PathVariable Integer id,
+                               @RequestBody TicketDto ticketDto) {
         iTicketService.deleteTicket(ticketDto);
     }
 
-    public Set<TicketDto> getEventTickets(EventDto eventDto) {
-        return iTicketService.getEventTickets(eventDto);
+    @GetMapping("/event/{id}/")
+    public Set<TicketDto> getEventTickets(@PathVariable Integer id) {
+        return iTicketService.getEventTickets(id);
     }
 
-    public Set<TicketDto> getUserTickets(UserDto userDto) {
-        return iTicketService.getUserTickets(userDto);
+    @GetMapping("/user/{id}/")
+    public Set<TicketDto> getUserTickets(@PathVariable Integer id) {
+        return iTicketService.getUserTickets(id);
     }
 
 }

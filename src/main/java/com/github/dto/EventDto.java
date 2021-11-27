@@ -2,9 +2,6 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.entity.Artist;
-import com.github.entity.EventProgram;
-import com.github.entity.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +9,11 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class EventDto {
 
     @JsonProperty(value = "id")

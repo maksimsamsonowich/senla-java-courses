@@ -3,7 +3,6 @@ package com.github.dao;
 import com.github.entity.Event;
 import com.github.entity.Event_;
 import com.github.entity.Ticket;
-import com.github.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -22,22 +21,22 @@ public class TicketDao extends AbstractDao<Ticket> {
         super(entityManager, criteriaBuilder, Ticket.class);
     }
 
-    public Set<Ticket> getEventTickets(Event event){
+    public Set<Ticket> getEventTickets(Integer id){
         CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
         Root<Event> rootEvent = criteriaQuery.from(Event.class);
         rootEvent.fetch("tickets", JoinType.LEFT).fetch("owner", JoinType.LEFT);
         criteriaQuery.select(rootEvent);
-        criteriaQuery.where(criteriaBuilder.equal(rootEvent.get(Event_.ID), event.getId()));
+        criteriaQuery.where(criteriaBuilder.equal(rootEvent.get(Event_.ID), id));
 
         TypedQuery<Event> typedQuery = entityManager.createQuery(criteriaQuery);
 
         return typedQuery.getSingleResult().getTickets();
     }
 
-    public Set<Ticket> getTicketsByUser(User user) {
+    public Set<Ticket> getTicketsByUser(Integer id) {
         String queryString = "select t from Ticket t join fetch t.owner own join fetch t.eventHolding eh where t.id = :id";
         TypedQuery<Ticket> query = entityManager.createQuery(queryString, Ticket.class);
-        query.setParameter("id", user.getId());
+        query.setParameter("id", id);
 
         return new HashSet<>(query.getResultList());
     }

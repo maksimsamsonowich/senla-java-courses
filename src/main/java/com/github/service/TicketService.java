@@ -32,8 +32,8 @@ public class TicketService implements ITicketService {
     }
 
     @Override
-    public TicketDto readTicket(TicketDto ticketDto) {
-        return ticketMapper.toDto(iTicketDao.read(ticketMapper.toEntity(ticketDto, Ticket.class).getId()), TicketDto.class);
+    public TicketDto readTicket(Integer id) {
+        return ticketMapper.toDto(iTicketDao.read(id), TicketDto.class);
     }
 
     @Override
@@ -48,14 +48,14 @@ public class TicketService implements ITicketService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<TicketDto> getEventTickets(EventDto eventDto) {
-        return ticketMapper.setToDto(iTicketDao.getEventTickets(eventMapper.toEntity(eventDto, Event.class)), TicketDto.class);
+    public Set<TicketDto> getEventTickets(Integer id) {
+        return ticketMapper.setToDto(iTicketDao.getEventTickets(id), TicketDto.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<TicketDto> getUserTickets(UserDto userDto) {
-        return ticketMapper.setToDto(iTicketDao.getTicketsByUser(userMapper.toEntity(userDto, User.class)), Ticket.class);
+    public Set<TicketDto> getUserTickets(Integer id) {
+        return ticketMapper.setToDto(iTicketDao.getTicketsByUser(id), Ticket.class);
     }
 
 

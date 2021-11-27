@@ -37,8 +37,8 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventDto readEvent(EventDto eventDto) {
-        return eventMapper.toDto(iEventDao.read(eventMapper.toEntity(eventDto, Event.class).getId()), EventDto.class);
+    public EventDto readEvent(Integer id) {
+        return eventMapper.toDto(iEventDao.read(id), EventDto.class);
     }
 
     @Override

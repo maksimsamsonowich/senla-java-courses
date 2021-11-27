@@ -9,11 +9,11 @@ import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ArtistDto {
 
     @JsonProperty(value = "id")

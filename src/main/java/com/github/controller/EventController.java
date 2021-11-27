@@ -2,10 +2,8 @@ package com.github.controller;
 
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.entity.Event;
 import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -16,30 +14,24 @@ import java.util.Set;
 public class EventController{
 
     private final IEventService iEventService;
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "hoolo";
-    }
     
-    @PostMapping("/register")
+    @PostMapping("/register/")
     public void createEvent(@RequestBody EventDto eventDto) {
         iEventService.createEvent(eventDto);
     }
 
-    @GetMapping("/view/{id}")
-    public EventDto readEvent(@PathVariable("id") Integer id,
-                              @RequestBody EventDto eventDto) {
-        return iEventService.readEvent(eventDto);
+    @GetMapping("/view/{id}/")
+    public EventDto readEvent(@PathVariable("id") Integer id) {
+        return iEventService.readEvent(id);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/edit/{id}/")
     public EventDto updateEventDescription(@PathVariable("id") Integer id,
                                            @RequestBody EventDto eventDto) {
         return iEventService.update(eventDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}/")
     public void deleteEvent(@PathVariable("id") Integer id,
                             @RequestBody EventDto eventDto) {
         iEventService.deleteEvent(eventDto);

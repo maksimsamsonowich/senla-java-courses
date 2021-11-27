@@ -10,14 +10,14 @@ public interface ITicketService {
 
     void createTicket(TicketDto ticketDto);
 
-    TicketDto readTicket(TicketDto ticketDto);
+    TicketDto readTicket(Integer id);
 
     TicketDto update(TicketDto ticketDto);
 
     void deleteTicket(TicketDto ticketDto);
 
-    Set<TicketDto>getEventTickets(EventDto eventDto);
+    Set<TicketDto>getEventTickets(Integer id);
 
-    Set<TicketDto> getUserTickets(UserDto userDto);
+    Set<TicketDto> getUserTickets(Integer id);
 
 }

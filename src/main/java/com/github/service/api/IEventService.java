@@ -10,7 +10,7 @@ public interface IEventService {
 
     void createEvent(EventDto eventDto);
 
-    EventDto readEvent(EventDto eventDto);
+    EventDto readEvent(Integer id);
 
     EventDto update(EventDto eventDto);
 

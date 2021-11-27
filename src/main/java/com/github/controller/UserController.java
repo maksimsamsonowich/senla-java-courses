@@ -4,26 +4,34 @@ import com.github.dto.UserDto;
 import com.github.service.api.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-@Component
+@RestController
 @AllArgsConstructor
+@RequestMapping("/user/")
 public class UserController {
 
     private final IUserService iUserService;
 
-    public void createUser(UserDto userDto) {
+    @PostMapping("/register/")
+    public void createUser(@RequestBody UserDto userDto) {
         iUserService.createUser(userDto);
     }
 
-    public UserDto readUser(UserDto userDto) {
-        return iUserService.readUser(userDto);
+    @GetMapping("/view/{id}/")
+    public UserDto readUser(@PathVariable Integer id) {
+        return iUserService.readUser(id);
     }
 
-    public UserDto update(UserDto userDto) {
+    @PutMapping("/edit/{id}/")
+    public UserDto update(@PathVariable Integer id,
+                          @RequestBody UserDto userDto) {
         return iUserService.update(userDto);
     }
 
-    public void deleteUser(UserDto userDto) {
+    @DeleteMapping("/delete/{id}/")
+    public void deleteUser(@PathVariable Integer id,
+                           @RequestBody UserDto userDto) {
         iUserService.deleteUser(userDto);
     }
 }

@@ -11,11 +11,11 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class TicketDto {
 
     @JsonProperty(value = "id")
