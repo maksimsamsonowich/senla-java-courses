@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
+@ComponentScan(basePackages = "com.github.controller")
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

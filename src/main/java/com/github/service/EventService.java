@@ -1,16 +1,13 @@
 package com.github.service;
 
 import com.github.dao.EventDao;
-import com.github.dto.ArtistDto;
+import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
-
 import com.github.dto.EventProgramDto;
 import com.github.dto.LocationDto;
 import com.github.entity.Artist;
 import com.github.entity.Event;
-
 import com.github.entity.EventProgram;
-import com.github.entity.Location;
 import com.github.exceptions.entities.NoSuchEntityException;
 import com.github.mapper.api.IMapper;
 import com.github.service.api.IEventService;
@@ -28,12 +25,12 @@ public class EventService implements IEventService {
     private final EventDao iEventDao;
 
     private final IMapper<EventDto, Event> eventMapper;
-    private final IMapper<ArtistDto, Artist> artistMapper;
+    private final IMapper<EventArtistDto, Artist> artistMapper;
     private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
 
     @Override
-    public void createEvent(EventDto eventDto) {
-        iEventDao.create(eventMapper.toEntity(eventDto, Event.class));
+    public EventDto createEvent(EventDto eventDto) {
+        return eventMapper.toDto(iEventDao.create(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class EventService implements IEventService {
                             .findFirst()
                             .orElseThrow(() -> new NoSuchEntityException("There is no such entity"))
                             .getEventOrganizer(),
-                             ArtistDto.class)
+                             EventArtistDto.class)
             );
             eventDto.setEventProgram(
                     eventProgramMapper.toDto(

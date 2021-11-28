@@ -2,8 +2,6 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.entity.Event;
-import com.github.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +23,9 @@ public class TicketDto {
     private Date orderDate;
 
     @JsonProperty(value = "event")
-    private Event eventHolding;
+    private EventDto eventHolding;
 
     @JsonProperty(value = "owner")
-    private User owner;
+    private UserTicketsDto owner;
 
 }

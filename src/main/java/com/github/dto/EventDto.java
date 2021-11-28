@@ -35,7 +35,7 @@ public class EventDto {
     private Date date;
 
     @JsonProperty(value = "eventOrganizer")
-    private ArtistDto eventOrganizer;
+    private EventArtistDto eventOrganizer;
 
     @JsonProperty(value = "eventProgram")
     private EventProgramDto eventProgram;

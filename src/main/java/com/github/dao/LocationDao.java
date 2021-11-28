@@ -3,7 +3,6 @@ package com.github.dao;
 import com.github.entity.Event;
 import com.github.entity.Event_;
 import com.github.entity.Location;
-
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;

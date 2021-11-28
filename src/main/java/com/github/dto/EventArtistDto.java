@@ -7,25 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtistDto {
+public class EventArtistDto {
 
     @JsonProperty(value = "id")
     private int id;
 
     @JsonProperty(value = "nickname")
     private String nickname;
-
-    @JsonProperty(value = "genres")
-    private Set<GenreDto> genres;
-
-    @JsonProperty(value = "cardOwner")
-    private UserDto cardOwner;
 
 }

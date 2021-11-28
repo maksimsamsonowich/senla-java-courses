@@ -1,7 +1,6 @@
 package com.github.configs.root;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.modelmapper.ModelMapper;
@@ -15,7 +14,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -88,15 +86,7 @@ public class ApplicationConfig {
         return dataSource;
     }
 
-    @Bean
-    public SpringLiquibase liquibase(DataSource dataSource) {
-        SpringLiquibase liquibase = new SpringLiquibase();
 
-        liquibase.setChangeLog(changeLogFile);
-        liquibase.setDataSource(dataSource);
-
-        return liquibase;
-    }
 
     @Bean
     public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {

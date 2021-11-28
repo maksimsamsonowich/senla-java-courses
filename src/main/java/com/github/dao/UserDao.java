@@ -1,7 +1,5 @@
 package com.github.dao;
 
-import com.github.entity.Event;
-import com.github.entity.Event_;
 import com.github.entity.User;
 import com.github.entity.User_;
 import com.github.exceptions.user.WrongPasswordException;
@@ -13,6 +11,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Objects;
 
 @Repository
 public class UserDao extends AbstractDao<User>  {
@@ -36,7 +35,7 @@ public class UserDao extends AbstractDao<User>  {
 
         User user = typedQuery.getSingleResult();
 
-        if (user.getPassword() == password)
+        if (Objects.equals(user.getPassword(), password))
             return user;
         else
             throw new WrongPasswordException("Wrong password");

@@ -1,7 +1,9 @@
 package com.github.service;
 
 import com.github.dao.TicketDao;
-import com.github.dto.*;
+import com.github.dto.EventDto;
+import com.github.dto.TicketDto;
+import com.github.dto.UserDto;
 import com.github.entity.Event;
 import com.github.entity.Ticket;
 import com.github.entity.User;
@@ -27,8 +29,8 @@ public class TicketService implements ITicketService {
     private final TicketDao iTicketDao;
 
     @Override
-    public void createTicket(TicketDto ticketDto) {
-        iTicketDao.create(ticketMapper.toEntity(ticketDto, Ticket.class));
+    public TicketDto createTicket(TicketDto ticketDto) {
+        return  ticketMapper.toDto(iTicketDao.create(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 
     @Override
