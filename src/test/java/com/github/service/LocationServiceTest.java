@@ -39,7 +39,7 @@ public class LocationServiceTest {
 
     @Test
     public void readLocationTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Location locationEntityMock = new Location();
         Mockito.when(locationDao.read(testId)).thenReturn(locationEntityMock);
@@ -76,7 +76,7 @@ public class LocationServiceTest {
 
     @Test
     public void getEventLocationTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Location locationEntityMock = new Location();
         Mockito.when(locationDao.getLocationByEvent(testId)).thenReturn(locationEntityMock);

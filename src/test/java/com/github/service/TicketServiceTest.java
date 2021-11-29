@@ -41,7 +41,7 @@ public class TicketServiceTest {
 
     @Test
     public void readTicketTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Ticket ticketEntityMock = new Ticket();
         Mockito.when(ticketDao.read(testId)).thenReturn(ticketEntityMock);
@@ -78,7 +78,7 @@ public class TicketServiceTest {
 
     @Test
     public void getEventTicketsTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
         Mockito.when(ticketDao.getEventTickets(testId)).thenReturn(ticketSetEntityMock);
@@ -91,7 +91,7 @@ public class TicketServiceTest {
 
     @Test
     public void getUserTicketsTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
         Mockito.when(ticketDao.getTicketsByUser(testId)).thenReturn(ticketSetEntityMock);

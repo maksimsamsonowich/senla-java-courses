@@ -38,7 +38,7 @@ public class UserServiceTest {
 
     @Test
     public void readUserTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         User userEntityMock = new User();
         Mockito.when(userDao.read(testId)).thenReturn(userEntityMock);

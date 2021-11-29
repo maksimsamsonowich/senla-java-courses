@@ -11,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,7 +42,7 @@ public class EventServiceTest {
 
     @Test
     public void readEventTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Event eventEntityMock = new Event();
         Mockito.when(eventDaoMock.read(testId)).thenReturn(eventEntityMock);
@@ -81,7 +79,7 @@ public class EventServiceTest {
 
     @Test
     public void getEventByLocationTest() {
-        final Integer testId = 1;
+        final int testId = 1;
 
         Set<Event> eventEntitySetMock = new HashSet<>();
         Mockito.when(eventDaoMock.getEventsByLocation(testId)).thenReturn(eventEntitySetMock);
