@@ -1,5 +1,6 @@
 package com.github.configs.root;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
@@ -22,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.github.dao"})
+@ComponentScan(basePackages = {"com.github"})
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
@@ -77,8 +78,8 @@ public class DatabaseConfig {
         localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
         localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         localContainerEntityManagerFactoryBean.setDataSource(dataSource);
-        localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
-        //localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
+        //localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
+        localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
         return localContainerEntityManagerFactoryBean;
     }
 
@@ -97,6 +98,16 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
         properties.put(Environment.SHOW_SQL, "true");
         return properties;
+    }
+
+    @Bean
+    public SpringLiquibase liquibase(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
+
+        liquibase.setChangeLog(changeLogFile);
+        liquibase.setDataSource(dataSource);
+
+        return liquibase;
     }
 
 }

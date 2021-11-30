@@ -2,6 +2,7 @@ package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
+import com.github.entity.Location;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
@@ -33,6 +36,7 @@ public class EventDaoTest {
     @Before
     public void getTestEntity() {
         testEventEntity = new Event();
+
         testEventEntity.setId(1);
         testEventEntity.setTitle("Title");
         testEventEntity.setDescription("Desc");
@@ -79,6 +83,17 @@ public class EventDaoTest {
         Event event = eventDao.read(1);
 
         Assert.assertEquals(event, testEventEntity);
+    }
+
+    @Test
+    public void givenLocation_whenGetEventByLocation_thenOk() {
+        Set<Event> events = eventDao.getEventsByLocation(1);
+        Event eventMock = eventDao.read(1);
+
+        Set<Event> eventSetMock = new HashSet<>();
+        eventSetMock.add(eventMock);
+
+        Assert.assertEquals(events, eventSetMock);
     }
 
 }

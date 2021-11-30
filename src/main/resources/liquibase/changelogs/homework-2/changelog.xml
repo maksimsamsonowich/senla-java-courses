@@ -93,4 +93,13 @@
     <changeSet id="homework-6-insert_data_into_tickets" author="Maksim Samsonowich">
         <sqlFile encoding="utf8" path="./sql/22.tickets-data-insert.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="homework-6-insert_data_into_genres" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/23.genres-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-6-insert_data_into_artists-genres" author="Maksim Samsonowich">
+        <sqlFile encoding="utf8" path="./sql/24.artists-genres-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog> 

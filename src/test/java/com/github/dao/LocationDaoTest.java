@@ -1,6 +1,7 @@
 package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
+import com.github.entity.Event;
 import com.github.entity.Location;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
