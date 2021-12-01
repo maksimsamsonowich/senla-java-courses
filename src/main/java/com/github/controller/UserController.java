@@ -7,28 +7,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("user")
+@RequestMapping("user-management")
 public class UserController {
 
     private final IUserService iUserService;
 
-    @PostMapping("register")
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return iUserService.createUser(userDto);
+    @PostMapping("{id}")
+    public UserDto createUser(@PathVariable Integer id, @RequestBody UserDto userDto) {
+        return iUserService.createUser(id, userDto);
     }
 
-    @GetMapping("view/{id}")
+    @GetMapping("{id}")
     public UserDto readUser(@PathVariable Integer id) {
         return iUserService.readUser(id);
     }
 
-    @PutMapping("update")
-    public UserDto update(@RequestBody UserDto userDto) {
-        return iUserService.update(userDto);
+    @PutMapping("{id}")
+    public UserDto update(@PathVariable Integer id, @RequestBody UserDto userDto) {
+        return iUserService.update(id, userDto);
     }
 
-    @DeleteMapping("delete")
-    public void deleteUser(@RequestBody UserDto userDto) {
-        iUserService.deleteUser(userDto);
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable("id") Integer id) {
+        iUserService.deleteUser(id);
     }
 }

@@ -67,7 +67,8 @@ public class EventControllerTest {
 
         this.jsonBody = jsonMapper.toJson(eventDto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/events/register")
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .post("/event-management/{id}}", eventDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                         .andDo(print()).andExpect(status().isOk());
@@ -80,7 +81,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/events/view/{id}", 1))
+                        .get("/event-management/{id}", 1))
                         .andDo(print())
                         .andExpect(status().isOk());
 
@@ -92,7 +93,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .put("/events/update")
+                .put("/event-management/{id}")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(print())
@@ -103,12 +104,8 @@ public class EventControllerTest {
     @Test
     public void givenEvent_whenDelete_thenOk() throws Exception {
 
-        this.jsonBody = jsonMapper.toJson(eventDto);
-
         this.mockMvc.perform(MockMvcRequestBuilders
-                .delete("/events/delete")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBody))
+                .delete("/event-management/{id}", eventDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -125,7 +122,7 @@ public class EventControllerTest {
         locationDto.setCapacity(12);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/events/location")
+                .get("/event-management/by-location")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.toJson(locationDto)))
                 .andDo(print())

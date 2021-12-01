@@ -6,13 +6,13 @@ import java.util.Set;
 
 public interface ITicketService {
 
-    TicketDto createTicket(TicketDto ticketDto);
+    TicketDto createTicket(Integer id, TicketDto ticketDto);
 
     TicketDto readTicket(Integer id);
 
-    TicketDto update(TicketDto ticketDto);
+    TicketDto update(Integer id, TicketDto ticketDto);
 
-    void deleteTicket(TicketDto ticketDto);
+    void deleteTicket(Integer id);
 
     Set<TicketDto>getEventTickets(Integer id);
 

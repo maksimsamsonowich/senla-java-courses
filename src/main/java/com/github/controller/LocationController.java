@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("location")
+@RequestMapping("location-management")
 public class LocationController {
 
     private ILocationService iLocationService;
@@ -17,27 +17,27 @@ public class LocationController {
         return "message";
     }
 
-    @PostMapping("register")
-    public void createLocation(@RequestBody LocationDto locationDto) {
-        iLocationService.createLocation(locationDto);
+    @PostMapping("{id}")
+    public void createLocation(@PathVariable Integer id, @RequestBody LocationDto locationDto) {
+        iLocationService.createLocation(id, locationDto);
     }
 
-    @GetMapping("view/{id}")
+    @GetMapping("{id}")
     public LocationDto readLocation(@PathVariable Integer id) {
         return iLocationService.readLocation(id);
     }
 
-    @PutMapping("update")
-    public LocationDto updateLocation(@RequestBody LocationDto locationDto) {
-        return iLocationService.update(locationDto);
+    @PutMapping("{id}")
+    public LocationDto updateLocation(@PathVariable Integer id, @RequestBody LocationDto locationDto) {
+        return iLocationService.update(id, locationDto);
     }
 
-    @DeleteMapping("delete")
-    public void deleteLocation(@RequestBody LocationDto locationDto) {
-        iLocationService.deleteLocation(locationDto);
+    @DeleteMapping("{id}")
+    public void deleteLocation(@PathVariable("id") Integer id) {
+        iLocationService.deleteLocation(id);
     }
 
-    @GetMapping("event/{id}")
+    @GetMapping("by-event/{id}")
     public LocationDto getEventLocation(@PathVariable Integer id) {
         return iLocationService.getEventLocation(id);
     }

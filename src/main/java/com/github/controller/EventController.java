@@ -10,32 +10,32 @@ import java.util.Set;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("events")
+@RequestMapping("event-management")
 public class EventController{
 
     private final IEventService iEventService;
     
-    @PostMapping("register")
-    public EventDto createEvent(@RequestBody EventDto eventDto) {
-        return iEventService.createEvent(eventDto);
+    @PostMapping("{id}")
+    public EventDto createEvent(@PathVariable Integer id, @RequestBody EventDto eventDto) {
+        return iEventService.createEvent(id, eventDto);
     }
 
-    @GetMapping("view/{id}")
+    @GetMapping("{id}")
     public EventDto readEvent(@PathVariable("id") Integer id) {
         return iEventService.readEvent(id);
     }
 
-    @PutMapping("update")
-    public EventDto updateEventDescription(@RequestBody EventDto eventDto) {
-        return iEventService.update(eventDto);
+    @PutMapping("{id}")
+    public EventDto updateEventDescription(@PathVariable Integer id, @RequestBody EventDto eventDto) {
+        return iEventService.update(id, eventDto);
     }
 
-    @DeleteMapping("delete")
-    public void deleteEvent(@RequestBody EventDto eventDto) {
-        iEventService.deleteEvent(eventDto);
+    @DeleteMapping("{id}")
+    public void deleteEvent(@PathVariable("id") Integer id) {
+        iEventService.deleteEvent(id);
     }
 
-    @GetMapping("location")
+    @GetMapping("by-location")
     public Set<EventDto> getEventsByLocation(@RequestBody LocationDto locationDto) {
         return iEventService.getEventsByLocation(locationDto);
     }

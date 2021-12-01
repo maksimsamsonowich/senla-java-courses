@@ -29,7 +29,7 @@ public class TicketService implements ITicketService {
     private final TicketDao iTicketDao;
 
     @Override
-    public TicketDto createTicket(TicketDto ticketDto) {
+    public TicketDto createTicket(Integer id, TicketDto ticketDto) {
         return  ticketMapper.toDto(iTicketDao.create(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 
@@ -39,13 +39,13 @@ public class TicketService implements ITicketService {
     }
 
     @Override
-    public TicketDto update(TicketDto ticketDto) {
+    public TicketDto update(Integer id, TicketDto ticketDto) {
         return ticketMapper.toDto(iTicketDao.update(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 
     @Override
-    public void deleteTicket(TicketDto ticketDto) {
-        iTicketDao.delete(iTicketDao.read(ticketMapper.toEntity(ticketDto, Ticket.class).getId()));
+    public void deleteTicket(Integer id) {
+        iTicketDao.delete(iTicketDao.read(id));
     }
 
     @Override

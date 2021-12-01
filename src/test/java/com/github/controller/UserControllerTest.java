@@ -66,7 +66,7 @@ public class UserControllerTest {
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/user/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/user-management/{id}", userDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print()).andExpect(status().isOk());
@@ -79,7 +79,7 @@ public class UserControllerTest {
         this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/user/view/{id}", 1))
+                        .get("/user-management/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -93,7 +93,7 @@ public class UserControllerTest {
         this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/user/update")
+                        .put("/user-management/{id}", userDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -113,14 +113,12 @@ public class UserControllerTest {
         userDto.setSurname("4123");
         userDto.setPhoneNumber("349219423");
 
-        userController.createUser(userDto);
+        userController.createUser(userDto.getId(), userDto);
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/user/delete")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonBody))
+                        .delete("/user-management/{id}", userDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 

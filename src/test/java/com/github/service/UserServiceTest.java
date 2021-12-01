@@ -31,7 +31,7 @@ public class UserServiceTest {
         Mockito.when(userDao.create(userEntityMock)).thenReturn(userEntityMock);
         UserDto userDtoMock = userMapper.toDto(userEntityMock, UserDto.class);
 
-        UserDto userDto = userService.createUser(userDtoMock);
+        UserDto userDto = userService.createUser(userDtoMock.getId(), userDtoMock);
 
         Assert.assertEquals(userDto, userDtoMock);
     }
@@ -56,7 +56,7 @@ public class UserServiceTest {
         Mockito.when(userDao.update(userEntityMock)).thenReturn(userEntityMock);
         UserDto userDtoMock = userMapper.toDto(userEntityMock, UserDto.class);
 
-        UserDto userDto = userService.update(userDtoMock);
+        UserDto userDto = userService.update(userDtoMock.getId(), userDtoMock);
 
         Assert.assertEquals(userDto, userDtoMock);
     }
@@ -68,7 +68,7 @@ public class UserServiceTest {
 
         doNothing().when(userDao).delete(userEntityMock);
 
-        userService.deleteUser(userDtoMock);
+        userService.deleteUser(userDtoMock.getId());
 
         verify(userDao, times(0)).delete(userEntityMock);
     }

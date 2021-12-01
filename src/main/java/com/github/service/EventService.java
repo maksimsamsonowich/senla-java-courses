@@ -29,7 +29,7 @@ public class EventService implements IEventService {
     private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
 
     @Override
-    public EventDto createEvent(EventDto eventDto) {
+    public EventDto createEvent(Integer id, EventDto eventDto) {
         return eventMapper.toDto(iEventDao.create(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
@@ -39,13 +39,13 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventDto update(EventDto eventDto) {
+    public EventDto update(Integer id, EventDto eventDto) {
         return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
     @Override
-    public void deleteEvent(EventDto eventDto) {
-        iEventDao.delete(iEventDao.read(eventDto.getId()));
+    public void deleteEvent(Integer id) {
+        iEventDao.delete(iEventDao.read(id));
     }
 
     @Override

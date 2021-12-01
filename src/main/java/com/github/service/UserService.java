@@ -21,7 +21,7 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserDto createUser(UserDto userDto) {
+    public UserDto createUser(Integer id, UserDto userDto) {
         return userMapper.toDto(iUserDao.create(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
@@ -33,13 +33,13 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserDto update(UserDto userDto) {
+    public UserDto update(Integer id, UserDto userDto) {
         return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override
     @Transactional
-    public void deleteUser(UserDto userDto) {
-        iUserDao.delete(iUserDao.read(userDto.getId()));
+    public void deleteUser(Integer id) {
+        iUserDao.delete(iUserDao.read(id));
     }
 }

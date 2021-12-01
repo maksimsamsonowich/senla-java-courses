@@ -62,7 +62,7 @@ public class LocationControllerTest {
 
         this.jsonBody = jsonMapper.toJson(locationDto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/location/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/location-management/{id}", locationDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print()).andExpect(status().isOk());
@@ -75,7 +75,7 @@ public class LocationControllerTest {
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/location/view/{id}", 1))
+                        .get("/location-management/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -87,7 +87,7 @@ public class LocationControllerTest {
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/location/update")
+                        .put("/location-management/{id}}", locationDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -104,14 +104,12 @@ public class LocationControllerTest {
         locationDto.setTitle("1234");
         locationDto.setCapacity(22);
 
-        locationController.createLocation(locationDto);
+        locationController.createLocation(locationDto.getId(), locationDto);
 
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/location/delete")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonBody))
+                        .delete("/location-management/{id}", locationDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 

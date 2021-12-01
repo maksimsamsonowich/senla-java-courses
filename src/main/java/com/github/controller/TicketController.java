@@ -9,37 +9,37 @@ import java.util.Set;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("ticket")
+@RequestMapping("ticket-management")
 public class TicketController {
 
     private ITicketService iTicketService;
 
-    @PostMapping("register")
-    public TicketDto createLocation(@RequestBody TicketDto ticketDto) {
-        return iTicketService.createTicket(ticketDto);
+    @PostMapping("{id}")
+    public TicketDto createLocation(@PathVariable Integer id, @RequestBody TicketDto ticketDto) {
+        return iTicketService.createTicket(id, ticketDto);
     }
 
-    @GetMapping("view/{id}")
+    @GetMapping("{id}")
     public TicketDto readLocation(@PathVariable Integer id) {
         return iTicketService.readTicket(id);
     }
 
-    @PutMapping("update")
-    public TicketDto updateLocation(@RequestBody TicketDto ticketDto) {
-        return iTicketService.update(ticketDto);
+    @PutMapping("{id}")
+    public TicketDto updateLocation(@PathVariable Integer id, @RequestBody TicketDto ticketDto) {
+        return iTicketService.update(id, ticketDto);
     }
 
-    @DeleteMapping("delete")
-    public void deleteLocation(@RequestBody TicketDto ticketDto) {
-        iTicketService.deleteTicket(ticketDto);
+    @DeleteMapping("{id}")
+    public void deleteLocation(@PathVariable("id") Integer id) {
+        iTicketService.deleteTicket(id);
     }
 
-    @GetMapping("event/{id}")
+    @GetMapping("by-event/{id}")
     public Set<TicketDto> getEventTickets(@PathVariable Integer id) {
         return iTicketService.getEventTickets(id);
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("by-user/{id}")
     public Set<TicketDto> getUserTickets(@PathVariable Integer id) {
         return iTicketService.getUserTickets(id);
     }

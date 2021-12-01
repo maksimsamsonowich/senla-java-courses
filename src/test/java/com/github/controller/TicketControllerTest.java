@@ -59,7 +59,7 @@ public class TicketControllerTest {
 
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/ticket/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/ticket-management/{id}", ticketDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print()).andExpect(status().isOk());
@@ -72,7 +72,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket/view/{id}", 1))
+                        .get("/ticket-management/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -84,7 +84,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/ticket/update")
+                        .put("/ticket-management/{id}", ticketDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -98,9 +98,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/ticket/delete")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonBody))
+                        .delete("/ticket-management/{id}", ticketDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -110,7 +108,7 @@ public class TicketControllerTest {
     public void givenEvent_whenTickets_thenOk() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket/event/{id}", 1))
+                        .get("/ticket-management/by-event/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 

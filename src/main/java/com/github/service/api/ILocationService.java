@@ -4,13 +4,13 @@ import com.github.dto.LocationDto;
 
 public interface ILocationService {
 
-    LocationDto createLocation(LocationDto locationDto);
+    LocationDto createLocation(Integer id, LocationDto locationDto);
 
     LocationDto readLocation(Integer id);
 
-    LocationDto update(LocationDto locationDto);
+    LocationDto update(Integer id, LocationDto locationDto);
 
-    void deleteLocation(LocationDto locationDto);
+    void deleteLocation(Integer id);
 
     LocationDto getEventLocation(Integer id);
 

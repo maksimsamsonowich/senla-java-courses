@@ -35,7 +35,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.create(eventEntityMock)).thenReturn(eventEntityMock);
         EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
 
-        EventDto event = eventService.createEvent(eventDtoMock);
+        EventDto event = eventService.createEvent(eventDtoMock.getId(), eventDtoMock);
 
         Assert.assertEquals(event, eventDtoMock);
     }
@@ -60,7 +60,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.update(eventEntityMock)).thenReturn(eventEntityMock);
         EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
 
-        EventDto event = eventService.update(eventDtoMock);
+        EventDto event = eventService.update(eventDtoMock.getId(), eventDtoMock);
 
         Assert.assertEquals(event, eventDtoMock);
     }
@@ -72,7 +72,7 @@ public class EventServiceTest {
 
         doNothing().when(eventDaoMock).delete(eventMock);
 
-        eventService.deleteEvent(eventDtoMock);
+        eventService.deleteEvent(eventDtoMock.getId());
 
         verify(eventDaoMock, times(0)).delete(eventMock);
     }
