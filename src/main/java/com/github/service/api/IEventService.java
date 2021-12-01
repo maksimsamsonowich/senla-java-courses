@@ -15,6 +15,6 @@ public interface IEventService {
 
     void deleteEvent(Integer id);
 
-    Set<EventDto> getEventsByLocation(EventDto eventDto);
+    Set<EventDto> getEventsByLocation(Integer id);
 
 }

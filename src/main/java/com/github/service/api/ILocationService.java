@@ -12,6 +12,6 @@ public interface ILocationService {
 
     void deleteLocation(Integer id);
 
-    LocationDto getEventLocation(LocationDto locationDto);
+    LocationDto getEventLocation(Integer id);
 
 }

@@ -44,8 +44,8 @@ public class LocationService implements ILocationService {
 
     @Override
     @Transactional(readOnly = true)
-    public LocationDto getEventLocation(LocationDto locationDto) {
-        return locationMapper.toDto(iLocationDao.getLocationByEvent(locationDto.getId()), LocationDto.class);
+    public LocationDto getEventLocation(Integer id) {
+        return locationMapper.toDto(iLocationDao.getLocationByEvent(id), LocationDto.class);
     }
 
 }

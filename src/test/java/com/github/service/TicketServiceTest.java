@@ -80,14 +80,11 @@ public class TicketServiceTest {
     public void getEventTicketsTest() {
         final int testId = 1;
 
-        TicketDto ticketDto = new TicketDto();
-        ticketDto.setId(testId);
-
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
         Mockito.when(ticketDao.getEventTickets(testId)).thenReturn(ticketSetEntityMock);
         Set<TicketDto> ticketDtoSetMock = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
 
-        Set<TicketDto> ticketDtoSet = ticketService.getEventTickets(ticketDto);
+        Set<TicketDto> ticketDtoSet = ticketService.getEventTickets(testId);
 
         Assert.assertEquals(ticketDtoSet, ticketDtoSetMock);
     }
@@ -96,14 +93,11 @@ public class TicketServiceTest {
     public void getUserTicketsTest() {
         final int testId = 1;
 
-        TicketDto ticketDto = new TicketDto();
-        ticketDto.setId(testId);
-
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
         Mockito.when(ticketDao.getTicketsByUser(testId)).thenReturn(ticketSetEntityMock);
         Set<TicketDto> ticketDtoSetMock = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
 
-        Set<TicketDto> ticketDtoSet = ticketService.getUserTickets(ticketDto);
+        Set<TicketDto> ticketDtoSet = ticketService.getUserTickets(testId);
 
         Assert.assertEquals(ticketDtoSet, ticketDtoSetMock);
     }
