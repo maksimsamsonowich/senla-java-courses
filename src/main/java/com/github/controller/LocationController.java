@@ -12,11 +12,6 @@ public class LocationController {
 
     private ILocationService iLocationService;
 
-    @GetMapping
-    public String message() {
-        return "message";
-    }
-
     @PostMapping("{id}")
     public void createLocation(@PathVariable Integer id, @RequestBody LocationDto locationDto) {
         iLocationService.createLocation(id, locationDto);

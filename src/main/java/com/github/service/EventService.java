@@ -52,8 +52,8 @@ public class EventService implements IEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<EventDto> getEventsByLocation(LocationDto locationDto) {
-        return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(locationDto.getId()));
+    public Set<EventDto> getEventsByLocation(Integer id) {
+        return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(id));
     }
 
     private Set<EventDto> convertSetOfEntitiesToDto(Set<Event> events) {

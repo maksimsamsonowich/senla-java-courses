@@ -85,7 +85,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.getEventsByLocation(testId)).thenReturn(eventEntitySetMock);
         Set<EventDto> eventDtoSetMock = eventMapper.setToDto(eventEntitySetMock, EventDto.class);
 
-        Set<EventDto> event = eventService.getEventsByLocation(new LocationDto());
+        Set<EventDto> event = eventService.getEventsByLocation(1);
 
         Assert.assertEquals(event, eventDtoSetMock);
     }
