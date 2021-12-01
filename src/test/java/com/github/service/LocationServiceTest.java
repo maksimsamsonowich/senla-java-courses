@@ -82,7 +82,10 @@ public class LocationServiceTest {
         Mockito.when(locationDao.getLocationByEvent(testId)).thenReturn(locationEntityMock);
         LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
 
-        LocationDto locationDtoSetMock = locationService.getEventLocation(testId);
+        LocationDto locationDto = new LocationDto();
+        locationDto.setId(testId);
+
+        LocationDto locationDtoSetMock = locationService.getEventLocation(locationDto);
 
         Assert.assertEquals(locationDtoSetMock, locationDtoMock);
     }

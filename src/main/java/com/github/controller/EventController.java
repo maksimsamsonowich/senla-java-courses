@@ -35,8 +35,8 @@ public class EventController{
         iEventService.deleteEvent(id);
     }
 
-    @GetMapping("by-location/{id}")
-    public Set<EventDto> getEventsByLocation(@PathVariable Integer id) {
-        return iEventService.getEventsByLocation(id);
+    @GetMapping("by-location")
+    public Set<EventDto> getEventsByLocation(@RequestBody EventDto eventDto) {
+        return iEventService.getEventsByLocation(eventDto);
     }
 }

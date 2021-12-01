@@ -4,6 +4,7 @@ import com.github.dao.EventDao;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 import com.github.entity.Event;
+import com.github.entity.Location;
 import com.github.mapper.Mapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -85,7 +86,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.getEventsByLocation(testId)).thenReturn(eventEntitySetMock);
         Set<EventDto> eventDtoSetMock = eventMapper.setToDto(eventEntitySetMock, EventDto.class);
 
-        Set<EventDto> event = eventService.getEventsByLocation(1);
+        Set<EventDto> event = eventService.getEventsByLocation(new EventDto());
 
         Assert.assertEquals(event, eventDtoSetMock);
     }

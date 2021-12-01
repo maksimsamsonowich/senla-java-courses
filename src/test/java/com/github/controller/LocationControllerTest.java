@@ -87,7 +87,7 @@ public class LocationControllerTest {
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/location-management/{id}}", locationDto.getId())
+                        .put("/location-management/{id}", locationDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())

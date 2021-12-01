@@ -32,9 +32,9 @@ public class LocationController {
         iLocationService.deleteLocation(id);
     }
 
-    @GetMapping("by-event/{id}")
-    public LocationDto getEventLocation(@PathVariable Integer id) {
-        return iLocationService.getEventLocation(id);
+    @GetMapping("by-event")
+    public LocationDto getEventLocation(@RequestBody LocationDto locationDto) {
+        return iLocationService.getEventLocation(locationDto);
     }
 }
 

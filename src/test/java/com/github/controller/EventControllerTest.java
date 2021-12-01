@@ -63,12 +63,12 @@ public class EventControllerTest {
     @Test
     public void givenEventDto_whenSave_thenOk() throws Exception {
 
-        eventDto.setId(2);
+        eventDto.setId(3);
 
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/event-management/{id}}", eventDto.getId())
+                        .post("/event-management/{id}", eventDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                         .andDo(print()).andExpect(status().isOk());
@@ -93,7 +93,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .put("/event-management/{id}")
+                .put("/event-management/{id}", eventDto.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(print())

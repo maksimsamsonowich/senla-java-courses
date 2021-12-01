@@ -107,8 +107,12 @@ public class TicketControllerTest {
     @Test
     public void givenEvent_whenTickets_thenOk() throws Exception {
 
+        this.jsonBody = jsonMapper.toJson(ticketDto);
+
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/by-event/{id}", 1))
+                        .get("/ticket-management/by-event")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
                 .andDo(print())
                 .andExpect(status().isOk());
 

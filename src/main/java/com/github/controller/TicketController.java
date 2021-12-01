@@ -34,14 +34,14 @@ public class TicketController {
         iTicketService.deleteTicket(id);
     }
 
-    @GetMapping("by-event/{id}")
-    public Set<TicketDto> getEventTickets(@PathVariable Integer id) {
-        return iTicketService.getEventTickets(id);
+    @GetMapping("by-event")
+    public Set<TicketDto> getEventTickets(@RequestBody TicketDto ticketDto) {
+        return iTicketService.getEventTickets(ticketDto);
     }
 
-    @GetMapping("by-user/{id}")
-    public Set<TicketDto> getUserTickets(@PathVariable Integer id) {
-        return iTicketService.getUserTickets(id);
+    @GetMapping("by-user")
+    public Set<TicketDto> getUserTickets(@RequestBody TicketDto ticketDto) {
+        return iTicketService.getUserTickets(ticketDto);
     }
 
 }
