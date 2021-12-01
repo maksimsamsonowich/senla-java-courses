@@ -35,6 +35,8 @@ public class LocationControllerTest {
     @Autowired
     private JsonMapper jsonMapper;
 
+    private LocationController locationController;
+
     private LocationDto locationDto;
 
     private String jsonBody;
@@ -44,6 +46,7 @@ public class LocationControllerTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        this.locationController = (LocationController) webApplicationContext.getBean("locationController");
 
         locationDto = new LocationDto();
         locationDto.setId(1);
@@ -84,7 +87,7 @@ public class LocationControllerTest {
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/location/edit")
+                        .put("/location/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -95,22 +98,20 @@ public class LocationControllerTest {
     @Test
     public void givenLocation_whenDelete_thenOk() throws Exception {
 
+        LocationDto locationDto = new LocationDto();
+        locationDto.setId(5);
+        locationDto.setAddress("123");
+        locationDto.setTitle("1234");
+        locationDto.setCapacity(22);
+
+        locationController.createLocation(locationDto);
+
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("location/delete")
+                        .delete("/location/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
-    public void givenLocation_whenLocation_thenOk() throws Exception {
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/location/event/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 

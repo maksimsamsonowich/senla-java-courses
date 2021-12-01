@@ -24,7 +24,7 @@ public class TicketController {
         return iTicketService.readTicket(id);
     }
 
-    @PutMapping("edit")
+    @PutMapping("update")
     public TicketDto updateLocation(@RequestBody TicketDto ticketDto) {
         return iTicketService.update(ticketDto);
     }

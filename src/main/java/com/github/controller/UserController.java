@@ -22,12 +22,12 @@ public class UserController {
         return iUserService.readUser(id);
     }
 
-    @PutMapping("edit")
+    @PutMapping("update")
     public UserDto update(@RequestBody UserDto userDto) {
         return iUserService.update(userDto);
     }
 
-    @DeleteMapping("delete}")
+    @DeleteMapping("delete")
     public void deleteUser(@RequestBody UserDto userDto) {
         iUserService.deleteUser(userDto);
     }

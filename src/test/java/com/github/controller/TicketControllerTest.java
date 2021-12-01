@@ -84,7 +84,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/ticket/edit")
+                        .put("/ticket/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -98,7 +98,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("ticket/delete")
+                        .delete("/ticket/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -111,16 +111,6 @@ public class TicketControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/ticket/event/{id}", 1))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
-    public void givenUser_whenTickets_thenOk() throws Exception {
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket/user/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 

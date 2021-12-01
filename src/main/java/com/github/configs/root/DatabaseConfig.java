@@ -1,5 +1,6 @@
 package com.github.configs.root;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
@@ -51,7 +52,15 @@ public class DatabaseConfig {
         return new DriverManagerDataSource(url, username, password);
     }
 
+    @Bean
+    public SpringLiquibase liquibase(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
 
+        liquibase.setChangeLog(changeLogFile);
+        liquibase.setDataSource(dataSource);
+
+        return liquibase;
+    }
 
     @Bean
     public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {

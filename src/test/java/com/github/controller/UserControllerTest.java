@@ -42,9 +42,12 @@ public class UserControllerTest {
 
     private MockMvc mockMvc;
 
+    private UserController userController;
+
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        this.userController = (UserController) webApplicationContext.getBean("userController");
 
         userDto = new UserDto();
         userDto.setId(1);
@@ -57,7 +60,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void givenTicketDto_whenSave_thenOk() throws Exception {
+    public void givenUserDto_whenSave_thenOk() throws Exception {
 
         userDto.setId(2);
 
@@ -71,7 +74,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void givenTicketId_whenRead_thenOk() throws Exception {
+    public void givenUserId_whenRead_thenOk() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
@@ -83,12 +86,14 @@ public class UserControllerTest {
     }
 
     @Test
-    public void givenTicket_whenUpdate_thenOk() throws Exception {
+    public void givenUser_whenUpdate_thenOk() throws Exception {
+
+        userDto.setLogin("maxmax");
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/user/edit")
+                        .put("/user/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -99,10 +104,21 @@ public class UserControllerTest {
     @Test
     public void givenTicket_whenDelete_thenOk() throws Exception {
 
+        UserDto userDto = new UserDto();
+        userDto.setId(5);
+        userDto.setEmail("jksaf");
+        userDto.setLogin("2344213");
+        userDto.setPassword("423sgdk");
+        userDto.setFirstName("123");
+        userDto.setSurname("4123");
+        userDto.setPhoneNumber("349219423");
+
+        userController.createUser(userDto);
+
         this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("user/delete")
+                        .delete("/user/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())

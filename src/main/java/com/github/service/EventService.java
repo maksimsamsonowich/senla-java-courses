@@ -45,7 +45,7 @@ public class EventService implements IEventService {
 
     @Override
     public void deleteEvent(EventDto eventDto) {
-        iEventDao.delete(eventMapper.toEntity(eventDto, Event.class));
+        iEventDao.delete(iEventDao.read(eventDto.getId()));
     }
 
     @Override

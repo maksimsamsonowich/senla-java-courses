@@ -27,7 +27,7 @@ public class LocationController {
         return iLocationService.readLocation(id);
     }
 
-    @PutMapping("edit")
+    @PutMapping("update")
     public LocationDto updateLocation(@RequestBody LocationDto locationDto) {
         return iLocationService.update(locationDto);
     }

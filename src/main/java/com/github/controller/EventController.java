@@ -25,7 +25,7 @@ public class EventController{
         return iEventService.readEvent(id);
     }
 
-    @PutMapping("edit")
+    @PutMapping("update")
     public EventDto updateEventDescription(@RequestBody EventDto eventDto) {
         return iEventService.update(eventDto);
     }

@@ -44,9 +44,12 @@ public class EventControllerTest {
 
     private MockMvc mockMvc;
 
+    private EventController eventController;
+
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        this.eventController = (EventController) webApplicationContext.getBean("eventController");
 
         eventDto = new EventDto();
         eventDto.setId(2);
@@ -89,7 +92,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .put("/events/edit")
+                .put("/events/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(print())
@@ -103,7 +106,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .delete("events/delete")
+                .delete("/events/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(print())
@@ -122,7 +125,7 @@ public class EventControllerTest {
         locationDto.setCapacity(12);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("events/location")
+                .get("/events/location")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.toJson(locationDto)))
                 .andDo(print())

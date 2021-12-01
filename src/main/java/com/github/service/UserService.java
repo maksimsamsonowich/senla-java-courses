@@ -40,6 +40,6 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public void deleteUser(UserDto userDto) {
-        iUserDao.delete(userMapper.toEntity(userDto, User.class));
+        iUserDao.delete(iUserDao.read(userDto.getId()));
     }
 }
