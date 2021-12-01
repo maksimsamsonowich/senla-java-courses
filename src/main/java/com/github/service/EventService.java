@@ -30,6 +30,7 @@ public class EventService implements IEventService {
 
     @Override
     public EventDto createEvent(Integer id, EventDto eventDto) {
+        eventDto.setId(id);
         return eventMapper.toDto(iEventDao.create(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
@@ -40,6 +41,7 @@ public class EventService implements IEventService {
 
     @Override
     public EventDto update(Integer id, EventDto eventDto) {
+        eventDto.setId(id);
         return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 

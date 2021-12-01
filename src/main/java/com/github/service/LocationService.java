@@ -22,6 +22,7 @@ public class LocationService implements ILocationService {
 
     @Override
     public LocationDto createLocation(Integer id, LocationDto locationDto) {
+        locationDto.setId(id);
         return locationMapper.toDto(iLocationDao.create(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
     }
 
@@ -32,6 +33,7 @@ public class LocationService implements ILocationService {
 
     @Override
     public LocationDto update(Integer id, LocationDto locationDto) {
+        locationDto.setId(id);
         return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
     }
 

@@ -30,6 +30,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public TicketDto createTicket(Integer id, TicketDto ticketDto) {
+        ticketDto.setId(id);
         return  ticketMapper.toDto(iTicketDao.create(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 
@@ -40,6 +41,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public TicketDto update(Integer id, TicketDto ticketDto) {
+        ticketDto.setId(id);
         return ticketMapper.toDto(iTicketDao.update(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 
