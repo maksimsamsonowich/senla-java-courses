@@ -59,7 +59,7 @@ public class TicketControllerTest {
 
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/ticket-management/{id}", ticketDto.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/ticket-management/{ticketId}", ticketDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print()).andExpect(status().isOk());
@@ -72,7 +72,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/{id}", 1))
+                        .get("/ticket-management/{ticketId}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -84,7 +84,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/ticket-management/{id}", ticketDto.getId())
+                        .put("/ticket-management/{ticketId}", ticketDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andDo(print())
@@ -98,7 +98,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/ticket-management/{id}", ticketDto.getId()))
+                        .delete("/ticket-management/{ticketId}", ticketDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -107,8 +107,10 @@ public class TicketControllerTest {
     @Test
     public void givenEvent_whenTickets_thenOk() throws Exception {
 
+        this.jsonBody = jsonMapper.toJson(ticketDto);
+
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/by-event/{id}", 1))
+                        .get("/ticket-management/by-event/{eventId}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
 

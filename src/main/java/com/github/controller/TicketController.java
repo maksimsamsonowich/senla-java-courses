@@ -14,34 +14,34 @@ public class TicketController {
 
     private ITicketService iTicketService;
 
-    @PostMapping("{id}")
-    public TicketDto createLocation(@PathVariable Integer id, @RequestBody TicketDto ticketDto) {
-        return iTicketService.createTicket(id, ticketDto);
+    @PostMapping("{ticketId}")
+    public TicketDto createLocation(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
+        return iTicketService.createTicket(ticketId, ticketDto);
     }
 
-    @GetMapping("{id}")
-    public TicketDto readLocation(@PathVariable Integer id) {
-        return iTicketService.readTicket(id);
+    @GetMapping("{ticketId}")
+    public TicketDto readLocation(@PathVariable Integer ticketId) {
+        return iTicketService.readTicket(ticketId);
     }
 
-    @PutMapping("{id}")
-    public TicketDto updateLocation(@PathVariable Integer id, @RequestBody TicketDto ticketDto) {
-        return iTicketService.update(id, ticketDto);
+    @PutMapping("{ticketId}")
+    public TicketDto updateLocation(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
+        return iTicketService.update(ticketId, ticketDto);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteLocation(@PathVariable("id") Integer id) {
-        iTicketService.deleteTicket(id);
+    @DeleteMapping("{ticketId}")
+    public void deleteLocation(@PathVariable Integer ticketId) {
+        iTicketService.deleteTicket(ticketId);
     }
 
-    @GetMapping("by-event/{id}")
-    public Set<TicketDto> getEventTickets(@PathVariable Integer id) {
-        return iTicketService.getEventTickets(id);
+    @GetMapping("by-event/{eventId}")
+    public Set<TicketDto> getEventTickets(@PathVariable Integer eventId) {
+        return iTicketService.getEventTickets(eventId);
     }
 
-    @GetMapping("by-user/{id}")
-    public Set<TicketDto> getUserTickets(@PathVariable Integer id) {
-        return iTicketService.getUserTickets(id);
+    @GetMapping("by-user/{userId}")
+    public Set<TicketDto> getUserTickets(@PathVariable Integer userId) {
+        return iTicketService.getUserTickets(userId);
     }
 
 }

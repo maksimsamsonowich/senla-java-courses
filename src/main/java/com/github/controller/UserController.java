@@ -12,23 +12,23 @@ public class UserController {
 
     private final IUserService iUserService;
 
-    @PostMapping("{id}")
-    public UserDto createUser(@PathVariable Integer id, @RequestBody UserDto userDto) {
-        return iUserService.createUser(id, userDto);
+    @PostMapping("{userId}")
+    public UserDto createUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+        return iUserService.createUser(userId, userDto);
     }
 
-    @GetMapping("{id}")
-    public UserDto readUser(@PathVariable Integer id) {
-        return iUserService.readUser(id);
+    @GetMapping("{userId}")
+    public UserDto readUser(@PathVariable Integer userId) {
+        return iUserService.readUser(userId);
     }
 
-    @PutMapping("{id}")
-    public UserDto update(@PathVariable Integer id, @RequestBody UserDto userDto) {
-        return iUserService.update(id, userDto);
+    @PutMapping("{userId}")
+    public UserDto update(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+        return iUserService.update(userId, userDto);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable("id") Integer id) {
-        iUserService.deleteUser(id);
+    @DeleteMapping("{userId}")
+    public void deleteUser(@PathVariable Integer userId) {
+        iUserService.deleteUser(userId);
     }
 }

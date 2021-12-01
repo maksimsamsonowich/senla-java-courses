@@ -15,28 +15,28 @@ public class EventController{
 
     private final IEventService iEventService;
     
-    @PostMapping("{id}")
-    public EventDto createEvent(@PathVariable Integer id, @RequestBody EventDto eventDto) {
-        return iEventService.createEvent(id, eventDto);
+    @PostMapping("{eventId}")
+    public EventDto createEvent(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
+        return iEventService.createEvent(eventId, eventDto);
     }
 
-    @GetMapping("{id}")
-    public EventDto readEvent(@PathVariable("id") Integer id) {
-        return iEventService.readEvent(id);
+    @GetMapping("{eventId}")
+    public EventDto readEvent(@PathVariable Integer eventId) {
+        return iEventService.readEvent(eventId);
     }
 
-    @PutMapping("{id}")
-    public EventDto updateEventDescription(@PathVariable Integer id, @RequestBody EventDto eventDto) {
-        return iEventService.update(id, eventDto);
+    @PutMapping("{eventId}")
+    public EventDto updateEventDescription(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
+        return iEventService.update(eventId, eventDto);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteEvent(@PathVariable("id") Integer id) {
-        iEventService.deleteEvent(id);
+    @DeleteMapping("{eventId}")
+    public void deleteEvent(@PathVariable("eventId") Integer eventId) {
+        iEventService.deleteEvent(eventId);
     }
 
-    @GetMapping("by-location/{id}")
-    public Set<EventDto> getEventsByLocation(@PathVariable Integer id) {
-        return iEventService.getEventsByLocation(id);
+    @GetMapping("by-location/{locationId}")
+    public Set<EventDto> getEventsByLocation(@PathVariable Integer locationId) {
+        return iEventService.getEventsByLocation(locationId);
     }
 }

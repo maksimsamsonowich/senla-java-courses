@@ -63,12 +63,12 @@ public class EventControllerTest {
     @Test
     public void givenEventDto_whenSave_thenOk() throws Exception {
 
-        eventDto.setId(2);
+        eventDto.setId(3);
 
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/event-management/{id}}", eventDto.getId())
+                        .post("/event-management/{eventId}", eventDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                         .andDo(print()).andExpect(status().isOk());
@@ -81,7 +81,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/event-management/{id}", 1))
+                        .get("/event-management/{eventId}", 1))
                         .andDo(print())
                         .andExpect(status().isOk());
 
@@ -93,7 +93,7 @@ public class EventControllerTest {
         this.jsonBody = jsonMapper.toJson(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .put("/event-management/{id}")
+                .put("/event-management/{eventId}", eventDto.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(print())
@@ -105,7 +105,7 @@ public class EventControllerTest {
     public void givenEvent_whenDelete_thenOk() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .delete("/event-management/{id}", eventDto.getId()))
+                .delete("/event-management/{eventId}", eventDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -122,9 +122,7 @@ public class EventControllerTest {
         locationDto.setCapacity(12);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/event-management/by-location")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.toJson(locationDto)))
+                .get("/event-management/by-location/{locationId}", locationDto.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
 
