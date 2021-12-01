@@ -2,7 +2,6 @@ package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
-import com.github.entity.Location;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

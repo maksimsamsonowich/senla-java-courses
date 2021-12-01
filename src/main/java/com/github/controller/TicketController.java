@@ -24,15 +24,13 @@ public class TicketController {
         return iTicketService.readTicket(id);
     }
 
-    @PutMapping("edit/{id}")
-    public TicketDto updateLocation(@PathVariable Integer id,
-                                    @RequestBody TicketDto ticketDto) {
+    @PutMapping("edit")
+    public TicketDto updateLocation(@RequestBody TicketDto ticketDto) {
         return iTicketService.update(ticketDto);
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteLocation(@PathVariable Integer id,
-                               @RequestBody TicketDto ticketDto) {
+    @DeleteMapping("delete")
+    public void deleteLocation(@RequestBody TicketDto ticketDto) {
         iTicketService.deleteTicket(ticketDto);
     }
 

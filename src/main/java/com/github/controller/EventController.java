@@ -25,9 +25,8 @@ public class EventController{
         return iEventService.readEvent(id);
     }
 
-    @PutMapping("edit/{id}")
-    public EventDto updateEventDescription(@PathVariable("id") Integer id,
-                                           @RequestBody EventDto eventDto) {
+    @PutMapping("edit")
+    public EventDto updateEventDescription(@RequestBody EventDto eventDto) {
         return iEventService.update(eventDto);
     }
 
@@ -36,7 +35,7 @@ public class EventController{
         iEventService.deleteEvent(eventDto);
     }
 
-    @GetMapping("location/{id}")
+    @GetMapping("location")
     public Set<EventDto> getEventsByLocation(@RequestBody LocationDto locationDto) {
         return iEventService.getEventsByLocation(locationDto);
     }

@@ -1,12 +1,10 @@
 package com.github.configs.root;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -23,7 +21,7 @@ import java.util.Properties;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.github"})
+@ComponentScan(basePackages = {"com.github.dao"})
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
@@ -39,7 +37,7 @@ public class DatabaseConfig {
     @Value("${driver}")
     private String driver;
 
-    @Value("${changeLogFile}")
+    @Value("${spring.liquibase.change-log}")
     private String changeLogFile;
 
     @Value("${packagesToScan}")
@@ -49,22 +47,11 @@ public class DatabaseConfig {
     private Map<String, String> hibernateAdditionalProperties;
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
     public DataSource dataSource()  {
-        DriverManagerDataSource dataSource
-                = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        return dataSource;
+        return new DriverManagerDataSource(url, username, password);
     }
+
+
 
     @Bean
     public TransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
@@ -98,16 +85,6 @@ public class DatabaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
         properties.put(Environment.SHOW_SQL, "true");
         return properties;
-    }
-
-    @Bean
-    public SpringLiquibase liquibase(DataSource dataSource) {
-        SpringLiquibase liquibase = new SpringLiquibase();
-
-        liquibase.setChangeLog(changeLogFile);
-        liquibase.setDataSource(dataSource);
-
-        return liquibase;
     }
 
 }
