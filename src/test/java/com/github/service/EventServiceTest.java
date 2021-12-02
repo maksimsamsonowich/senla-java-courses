@@ -2,9 +2,7 @@ package com.github.service;
 
 import com.github.dao.EventDao;
 import com.github.dto.EventDto;
-import com.github.dto.LocationDto;
 import com.github.entity.Event;
-import com.github.entity.Location;
 import com.github.mapper.Mapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +34,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.create(eventEntityMock)).thenReturn(eventEntityMock);
         EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
 
-        EventDto event = eventService.createEvent(eventDtoMock.getId(), eventDtoMock);
+        EventDto event = eventService.createEvent(eventDtoMock);
 
         Assert.assertEquals(event, eventDtoMock);
     }
@@ -61,7 +59,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.update(eventEntityMock)).thenReturn(eventEntityMock);
         EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
 
-        EventDto event = eventService.update(eventDtoMock.getId(), eventDtoMock);
+        EventDto event = eventService.update(1, eventDtoMock);
 
         Assert.assertEquals(event, eventDtoMock);
     }

@@ -12,9 +12,9 @@ public class LocationController {
 
     private ILocationService iLocationService;
 
-    @PostMapping("{locationId}")
-    public void createLocation(@PathVariable Integer locationId, @RequestBody LocationDto locationDto) {
-        iLocationService.createLocation(locationId, locationDto);
+    @PostMapping
+    public LocationDto createLocation(@RequestBody LocationDto locationDto) {
+        return iLocationService.createLocation(locationDto);
     }
 
     @GetMapping("{locationId}")
@@ -33,8 +33,8 @@ public class LocationController {
     }
 
     @GetMapping("by-event/{eventId}")
-    public LocationDto getEventLocation(@PathVariable Integer locationId) {
-        return iLocationService.getEventLocation(locationId);
+    public LocationDto getEventLocation(@PathVariable Integer eventId) {
+        return iLocationService.getEventLocation(eventId);
     }
 }
 

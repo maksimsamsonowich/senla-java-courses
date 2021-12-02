@@ -29,8 +29,7 @@ public class TicketService implements ITicketService {
     private final TicketDao iTicketDao;
 
     @Override
-    public TicketDto createTicket(Integer id, TicketDto ticketDto) {
-        ticketDto.setId(id);
+    public TicketDto createTicket(TicketDto ticketDto) {
         return  ticketMapper.toDto(iTicketDao.create(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
     }
 

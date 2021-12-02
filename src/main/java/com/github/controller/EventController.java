@@ -1,7 +1,6 @@
 package com.github.controller;
 
 import com.github.dto.EventDto;
-import com.github.dto.LocationDto;
 import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +14,9 @@ public class EventController{
 
     private final IEventService iEventService;
     
-    @PostMapping("{eventId}")
-    public EventDto createEvent(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
-        return iEventService.createEvent(eventId, eventDto);
+    @PostMapping
+    public EventDto createEvent(@RequestBody EventDto eventDto) {
+        return iEventService.createEvent(eventDto);
     }
 
     @GetMapping("{eventId}")

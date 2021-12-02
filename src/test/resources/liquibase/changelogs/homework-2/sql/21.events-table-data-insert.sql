@@ -1,5 +1,4 @@
 insert into events (
-                    id,
                     title,
                     artists_id,
                     locations_id,
@@ -9,7 +8,6 @@ insert into events (
                     date,
                     events_program_id )
 values (
-        1,
         'Death Race For Love',
         1,
         1,

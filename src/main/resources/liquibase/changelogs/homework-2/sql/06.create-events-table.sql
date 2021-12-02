@@ -1,5 +1,5 @@
 CREATE TABLE events (
-    id integer NOT NULL,
+    id serial NOT NULL,
     title varchar(255) not null,
     artists_id integer DEFAULT NULL,
     locations_id integer DEFAULT NULL,

@@ -4,7 +4,6 @@ import com.github.dao.EventDao;
 import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
 import com.github.dto.EventProgramDto;
-import com.github.dto.LocationDto;
 import com.github.entity.Artist;
 import com.github.entity.Event;
 import com.github.entity.EventProgram;
@@ -29,8 +28,7 @@ public class EventService implements IEventService {
     private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
 
     @Override
-    public EventDto createEvent(Integer id, EventDto eventDto) {
-        eventDto.setId(id);
+    public EventDto createEvent(EventDto eventDto) {
         return eventMapper.toDto(iEventDao.create(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 

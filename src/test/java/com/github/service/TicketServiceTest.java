@@ -34,7 +34,7 @@ public class TicketServiceTest {
         Mockito.when(ticketDao.create(ticketEntityMock)).thenReturn(ticketEntityMock);
         TicketDto ticketDtoMock = ticketMapper.toDto(ticketEntityMock, TicketDto.class);
 
-        TicketDto ticketDto = ticketService.createTicket(ticketDtoMock.getId(), ticketDtoMock);
+        TicketDto ticketDto = ticketService.createTicket(ticketDtoMock);
 
         Assert.assertEquals(ticketDto, ticketDtoMock);
     }
@@ -59,7 +59,7 @@ public class TicketServiceTest {
         Mockito.when(ticketDao.update(ticketEntityMock)).thenReturn(ticketEntityMock);
         TicketDto ticketDtoMock = ticketMapper.toDto(ticketEntityMock, TicketDto.class);
 
-        TicketDto ticketDto = ticketService.update(ticketDtoMock.getId(), ticketDtoMock);
+        TicketDto ticketDto = ticketService.update(1, ticketDtoMock);
 
         Assert.assertEquals(ticketDto, ticketDtoMock);
     }

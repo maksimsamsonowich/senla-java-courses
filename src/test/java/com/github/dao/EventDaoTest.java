@@ -36,7 +36,6 @@ public class EventDaoTest {
     public void getTestEntity() {
         testEventEntity = new Event();
 
-        testEventEntity.setId(1);
         testEventEntity.setTitle("Title");
         testEventEntity.setDescription("Desc");
         testEventEntity.setAgeLimit((short) 18);
@@ -47,6 +46,7 @@ public class EventDaoTest {
     @Test
     public void givenEvent_whenSave_thenOk() {
         eventDao.create(testEventEntity);
+        testEventEntity.setId(1);
 
         Event secondEvent = eventDao.read(1);
 
@@ -57,15 +57,17 @@ public class EventDaoTest {
     public void givenEvent_whenDelete_thenOk() {
         eventDao.create(testEventEntity);
 
+        testEventEntity.setId(1);
         eventDao.delete(testEventEntity);
 
-        Event secontEvent = eventDao.read(1);
-        Assert.assertNull(secontEvent);
+        Event secondEvent = eventDao.read(2);
+        Assert.assertNull(secondEvent);
     }
 
     @Test
     public void givenEvent_whenRead_thenOk() {
         eventDao.create(testEventEntity);
+        testEventEntity.setId(1);
 
         Event event = eventDao.read(1);
 
@@ -76,6 +78,7 @@ public class EventDaoTest {
     public void givenEvent_whenUpdate_thenOk() {
         eventDao.create(testEventEntity);
 
+        testEventEntity.setId(1);
         testEventEntity.setAgeLimit((short) 20);
         eventDao.update(testEventEntity);
 

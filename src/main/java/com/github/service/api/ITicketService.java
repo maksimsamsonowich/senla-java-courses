@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface ITicketService {
 
-    TicketDto createTicket(Integer id, TicketDto ticketDto);
+    TicketDto createTicket(TicketDto ticketDto);
 
     TicketDto readTicket(Integer id);
 

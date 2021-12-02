@@ -1,3 +1,3 @@
 insert into artists
-    ( users_id, nickname, id )
-values ( 1,  'JuiceWRLD', 1 )
+    ( users_id, nickname )
+values ( 1,  'JuiceWRLD' )

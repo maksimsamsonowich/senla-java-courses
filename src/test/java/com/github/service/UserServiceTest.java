@@ -31,7 +31,7 @@ public class UserServiceTest {
         Mockito.when(userDao.create(userEntityMock)).thenReturn(userEntityMock);
         UserDto userDtoMock = userMapper.toDto(userEntityMock, UserDto.class);
 
-        UserDto userDto = userService.createUser(userDtoMock.getId(), userDtoMock);
+        UserDto userDto = userService.createUser(userDtoMock);
 
         Assert.assertEquals(userDto, userDtoMock);
     }

@@ -21,8 +21,7 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserDto createUser(Integer id, UserDto userDto) {
-        userDto.setId(id);
+    public UserDto createUser(UserDto userDto) {
         return userMapper.toDto(iUserDao.create(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 

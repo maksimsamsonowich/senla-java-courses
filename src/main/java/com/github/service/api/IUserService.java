@@ -4,7 +4,7 @@ import com.github.dto.UserDto;
 
 public interface IUserService {
 
-    UserDto createUser(Integer id, UserDto user);
+    UserDto createUser(UserDto user);
 
     UserDto readUser(Integer id);
 

@@ -14,23 +14,23 @@ public class TicketController {
 
     private ITicketService iTicketService;
 
-    @PostMapping("{ticketId}")
-    public TicketDto createLocation(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
-        return iTicketService.createTicket(ticketId, ticketDto);
+    @PostMapping
+    public TicketDto createTicket(@RequestBody TicketDto ticketDto) {
+        return iTicketService.createTicket(ticketDto);
     }
 
     @GetMapping("{ticketId}")
-    public TicketDto readLocation(@PathVariable Integer ticketId) {
+    public TicketDto readTicket(@PathVariable Integer ticketId) {
         return iTicketService.readTicket(ticketId);
     }
 
     @PutMapping("{ticketId}")
-    public TicketDto updateLocation(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
+    public TicketDto updateTicket(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
         return iTicketService.update(ticketId, ticketDto);
     }
 
     @DeleteMapping("{ticketId}")
-    public void deleteLocation(@PathVariable Integer ticketId) {
+    public void deleteTicket(@PathVariable Integer ticketId) {
         iTicketService.deleteTicket(ticketId);
     }
 

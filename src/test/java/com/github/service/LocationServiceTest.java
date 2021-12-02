@@ -32,7 +32,7 @@ public class LocationServiceTest {
         Mockito.when(locationDao.create(locationEntityMock)).thenReturn(locationEntityMock);
         LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
 
-        LocationDto locationDto = locationService.createLocation(locationDtoMock.getId(), locationDtoMock);
+        LocationDto locationDto = locationService.createLocation(locationDtoMock);
 
         Assert.assertEquals(locationDto, locationDtoMock);
     }
@@ -57,7 +57,7 @@ public class LocationServiceTest {
         Mockito.when(locationDao.update(locationEntityMock)).thenReturn(locationEntityMock);
         LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
 
-        LocationDto locationDto = locationService.update(locationDtoMock.getId(), locationDtoMock);
+        LocationDto locationDto = locationService.update(1, locationDtoMock);
 
         Assert.assertEquals(locationDto, locationDtoMock);
     }

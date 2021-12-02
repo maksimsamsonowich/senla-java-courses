@@ -4,7 +4,7 @@ import com.github.dto.LocationDto;
 
 public interface ILocationService {
 
-    LocationDto createLocation(Integer id, LocationDto locationDto);
+    LocationDto createLocation(LocationDto locationDto);
 
     LocationDto readLocation(Integer id);
 

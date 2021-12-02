@@ -12,9 +12,9 @@ public class UserController {
 
     private final IUserService iUserService;
 
-    @PostMapping("{userId}")
-    public UserDto createUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
-        return iUserService.createUser(userId, userDto);
+    @PostMapping
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        return iUserService.createUser(userDto);
     }
 
     @GetMapping("{userId}")
