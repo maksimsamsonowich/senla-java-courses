@@ -39,7 +39,7 @@ public class LocationDaoTest {
     }
 
     @Test
-    public void givenLocation_whenSave_thenOk() {
+    public void createLocationSuccess() {
         locationDao.create(testLocationEntity);
 
         Location secondLocation = locationDao.read(1);
@@ -48,7 +48,7 @@ public class LocationDaoTest {
     }
 
     @Test
-    public void givenLocation_whenDelete_thenOk() {
+    public void deleteLocationSuccess() {
         locationDao.create(testLocationEntity);
 
         locationDao.delete(testLocationEntity);
@@ -58,7 +58,7 @@ public class LocationDaoTest {
     }
 
     @Test
-    public void givenLocation_whenRead_thenOk() {
+    public void readLocationSuccess() {
         locationDao.create(testLocationEntity);
 
         Location secondLocation = locationDao.read(1);
@@ -67,7 +67,7 @@ public class LocationDaoTest {
     }
 
     @Test
-    public void givenLocation_whenUpdate_thenOk() {
+    public void updateLocationSuccess() {
         locationDao.create(testLocationEntity);
 
         testLocationEntity.setTitle("KK");

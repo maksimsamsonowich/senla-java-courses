@@ -54,6 +54,11 @@ public class EventService implements IEventService {
         return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(id));
     }
 
+    @Transactional(readOnly = true)
+    public Set<EventDto> getLimitCheapestEvents(Integer resultLimit) {
+        return convertSetOfEntitiesToDto(iEventDao.getCheapestEvents(resultLimit));
+    }
+
     private Set<EventDto> convertSetOfEntitiesToDto(Set<Event> events) {
         Set<EventDto> retSet = eventMapper.setToDto(events, EventDto.class);
 

@@ -42,7 +42,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void givenUser_whenSave_thenOk() {
+    public void createUserSuccess() {
         userDao.create(testUserEntity);
 
         User secondUser = userDao.read(1);
@@ -51,7 +51,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void givenUser_whenDelete_thenOk() {
+    public void deleteUserSuccess() {
         userDao.create(testUserEntity);
 
         userDao.delete(testUserEntity);
@@ -61,7 +61,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void givenUser_whenRead_thenOk() {
+    public void readUserSuccess() {
         userDao.create(testUserEntity);
 
         User secondUser = userDao.read(1);
@@ -70,7 +70,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void givenUser_whenUpdate_thenOk() {
+    public void updateUserSuccess() {
         userDao.create(testUserEntity);
 
         testUserEntity.setSurname("wow");

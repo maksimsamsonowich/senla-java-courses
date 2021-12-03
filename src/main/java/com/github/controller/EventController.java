@@ -25,7 +25,7 @@ public class EventController{
     }
 
     @PutMapping("{eventId}")
-    public EventDto updateEventDescription(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
+    public EventDto updateEvent(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
         return iEventService.update(eventId, eventDto);
     }
 

@@ -5,8 +5,7 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.UserDto;
 import com.github.mapper.JsonMapper;
-import com.jayway.jsonpath.JsonPath;
-import org.junit.Assert;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,14 +17,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
+@Transactional
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ExtendWith(SpringExtension.class)
@@ -58,98 +56,86 @@ public class UserControllerTest {
     }
 
     @Test
-    public void givenUserDto_whenSave_thenOk() throws Exception {
+    @Transactional(readOnly = true)
+    public void createUserSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.post("/user-management")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/user-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(print())
-                        .andExpect(status().is2xxSuccessful())
-                        .andReturn();
-
-        int jsonIdResult = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
-        String jsonLoginResult = JsonPath.read(result.getResponse().getContentAsString(), "$.login");
-        String jsonPasswordResult = JsonPath.read(result.getResponse().getContentAsString(), "$.password");
-        String jsonEmailResult = JsonPath.read(result.getResponse().getContentAsString(), "$.email");
-        String jsonFirstNameResult = JsonPath.read(result.getResponse().getContentAsString(), "$.firstName");
-        String jsonSurnameResult = JsonPath.read(result.getResponse().getContentAsString(), "$.surname");
-        String jsonPhoneNumberResult = JsonPath.read(result.getResponse().getContentAsString(), "$.phoneNumber");
-        UserDto userDtoMock = userController.readUser(userDto.getId());
-
-        Assert.assertEquals(userDtoMock.getId(), jsonIdResult);
-        Assert.assertEquals(userDtoMock.getLogin(), jsonLoginResult);
-        Assert.assertEquals(userDtoMock.getPassword(), jsonPasswordResult);
-        Assert.assertEquals(userDtoMock.getEmail(), jsonEmailResult);
-        Assert.assertEquals(userDtoMock.getFirstName(), jsonFirstNameResult);
-        Assert.assertEquals(userDtoMock.getSurname(), jsonSurnameResult);
-        Assert.assertEquals(userDtoMock.getPhoneNumber(), jsonPhoneNumberResult);
-
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
+                                CoreMatchers.is(userDto.getLogin())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.password",
+                                CoreMatchers.is(userDto.getPassword())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.email",
+                                CoreMatchers.is(userDto.getEmail())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
+                                CoreMatchers.is(userDto.getFirstName())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
+                                CoreMatchers.is(userDto.getSurname())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
+                                CoreMatchers.is(userDto.getPhoneNumber())));
 
     }
 
     @Test
-    public void givenUserId_whenRead_thenOk() throws Exception {
+    @Transactional(readOnly = true)
+    public void readUserSuccess() throws Exception {
+
+        userDto = userController.createUser(userDto);
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
+        this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/user-management/{id}", userDto.getId()))
-                .andDo(print())
-                .andExpect(status().is2xxSuccessful())
-                .andReturn();
-
-        int jsonIdResult = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
-        String jsonLoginResult = JsonPath.read(result.getResponse().getContentAsString(), "$.login");
-        String jsonPasswordResult = JsonPath.read(result.getResponse().getContentAsString(), "$.password");
-        String jsonEmailResult = JsonPath.read(result.getResponse().getContentAsString(), "$.email");
-        String jsonFirstNameResult = JsonPath.read(result.getResponse().getContentAsString(), "$.firstName");
-        String jsonSurnameResult = JsonPath.read(result.getResponse().getContentAsString(), "$.surname");
-        String jsonPhoneNumberResult = JsonPath.read(result.getResponse().getContentAsString(), "$.phoneNumber");
-        UserDto userDtoMock = userController.readUser(userDto.getId());
-
-        Assert.assertEquals(userDtoMock.getId(), jsonIdResult);
-        Assert.assertEquals(userDtoMock.getLogin(), jsonLoginResult);
-        Assert.assertEquals(userDtoMock.getPassword(), jsonPasswordResult);
-        Assert.assertEquals(userDtoMock.getEmail(), jsonEmailResult);
-        Assert.assertEquals(userDtoMock.getFirstName(), jsonFirstNameResult);
-        Assert.assertEquals(userDtoMock.getSurname(), jsonSurnameResult);
-        Assert.assertEquals(userDtoMock.getPhoneNumber(), jsonPhoneNumberResult);
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
+                                CoreMatchers.is(userDto.getLogin())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.password",
+                                CoreMatchers.is(userDto.getPassword())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.email",
+                                CoreMatchers.is(userDto.getEmail())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
+                                CoreMatchers.is(userDto.getFirstName())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
+                                CoreMatchers.is(userDto.getSurname())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
+                                CoreMatchers.is(userDto.getPhoneNumber())));
 
     }
 
     @Test
-    public void givenUser_whenUpdate_thenOk() throws Exception {
+    public void updateUserSuccess() throws Exception {
 
         userDto.setLogin("maxmax");
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
+        this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/user-management/{id}", userDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String jsonLoginResult = JsonPath.read(result.getResponse().getContentAsString(), "$.login");
-
-        Assert.assertEquals(userDto.getLogin(), jsonLoginResult);
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
+                        CoreMatchers.is(userDto.getLogin())));
 
     }
 
     @Test
-    public void givenTicket_whenDelete_thenOk() throws Exception {
+    public void deleteUserSuccess() throws Exception {
 
         UserDto userDto = new UserDto();
         userDto.setId(5);
-        userDto.setEmail("jksaf");
-        userDto.setLogin("2344213");
-        userDto.setPassword("423sgdk");
-        userDto.setFirstName("123");
-        userDto.setSurname("4123");
+        userDto.setEmail("user");
+        userDto.setLogin("user");
+        userDto.setPassword("user");
+        userDto.setFirstName("user");
+        userDto.setSurname("user");
         userDto.setPhoneNumber("349219423");
 
         userController.createUser(userDto);
@@ -158,8 +144,8 @@ public class UserControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/user-management/{id}", userDto.getId()))
-                .andDo(print())
-                .andExpect(status().isOk());
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 

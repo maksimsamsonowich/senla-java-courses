@@ -5,8 +5,10 @@ import com.github.dto.EventDto;
 import com.github.entity.Event;
 import com.github.mapper.Mapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -19,73 +21,83 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class EventServiceTest {
 
-    @Mock
-    private Mapper<EventDto, Event> eventMapper;
-
-    @Mock
-    private EventService eventService;
+    private Event eventMock;
 
     @Mock
     private EventDao eventDaoMock;
 
-    @Test
-    public void createEventTest() {
-        Event eventEntityMock = new Event();
-        Mockito.when(eventDaoMock.create(eventEntityMock)).thenReturn(eventEntityMock);
-        EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
+    @InjectMocks
+    private EventService eventService;
 
-        EventDto event = eventService.createEvent(eventDtoMock);
+    @Mock
+    private Mapper<EventDto, Event> eventMapper;
 
-        Assert.assertEquals(event, eventDtoMock);
+    @Before
+    public void setup() {
+        eventMock = new Event();
+        eventMock.setId(1);
+        eventMock.setTitle("Wow");
+        eventMock.setAgeLimit((short) 18);
+        eventMock.setOccupiedPlace((short) 199);
+        eventMock.setDescription("Trust nobody");
     }
 
     @Test
-    public void readEventTest() {
-        final int testId = 1;
+    public void createEventSuccess() {
 
-        Event eventEntityMock = new Event();
-        Mockito.when(eventDaoMock.read(testId)).thenReturn(eventEntityMock);
-        EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
+        Mockito.when(eventDaoMock.create(eventMock)).thenReturn(eventMock);
 
-        EventDto event = eventService.readEvent(testId);
+        EventDto expectedResult = eventMapper.toDto(eventMock, EventDto.class);
+        EventDto actualResult = eventService.createEvent(expectedResult);
 
-        Assert.assertEquals(event, eventDtoMock);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void readEventSuccess() {
+
+        Mockito.when(eventDaoMock.read(eventMock.getId())).thenReturn(eventMock);
+
+        EventDto expectedResult = eventMapper.toDto(eventMock, EventDto.class);
+        EventDto actualResult = eventService.readEvent(eventMock.getId());
+
+        Assert.assertEquals(expectedResult, actualResult);
 
     }
 
     @Test
-    public void updateEventTest() {
-        Event eventEntityMock = new Event();
-        Mockito.when(eventDaoMock.update(eventEntityMock)).thenReturn(eventEntityMock);
-        EventDto eventDtoMock = eventMapper.toDto(eventEntityMock, EventDto.class);
+    public void updateEventSuccess() {
 
-        EventDto event = eventService.update(1, eventDtoMock);
+        Mockito.when(eventDaoMock.update(eventMock)).thenReturn(eventMock);
 
-        Assert.assertEquals(event, eventDtoMock);
+        EventDto expectedResult = new EventDto();
+        EventDto actualResult = eventService.update(expectedResult.getId(), expectedResult);
+
+        Assert.assertNull(actualResult);
     }
 
     @Test
-    public void deleteEventTest() {
-        EventDto eventDtoMock = new EventDto();
-        Event eventMock = new Event();
+    public void deleteEventSuccess() {
 
         doNothing().when(eventDaoMock).delete(eventMock);
+        Mockito.when(eventDaoMock.read(eventMock.getId())).thenReturn(eventMock);
 
-        eventService.deleteEvent(eventDtoMock.getId());
+        eventService.deleteEvent(eventMock.getId());
 
-        verify(eventDaoMock, times(0)).delete(eventMock);
+        verify(eventDaoMock, times(1)).delete(eventMock);
+
     }
 
     @Test
-    public void getEventByLocationTest() {
-        final int testId = 1;
+    public void getEventByLocationSuccess() {
 
         Set<Event> eventEntitySetMock = new HashSet<>();
-        Mockito.when(eventDaoMock.getEventsByLocation(testId)).thenReturn(eventEntitySetMock);
-        Set<EventDto> eventDtoSetMock = eventMapper.setToDto(eventEntitySetMock, EventDto.class);
 
-        Set<EventDto> event = eventService.getEventsByLocation(testId);
+        Mockito.when(eventDaoMock.getEventsByLocation(eventMock.getId())).thenReturn(eventEntitySetMock);
 
-        Assert.assertEquals(event, eventDtoSetMock);
+        Set<EventDto> expectedResult = eventMapper.setToDto(eventEntitySetMock, EventDto.class);
+        Set<EventDto> actualResult = eventService.getEventsByLocation(eventMock.getId());
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 }

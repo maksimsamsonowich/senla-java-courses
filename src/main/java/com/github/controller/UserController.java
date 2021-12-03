@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PutMapping("{userId}")
-    public UserDto update(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+    public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
         return iUserService.update(userId, userDto);
     }
 

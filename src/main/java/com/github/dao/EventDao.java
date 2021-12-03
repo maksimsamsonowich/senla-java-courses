@@ -35,5 +35,12 @@ public class EventDao extends AbstractDao<Event> {
         return typedQuery.getSingleResult().getEvents();
     }
 
+    @SuppressWarnings("unchecked")
+    public Set<Event> getCheapestEvents(int numOfResults) {
+        return (Set<Event>) entityManager
+                .createQuery("select e from Event e order by e.eventProgram.price")
+                .setMaxResults(numOfResults)
+                .getResultList();
+    }
 
 }

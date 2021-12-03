@@ -1,13 +1,14 @@
 package com.github.service;
 
 import com.github.dao.LocationDao;
-import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
 import com.github.mapper.Mapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,77 +18,82 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class LocationServiceTest {
 
-    @Mock
-    private Mapper<LocationDto, Location> locationMapper;
-
-    @Mock
-    private LocationService locationService;
+    private Location locationMock;
 
     @Mock
     private LocationDao locationDao;
 
-    @Test
-    public void createLocationTest() {
-        Location locationEntityMock = new Location();
-        Mockito.when(locationDao.create(locationEntityMock)).thenReturn(locationEntityMock);
-        LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
+    @InjectMocks
+    private LocationService locationService;
 
-        LocationDto locationDto = locationService.createLocation(locationDtoMock);
+    @Mock
+    private Mapper<LocationDto, Location> locationMapper;
 
-        Assert.assertEquals(locationDto, locationDtoMock);
+    @Before
+    public void setup() {
+        locationMock = new Location();
+        locationMock.setId(1);
+        locationMock.setTitle("BAR");
+        locationMock.setCapacity(50);
+        locationMock.setAddress("FFF");
     }
 
     @Test
-    public void readLocationTest() {
-        final int testId = 1;
+    public void createLocationSuccess() {
 
-        Location locationEntityMock = new Location();
-        Mockito.when(locationDao.read(testId)).thenReturn(locationEntityMock);
-        LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, EventDto.class);
+        Mockito.when(locationDao.create(locationMock)).thenReturn(locationMock);
 
-        LocationDto locationDto = locationService.readLocation(testId);
+        LocationDto expectedResult = locationMapper.toDto(locationMock, LocationDto.class);
+        LocationDto actualResult = locationService.createLocation(expectedResult);
 
-        Assert.assertEquals(locationDto, locationDtoMock);
+        Assert.assertEquals(expectedResult, actualResult);
 
     }
 
     @Test
-    public void updateLocationTest() {
-        Location locationEntityMock = new Location();
-        Mockito.when(locationDao.update(locationEntityMock)).thenReturn(locationEntityMock);
-        LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
+    public void readLocationSuccess() {
 
-        LocationDto locationDto = locationService.update(1, locationDtoMock);
+        Mockito.when(locationDao.read(locationMock.getId())).thenReturn(locationMock);
 
-        Assert.assertEquals(locationDto, locationDtoMock);
+        LocationDto expectedResult = locationMapper.toDto(locationMock, LocationDto.class);
+        LocationDto actualResult = locationService.readLocation(locationMock.getId());
+
+        Assert.assertEquals(expectedResult, actualResult);
+
     }
 
     @Test
-    public void deleteLocationTest() {
-        LocationDto locationDtoMock = new LocationDto();
-        Location locationMock = new Location();
+    public void updateLocationSuccess() {
+
+        Mockito.when(locationDao.update(locationMock)).thenReturn(locationMock);
+
+        LocationDto expectedResult = new LocationDto();
+        LocationDto actualResult = locationService.update(locationMock.getId(), expectedResult);
+
+        Assert.assertNull(actualResult);
+
+    }
+
+    @Test
+    public void deleteLocationSuccess() {
 
         doNothing().when(locationDao).delete(locationMock);
+        Mockito.when(locationDao.read(locationMock.getId())).thenReturn(locationMock);
 
-        locationService.deleteLocation(locationDtoMock.getId());
+        locationService.deleteLocation(locationMock.getId());
 
-        verify(locationDao, times(0)).delete(locationMock);
+        verify(locationDao, times(1)).delete(locationMock);
     }
 
     @Test
-    public void getEventLocationTest() {
-        final int testId = 1;
+    public void getEventLocationSuccess() {
 
-        Location locationEntityMock = new Location();
-        Mockito.when(locationDao.getLocationByEvent(testId)).thenReturn(locationEntityMock);
-        LocationDto locationDtoMock = locationMapper.toDto(locationEntityMock, LocationDto.class);
+        Mockito.when(locationDao.getLocationByEvent(locationMock.getId())).thenReturn(locationMock);
 
-        LocationDto locationDto = new LocationDto();
-        locationDto.setId(testId);
+        LocationDto expectedResult = locationMapper.toDto(locationMock, LocationDto.class);
+        LocationDto actualResult = locationService.getEventLocation(locationMock.getId());
 
-        LocationDto locationDtoSetMock = locationService.getEventLocation(testId);
-
-        Assert.assertEquals(locationDtoSetMock, locationDtoMock);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

@@ -44,7 +44,7 @@ public class EventDaoTest {
     }
 
     @Test
-    public void givenEvent_whenSave_thenOk() {
+    public void createEventSuccess() {
         eventDao.create(testEventEntity);
         testEventEntity.setId(1);
 
@@ -54,7 +54,7 @@ public class EventDaoTest {
     }
 
     @Test
-    public void givenEvent_whenDelete_thenOk() {
+    public void deleteEventSuccess() {
         eventDao.create(testEventEntity);
 
         testEventEntity.setId(1);
@@ -65,7 +65,7 @@ public class EventDaoTest {
     }
 
     @Test
-    public void givenEvent_whenRead_thenOk() {
+    public void readEventSuccess() {
         eventDao.create(testEventEntity);
         testEventEntity.setId(1);
 
@@ -75,7 +75,7 @@ public class EventDaoTest {
     }
 
     @Test
-    public void givenEvent_whenUpdate_thenOk() {
+    public void updateEventSuccess() {
         eventDao.create(testEventEntity);
 
         testEventEntity.setId(1);
@@ -88,7 +88,7 @@ public class EventDaoTest {
     }
 
     @Test
-    public void givenLocation_whenGetEventByLocation_thenOk() {
+    public void getEventByLocationSuccess() {
         Set<Event> events = eventDao.getEventsByLocation(1);
         Event eventMock = eventDao.read(1);
 

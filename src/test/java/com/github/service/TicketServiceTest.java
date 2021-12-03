@@ -5,12 +5,15 @@ import com.github.dto.TicketDto;
 import com.github.entity.Ticket;
 import com.github.mapper.Mapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,87 +22,92 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class TicketServiceTest {
 
-    @Mock
-    private Mapper<TicketDto, Ticket> ticketMapper;
-
-    @Mock
-    private TicketService ticketService;
+    private Ticket ticketMock;
 
     @Mock
     private TicketDao ticketDao;
 
-    @Test
-    public void createTicketTest() {
-        Ticket ticketEntityMock = new Ticket();
-        Mockito.when(ticketDao.create(ticketEntityMock)).thenReturn(ticketEntityMock);
-        TicketDto ticketDtoMock = ticketMapper.toDto(ticketEntityMock, TicketDto.class);
+    @InjectMocks
+    private TicketService ticketService;
 
-        TicketDto ticketDto = ticketService.createTicket(ticketDtoMock);
+    @Mock
+    private Mapper<TicketDto, Ticket> ticketMapper;
 
-        Assert.assertEquals(ticketDto, ticketDtoMock);
+    @Before
+    public void setup() {
+        ticketMock = new Ticket();
+        ticketMock.setId(1);
+        ticketMock.setOrderDate(Date.valueOf("2021-12-03"));
     }
 
     @Test
-    public void readTicketTest() {
-        final int testId = 1;
+    public void createTicketSuccess() {
 
-        Ticket ticketEntityMock = new Ticket();
-        Mockito.when(ticketDao.read(testId)).thenReturn(ticketEntityMock);
-        TicketDto ticketDtoMock = ticketMapper.toDto(ticketEntityMock, TicketDto.class);
+        Mockito.when(ticketDao.create(ticketMock)).thenReturn(ticketMock);
 
-        TicketDto ticketDto = ticketService.readTicket(testId);
+        TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
+        TicketDto actualResult = ticketService.createTicket(expectedResult);
 
-        Assert.assertEquals(ticketDto, ticketDtoMock);
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void readTicketSuccess() {
+
+        Mockito.when(ticketDao.read(ticketMock.getId())).thenReturn(ticketMock);
+
+        TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
+        TicketDto actualResult = ticketService.readTicket(ticketMock.getId());
+
+        Assert.assertEquals(expectedResult, actualResult);
 
     }
 
     @Test
-    public void updateTicketTest() {
-        Ticket ticketEntityMock = new Ticket();
-        Mockito.when(ticketDao.update(ticketEntityMock)).thenReturn(ticketEntityMock);
-        TicketDto ticketDtoMock = ticketMapper.toDto(ticketEntityMock, TicketDto.class);
+    public void updateTicketSuccess() {
 
-        TicketDto ticketDto = ticketService.update(1, ticketDtoMock);
+        Mockito.when(ticketDao.update(ticketMock)).thenReturn(ticketMock);
 
-        Assert.assertEquals(ticketDto, ticketDtoMock);
+        TicketDto expectedResult = new TicketDto();
+        TicketDto actualResult = ticketService.update(ticketMock.getId(), expectedResult);
+
+        Assert.assertNull(actualResult);
     }
 
     @Test
-    public void deleteTicketTest() {
-        TicketDto ticketDtoMock = new TicketDto();
-        Ticket ticketEntityMock = new Ticket();
+    public void deleteTicketSuccess() {
 
-        doNothing().when(ticketDao).delete(ticketEntityMock);
+        doNothing().when(ticketDao).delete(ticketMock);
+        Mockito.when(ticketDao.read(ticketMock.getId())).thenReturn(ticketMock);
 
-        ticketService.deleteTicket(ticketDtoMock.getId());
+        ticketService.deleteTicket(ticketMock.getId());
 
-        verify(ticketDao, times(0)).delete(ticketEntityMock);
+        verify(ticketDao, times(1)).delete(ticketMock);
     }
 
     @Test
-    public void getEventTicketsTest() {
-        final int testId = 1;
+    public void getEventTicketsSuccess() {
 
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
-        Mockito.when(ticketDao.getEventTickets(testId)).thenReturn(ticketSetEntityMock);
-        Set<TicketDto> ticketDtoSetMock = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
 
-        Set<TicketDto> ticketDtoSet = ticketService.getEventTickets(testId);
+        Mockito.when(ticketDao.getEventTickets(ticketMock.getId())).thenReturn(ticketSetEntityMock);
 
-        Assert.assertEquals(ticketDtoSet, ticketDtoSetMock);
+        Set<TicketDto> expectedResult = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
+        Set<TicketDto> actualResult = ticketService.getEventTickets(ticketMock.getId());
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
-    public void getUserTicketsTest() {
-        final int testId = 1;
-
+    public void getUserTicketsSuccess() {
         Set<Ticket> ticketSetEntityMock = new HashSet<>();
-        Mockito.when(ticketDao.getTicketsByUser(testId)).thenReturn(ticketSetEntityMock);
-        Set<TicketDto> ticketDtoSetMock = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
 
-        Set<TicketDto> ticketDtoSet = ticketService.getUserTickets(testId);
+        Mockito.when(ticketDao.getTicketsByUser(ticketMock.getId())).thenReturn(ticketSetEntityMock);
 
-        Assert.assertEquals(ticketDtoSet, ticketDtoSetMock);
+        Set<TicketDto> expectedResult = ticketMapper.setToDto(ticketSetEntityMock, TicketDto.class);
+        Set<TicketDto> actualResult = ticketService.getUserTickets(ticketMock.getId());
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
 }

@@ -5,11 +5,9 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dao.EventDao;
 import com.github.dto.EventDto;
-import com.github.dto.LocationDto;
 import com.github.entity.Event;
 import com.github.mapper.JsonMapper;
-import com.jayway.jsonpath.JsonPath;
-import org.junit.Assert;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,19 +19,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.Set;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@Transactional
 @WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
 @ExtendWith(SpringExtension.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class EventControllerTest {
 
@@ -65,136 +62,98 @@ public class EventControllerTest {
     }
 
     @Test
-    public void givenEventDto_whenSave_thenOk() throws Exception {
+    @Transactional(readOnly = true)
+    public void createEventSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(eventDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
+        this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/event-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(print())
-                        .andExpect(status().is2xxSuccessful())
-                        .andReturn();
-
-        int jsonIdResult = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
-        String jsonTitleResult = JsonPath.read(result.getResponse().getContentAsString(), "$.title").toString();
-        String jsonDescriptionResult = JsonPath.read(result.getResponse().getContentAsString(), "$.description");
-        int jsonAgeLimitResult = JsonPath.read(result.getResponse().getContentAsString(), "$.ageLimit");
-        int jsonOccupiedPlaceResult = JsonPath.read(result.getResponse().getContentAsString(), "$.occupiedPlace");
-
-        Event event = eventDao.read(jsonIdResult);
-
-        Assert.assertEquals(event.getId(), jsonIdResult);
-        Assert.assertEquals(event.getTitle(), jsonTitleResult);
-        Assert.assertEquals(event.getDescription(), jsonDescriptionResult);
-        Assert.assertEquals(event.getAgeLimit(), jsonAgeLimitResult);
-        Assert.assertEquals(event.getOccupiedPlace(), jsonOccupiedPlaceResult);
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                                CoreMatchers.is(eventDto.getTitle())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.description",
+                                CoreMatchers.is(eventDto.getDescription())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.ageLimit",
+                                CoreMatchers.is(eventDto.getAgeLimit())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.occupiedPlace",
+                                CoreMatchers.is(eventDto.getOccupiedPlace())));
     }
 
     @Test
-    public void givenEventId_whenRead_thenOk() throws Exception {
+    @Transactional(readOnly = true)
+    public void readEventSuccess() throws Exception {
 
-        this.jsonBody = jsonMapper.toJson(eventDto);
+        eventDto = eventController.createEvent(eventDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/event-management/{eventId}", 1))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn();
-
-        int jsonIdResult = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
-        String jsonTitleResult = JsonPath.read(result.getResponse().getContentAsString(), "$.title");
-        String jsonDescriptionResult = JsonPath.read(result.getResponse().getContentAsString(), "$.description");
-        int jsonAgeLimitResult = JsonPath.read(result.getResponse().getContentAsString(), "$.ageLimit");
-        int jsonOccupiedPlaceResult = JsonPath.read(result.getResponse().getContentAsString(), "$.occupiedPlace");
-
-        Event event = eventDao.read(jsonIdResult);
-
-        Assert.assertEquals(event.getId(), jsonIdResult);
-        Assert.assertEquals(event.getTitle(), jsonTitleResult);
-        Assert.assertEquals(event.getDescription(), jsonDescriptionResult);
-        Assert.assertEquals(event.getAgeLimit(), jsonAgeLimitResult);
-        Assert.assertEquals(event.getOccupiedPlace(), jsonOccupiedPlaceResult);
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/event-management/{eventId}", eventDto.getId()))
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(MockMvcResultMatchers.status().isOk())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                                CoreMatchers.is(eventDto.getTitle())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.description",
+                                CoreMatchers.is(eventDto.getDescription())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.ageLimit",
+                                CoreMatchers.is(eventDto.getAgeLimit())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.occupiedPlace",
+                                CoreMatchers.is(eventDto.getOccupiedPlace())));
 
     }
 
     @Test
-    public void givenEvent_whenUpdate_thenOk() throws Exception {
+    public void updateEventSuccess() throws Exception {
 
-        eventDto.setId(1);
+        eventDto.setId(2);
         eventDto.setTitle("Edited title");
 
         this.jsonBody = jsonMapper.toJson(eventDto);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
+        this.mockMvc.perform(MockMvcRequestBuilders
                 .put("/event-management/{eventId}", eventDto.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Event event = eventDao.read(eventDto.getId());
-
-        String jsonTitleResult = JsonPath.read(result.getResponse().getContentAsString(), "$.title");
-
-        Assert.assertEquals(event.getTitle(), jsonTitleResult);
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                        CoreMatchers.is(eventDto.getTitle())));
     }
 
     @Test
-    public void givenEvent_whenDelete_thenOk() throws Exception {
+    public void deleteEventSuccess() throws Exception {
+
+        eventDto = eventController.createEvent(eventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .delete("/event-management/{eventId}", eventDto.getId()))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
     @Test
-    public void givenLocation_whenGetEventByLocation_thenOk() throws Exception{
+    @Transactional(readOnly = true)
+    public void getEventsByLocationSuccess() throws Exception{
 
-        LocationDto locationDto
-                = new LocationDto();
-        locationDto.setId(1);
-        locationDto.setAddress("Кабяка 11");
-        locationDto.setTitle("NN");
-        locationDto.setCapacity(12);
+        eventDto.setId(1);
 
-        MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/event-management/by-location/{locationId}", locationDto.getId()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
+        Event event = eventDao.getEventsByLocation(eventDto.getId()).iterator().next();
 
-        Set<Event> events = eventDao.getEventsByLocation(locationDto.getId());
-
-        int iterator = 0;
-
-        for(Event event : events) {
-            int jsonEventIdActual = JsonPath.read(result.getResponse().getContentAsString(), "$.[" + iterator + "].id");
-
-            Assert.assertEquals(event.getId(), jsonEventIdActual);
-
-            String jsonTitleResult = JsonPath.read(result.getResponse().getContentAsString(), "$.[" + iterator + "].title");
-
-            Assert.assertEquals(event.getTitle(), jsonTitleResult);
-
-            String jsonDescriptionResult = JsonPath.read(result.getResponse().getContentAsString(), "$.[" + iterator + "].description");
-
-            Assert.assertEquals(event.getDescription(), jsonDescriptionResult);
-
-            int jsonAgeLimitResult = JsonPath.read(result.getResponse().getContentAsString(), "$.[" + iterator + "].ageLimit");
-
-            Assert.assertEquals(event.getAgeLimit(), jsonAgeLimitResult);
-
-            int jsonOccupiedPlaceResult = JsonPath.read(result.getResponse().getContentAsString(), "$.[" + iterator + "].occupiedPlace");
-
-            Assert.assertEquals(event.getOccupiedPlace(), jsonOccupiedPlaceResult);
-
-            iterator++;
-        }
+        this.mockMvc.perform(MockMvcRequestBuilders
+                .get("/event-management/by-location/{locationId}", eventDto.getId()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].title",
+                        CoreMatchers.is(event.getTitle())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description",
+                        CoreMatchers.is(event.getDescription())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].ageLimit",
+                        CoreMatchers.is((int) event.getAgeLimit())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].occupiedPlace",
+                        CoreMatchers.is((int) event.getOccupiedPlace())));
     }
 
 }
