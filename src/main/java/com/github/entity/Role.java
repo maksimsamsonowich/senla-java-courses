@@ -1,8 +1,6 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,19 +8,19 @@ import java.util.Set;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "genres")
-public class Genre {
+@Table(name = "roles")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String name;
+    @Column(name = "name")
+    private String role;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "genres")
-    private Set<Artist> artists;
+    @ManyToMany(mappedBy = "roles",
+            fetch = FetchType.LAZY)
+    private Set<User> users;
 
 }

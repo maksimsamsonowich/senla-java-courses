@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Location;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 public class LocationDaoTest {
 
     @Resource
-    private LocationDao locationDao;
+    private LocationRepository locationDao;
 
     @Mock
     private Location testLocationEntity;

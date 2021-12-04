@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Ticket;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class TicketDaoTest {
 
     @Resource
-    private TicketDao ticketDao;
+    private TicketRepository ticketDao;
 
     @Mock
     private Ticket testTicketEntity;

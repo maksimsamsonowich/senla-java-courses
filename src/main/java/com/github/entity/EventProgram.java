@@ -1,16 +1,15 @@
 package com.github.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Time;
 
+@Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedEntityGraph(
@@ -33,24 +32,15 @@ import java.sql.Time;
 public class EventProgram {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private Time continuance;
 
     private double price;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "eventProgram", fetch = FetchType.LAZY)
     private Event event;
-
-    public String toString() {
-        return String.format(
-                "EventProgram [id=%d " +
-                        "continuance=%s, " +
-                        "price=%d]",
-                id,
-                continuance,
-                price
-        );
-    }
 
 }

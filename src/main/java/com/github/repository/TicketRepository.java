@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.entity.Event;
 import com.github.entity.Event_;
@@ -15,9 +15,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Repository
-public class TicketDao extends AbstractDao<Ticket> {
+public class TicketRepository extends AbstractRepository<Ticket> {
 
-    public TicketDao(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
+    public TicketRepository(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
         super(entityManager, criteriaBuilder, Ticket.class);
     }
 

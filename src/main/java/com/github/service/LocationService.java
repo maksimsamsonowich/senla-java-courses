@@ -1,9 +1,9 @@
 package com.github.service;
 
-import com.github.dao.LocationDao;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
 import com.github.mapper.api.IMapper;
+import com.github.repository.LocationRepository;
 import com.github.service.api.ILocationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class LocationService implements ILocationService {
 
     private final IMapper<LocationDto, Location> locationMapper;
 
-    private final LocationDao iLocationDao;
+    private final LocationRepository iLocationDao;
 
     @Override
     public LocationDto createLocation(LocationDto locationDto) {

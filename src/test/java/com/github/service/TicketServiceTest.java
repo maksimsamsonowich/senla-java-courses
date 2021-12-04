@@ -1,9 +1,9 @@
 package com.github.service;
 
-import com.github.dao.TicketDao;
 import com.github.dto.TicketDto;
 import com.github.entity.Ticket;
 import com.github.mapper.Mapper;
+import com.github.repository.TicketRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class TicketServiceTest {
     private Ticket ticketMock;
 
     @Mock
-    private TicketDao ticketDao;
+    private TicketRepository ticketDao;
 
     @InjectMocks
     private TicketService ticketService;

@@ -30,54 +30,45 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class UserControllerTest {
 
+    private String jsonBody;
+
+    private UserDto expectedUserDto;
+
+    private MockMvc mockMvc;
+
     @Autowired
     private JsonMapper jsonMapper;
 
     @Autowired
     private UserController userController;
 
-    private UserDto userDto;
-
-    private String jsonBody;
-
-    private MockMvc mockMvc;
-
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
-        userDto = new UserDto();
-        userDto.setLogin("max");
-        userDto.setPassword("max");
-        userDto.setEmail("max");
-        userDto.setFirstName("max");
-        userDto.setSurname("max");
-        userDto.setPhoneNumber("+375999999999");
+        expectedUserDto = new UserDto();
+        expectedUserDto.setFirstName("motzisudo");
+        expectedUserDto.setSurname("motzisudo");
+        expectedUserDto.setPhoneNumber("+375999999999");
     }
 
     @Test
     @Transactional(readOnly = true)
     public void createUserSuccess() throws Exception {
 
-        this.jsonBody = jsonMapper.toJson(userDto);
+        this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders.post("/user-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
-                                CoreMatchers.is(userDto.getLogin())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.password",
-                                CoreMatchers.is(userDto.getPassword())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.email",
-                                CoreMatchers.is(userDto.getEmail())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
-                                CoreMatchers.is(userDto.getFirstName())))
+                                CoreMatchers.is(expectedUserDto.getFirstName())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
-                                CoreMatchers.is(userDto.getSurname())))
+                                CoreMatchers.is(expectedUserDto.getSurname())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
-                                CoreMatchers.is(userDto.getPhoneNumber())));
+                                CoreMatchers.is(expectedUserDto.getPhoneNumber())));
 
     }
 
@@ -85,65 +76,51 @@ public class UserControllerTest {
     @Transactional(readOnly = true)
     public void readUserSuccess() throws Exception {
 
-        userDto = userController.createUser(userDto);
+        expectedUserDto = userController.createUser(expectedUserDto);
 
-        this.jsonBody = jsonMapper.toJson(userDto);
+        this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/user-management/{id}", userDto.getId()))
+                        .get("/user-management/{id}", expectedUserDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
-                                CoreMatchers.is(userDto.getLogin())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.password",
-                                CoreMatchers.is(userDto.getPassword())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.email",
-                                CoreMatchers.is(userDto.getEmail())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
-                                CoreMatchers.is(userDto.getFirstName())))
+                                CoreMatchers.is(expectedUserDto.getFirstName())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
-                                CoreMatchers.is(userDto.getSurname())))
+                                CoreMatchers.is(expectedUserDto.getSurname())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
-                                CoreMatchers.is(userDto.getPhoneNumber())));
+                                CoreMatchers.is(expectedUserDto.getPhoneNumber())));
 
     }
 
     @Test
     public void updateUserSuccess() throws Exception {
 
-        userDto.setLogin("maxmax");
+        expectedUserDto = userController.createUser(expectedUserDto);
+        expectedUserDto.setSurname("maxmax");
 
-        this.jsonBody = jsonMapper.toJson(userDto);
+        this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/user-management/{id}", userDto.getId())
+                        .put("/user-management/{id}", expectedUserDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.login",
-                        CoreMatchers.is(userDto.getLogin())));
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
+                        CoreMatchers.is(expectedUserDto.getSurname())));
 
     }
 
     @Test
     public void deleteUserSuccess() throws Exception {
 
-        UserDto userDto = new UserDto();
-        userDto.setId(5);
-        userDto.setEmail("user");
-        userDto.setLogin("user");
-        userDto.setPassword("user");
-        userDto.setFirstName("user");
-        userDto.setSurname("user");
-        userDto.setPhoneNumber("349219423");
+        expectedUserDto = userController.createUser(expectedUserDto);
 
-        userController.createUser(userDto);
-
-        this.jsonBody = jsonMapper.toJson(userDto);
+        this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/user-management/{id}", userDto.getId()))
+                        .delete("/user-management/{id}", expectedUserDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk());
 

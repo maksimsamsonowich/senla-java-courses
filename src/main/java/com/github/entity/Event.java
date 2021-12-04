@@ -1,17 +1,16 @@
 package com.github.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
 
+@Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "events")
@@ -36,6 +35,7 @@ import java.util.Set;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "title", nullable = false)
@@ -53,17 +53,24 @@ public class Event {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @OneToMany(mappedBy = "eventHolding", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "eventHolding",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE, CascadeType.DETACH })
     @JoinColumn(name = "artists_id")
     private Artist eventOrganizer;
 
+    @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "events_program_id")
     private EventProgram eventProgram;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locations_id")
     private Location location;
@@ -72,23 +79,6 @@ public class Event {
     public boolean equals(Object object) {
         Event event = (Event) object;
         return id == event.getId();
-    }
-
-    public String toString() {
-        return String.format(
-                "Event [id=%d, " +
-                        "title=%s, " +
-                        "description=%s, " +
-                        "ageLimit=%d, " +
-                        "occupiedPlace=%d, " +
-                        "date=%s]",
-                id,
-                title,
-                description,
-                ageLimit,
-                occupiedPlace,
-                date
-        );
     }
 
 }

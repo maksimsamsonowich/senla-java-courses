@@ -1,9 +1,9 @@
 package com.github.service;
 
-import com.github.dao.EventDao;
 import com.github.dto.EventDto;
 import com.github.entity.Event;
 import com.github.mapper.Mapper;
+import com.github.repository.EventRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class EventServiceTest {
     private Event eventMock;
 
     @Mock
-    private EventDao eventDaoMock;
+    private EventRepository eventDaoMock;
 
     @InjectMocks
     private EventService eventService;

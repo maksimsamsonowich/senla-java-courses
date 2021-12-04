@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class EventDaoTest {
 
     @Resource
-    private EventDao eventDao;
+    private EventRepository eventDao;
 
     @Mock
     private Event testEventEntity;

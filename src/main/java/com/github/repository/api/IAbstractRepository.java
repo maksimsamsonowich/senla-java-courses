@@ -1,6 +1,6 @@
-package com.github.dao.api;
+package com.github.repository.api;
 
-public interface IAbstractDao<T> {
+public interface IAbstractRepository<T> {
 
     T create(T entity);
 

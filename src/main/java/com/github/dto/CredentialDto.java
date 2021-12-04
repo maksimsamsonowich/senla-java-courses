@@ -14,24 +14,18 @@ import java.util.Set;
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class CredentialDto {
 
     @JsonProperty(value = "id")
     private int id;
 
-    @JsonProperty(value = "phoneNumber")
-    private String phoneNumber;
+    @JsonProperty(value = "email")
+    private String email;
 
-    @JsonProperty(value = "firstName")
-    private String firstName;
+    @JsonProperty(value = "password")
+    private String password;
 
-    @JsonProperty(value = "surname")
-    private String surname;
-
-    @JsonProperty(value = "artistCard")
-    private Set<EventArtistDto> artistCard;
-
-    @JsonProperty(value = "tickets")
-    private Set<UserTicketsDto> tickets;
+    @JsonProperty(value = "roles")
+    private Set<RoleDto> roles;
 
 }

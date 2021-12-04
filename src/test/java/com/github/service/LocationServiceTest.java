@@ -1,9 +1,9 @@
 package com.github.service;
 
-import com.github.dao.LocationDao;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
 import com.github.mapper.Mapper;
+import com.github.repository.LocationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class LocationServiceTest {
     private Location locationMock;
 
     @Mock
-    private LocationDao locationDao;
+    private LocationRepository locationDao;
 
     @InjectMocks
     private LocationService locationService;

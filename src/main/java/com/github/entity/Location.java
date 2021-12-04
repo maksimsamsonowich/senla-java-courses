@@ -1,16 +1,15 @@
 package com.github.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "locations")
@@ -32,6 +31,7 @@ import java.util.Set;
 public class Location {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String title;
@@ -40,20 +40,9 @@ public class Location {
 
     private int capacity;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "location",
+            fetch = FetchType.LAZY)
     private Set<Event> events;
-
-    public String toString() {
-        return String.format(
-                "Location [id=%d, " +
-                        "title=%s, " +
-                        "address=%s, " +
-                        "capacity=%d]",
-                id,
-                title,
-                address,
-                capacity
-        );
-    }
 
 }

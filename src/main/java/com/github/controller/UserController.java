@@ -31,4 +31,5 @@ public class UserController {
     public void deleteUser(@PathVariable Integer userId) {
         iUserService.deleteUser(userId);
     }
+
 }

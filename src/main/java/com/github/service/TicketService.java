@@ -1,13 +1,9 @@
 package com.github.service;
 
-import com.github.dao.TicketDao;
-import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
-import com.github.dto.UserDto;
-import com.github.entity.Event;
 import com.github.entity.Ticket;
-import com.github.entity.User;
 import com.github.mapper.api.IMapper;
+import com.github.repository.TicketRepository;
 import com.github.service.api.ITicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,10 +19,8 @@ import java.util.Set;
 public class TicketService implements ITicketService {
 
     private final IMapper<TicketDto, Ticket> ticketMapper;
-    private final IMapper<EventDto, Event> eventMapper;
-    private final IMapper<UserDto, User> userMapper;
 
-    private final TicketDao iTicketDao;
+    private final TicketRepository iTicketDao;
 
     @Override
     public TicketDto createTicket(TicketDto ticketDto) {

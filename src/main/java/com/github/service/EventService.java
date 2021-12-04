@@ -1,6 +1,5 @@
 package com.github.service;
 
-import com.github.dao.EventDao;
 import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
 import com.github.dto.EventProgramDto;
@@ -9,6 +8,7 @@ import com.github.entity.Event;
 import com.github.entity.EventProgram;
 import com.github.exceptions.entities.NoSuchEntityException;
 import com.github.mapper.api.IMapper;
+import com.github.repository.EventRepository;
 import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class EventService implements IEventService {
 
-    private final EventDao iEventDao;
+    private final EventRepository iEventDao;
 
     private final IMapper<EventDto, Event> eventMapper;
     private final IMapper<EventArtistDto, Artist> artistMapper;

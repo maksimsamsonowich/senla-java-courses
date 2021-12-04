@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.entity.Event;
 import com.github.entity.Event_;
@@ -13,9 +13,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 @Repository
-public class LocationDao extends AbstractDao<Location>  {
+public class LocationRepository extends AbstractRepository<Location> {
 
-    public LocationDao(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
+    public LocationRepository(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
         super(entityManager, criteriaBuilder, Location.class);
     }
 

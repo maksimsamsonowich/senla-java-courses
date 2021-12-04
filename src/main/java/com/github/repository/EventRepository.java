@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.entity.Event;
 import com.github.entity.Location;
@@ -14,9 +14,9 @@ import javax.persistence.criteria.Root;
 import java.util.Set;
 
 @Repository
-public class EventDao extends AbstractDao<Event> {
+public class EventRepository extends AbstractRepository<Event> {
 
-    public EventDao(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
+    public EventRepository(EntityManager entityManager, CriteriaBuilder criteriaBuilder) {
         super(entityManager, criteriaBuilder, Event.class);
     }
 

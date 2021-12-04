@@ -3,10 +3,10 @@ package com.github.controller;
 import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
-import com.github.dao.EventDao;
 import com.github.dto.EventDto;
 import com.github.entity.Event;
 import com.github.mapper.JsonMapper;
+import com.github.repository.EventRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,38 +34,38 @@ import java.sql.Date;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class EventControllerTest {
 
+    private String jsonBody;
+
+    private MockMvc mockMvc;
+
+    private EventDto expectedEventDto;
+
+    @Autowired
+    private EventRepository eventDao;
+
     @Autowired
     private JsonMapper jsonMapper;
 
     @Autowired
     private EventController eventController;
 
-    @Autowired
-    private EventDao eventDao;
-
-    private EventDto eventDto;
-
-    private String jsonBody;
-
-    private MockMvc mockMvc;
-
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
 
-        eventDto = new EventDto();
-        eventDto.setTitle("Title");
-        eventDto.setDescription("Desc");
-        eventDto.setAgeLimit((short) 18);
-        eventDto.setOccupiedPlace((short) 11);
-        eventDto.setDate(Date.valueOf("2021-11-29"));
+        expectedEventDto = new EventDto();
+        expectedEventDto.setTitle("Candles");
+        expectedEventDto.setDescription("Tryna put a diamond ring on her finger");
+        expectedEventDto.setAgeLimit((short) 21);
+        expectedEventDto.setOccupiedPlace((short) 99);
+        expectedEventDto.setDate(Date.valueOf("2021-11-29"));
     }
 
     @Test
     @Transactional(readOnly = true)
     public void createEventSuccess() throws Exception {
 
-        this.jsonBody = jsonMapper.toJson(eventDto);
+        this.jsonBody = jsonMapper.toJson(expectedEventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/event-management")
@@ -74,61 +74,61 @@ public class EventControllerTest {
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                         .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(eventDto.getTitle())))
+                                CoreMatchers.is(expectedEventDto.getTitle())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.description",
-                                CoreMatchers.is(eventDto.getDescription())))
+                                CoreMatchers.is(expectedEventDto.getDescription())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.ageLimit",
-                                CoreMatchers.is(eventDto.getAgeLimit())))
+                                CoreMatchers.is(expectedEventDto.getAgeLimit())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.occupiedPlace",
-                                CoreMatchers.is(eventDto.getOccupiedPlace())));
+                                CoreMatchers.is(expectedEventDto.getOccupiedPlace())));
     }
 
     @Test
     @Transactional(readOnly = true)
     public void readEventSuccess() throws Exception {
 
-        eventDto = eventController.createEvent(eventDto);
+        expectedEventDto = eventController.createEvent(expectedEventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/event-management/{eventId}", eventDto.getId()))
+                        .get("/event-management/{eventId}", expectedEventDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk())
                         .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(eventDto.getTitle())))
+                                CoreMatchers.is(expectedEventDto.getTitle())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.description",
-                                CoreMatchers.is(eventDto.getDescription())))
+                                CoreMatchers.is(expectedEventDto.getDescription())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.ageLimit",
-                                CoreMatchers.is(eventDto.getAgeLimit())))
+                                CoreMatchers.is(expectedEventDto.getAgeLimit())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.occupiedPlace",
-                                CoreMatchers.is(eventDto.getOccupiedPlace())));
+                                CoreMatchers.is(expectedEventDto.getOccupiedPlace())));
 
     }
 
     @Test
     public void updateEventSuccess() throws Exception {
 
-        eventDto.setId(2);
-        eventDto.setTitle("Edited title");
+        expectedEventDto = eventController.createEvent(expectedEventDto);
+        expectedEventDto.setTitle("Doom");
 
-        this.jsonBody = jsonMapper.toJson(eventDto);
+        this.jsonBody = jsonMapper.toJson(expectedEventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .put("/event-management/{eventId}", eventDto.getId())
+                .put("/event-management/{eventId}", expectedEventDto.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                        CoreMatchers.is(eventDto.getTitle())));
+                        CoreMatchers.is(expectedEventDto.getTitle())));
     }
 
     @Test
     public void deleteEventSuccess() throws Exception {
 
-        eventDto = eventController.createEvent(eventDto);
+        expectedEventDto = eventController.createEvent(expectedEventDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .delete("/event-management/{eventId}", eventDto.getId()))
+                .delete("/event-management/{eventId}", expectedEventDto.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -138,22 +138,21 @@ public class EventControllerTest {
     @Transactional(readOnly = true)
     public void getEventsByLocationSuccess() throws Exception{
 
-        eventDto.setId(1);
-
-        Event event = eventDao.getEventsByLocation(eventDto.getId()).iterator().next();
+        expectedEventDto.setId(1);
+        Event expectedEventDto = eventDao.getEventsByLocation(this.expectedEventDto.getId()).iterator().next();
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/event-management/by-location/{locationId}", eventDto.getId()))
+                .get("/event-management/by-location/{locationId}", expectedEventDto.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].title",
-                        CoreMatchers.is(event.getTitle())))
+                        CoreMatchers.is(expectedEventDto.getTitle())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description",
-                        CoreMatchers.is(event.getDescription())))
+                        CoreMatchers.is(expectedEventDto.getDescription())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].ageLimit",
-                        CoreMatchers.is((int) event.getAgeLimit())))
+                        CoreMatchers.is((int) expectedEventDto.getAgeLimit())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].occupiedPlace",
-                        CoreMatchers.is((int) event.getOccupiedPlace())));
+                        CoreMatchers.is((int) expectedEventDto.getOccupiedPlace())));
     }
 
 }

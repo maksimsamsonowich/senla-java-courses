@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.github.dao"})
+@ComponentScan(basePackages = {"com.github.repository"})
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
@@ -49,7 +49,12 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource()  {
-        return new DriverManagerDataSource(url, username, password);
+        DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
+        managerDataSource.setUrl(url);
+        managerDataSource.setUsername(username);
+        managerDataSource.setPassword(password);
+        managerDataSource.setDriverClassName(driver);
+        return  managerDataSource;
     }
 
     @Bean

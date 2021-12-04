@@ -1,4 +1,4 @@
-package com.github.dao;
+package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.User;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 public class UserDaoTest {
 
     @Resource
-    private UserDao userDao;
+    private UserRepository userDao;
 
     @Mock
     private User testUserEntity;
@@ -33,9 +33,6 @@ public class UserDaoTest {
     public void getTestEntity() {
         testUserEntity = new User();
         testUserEntity.setId(1);
-        testUserEntity.setLogin("max");
-        testUserEntity.setPassword("max");
-        testUserEntity.setEmail("max");
         testUserEntity.setFirstName("max");
         testUserEntity.setSurname("max");
         testUserEntity.setPhoneNumber("+375999999999");

@@ -1,11 +1,12 @@
 package com.github.service;
 
-import com.github.dao.api.IAbstractDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.api.IMapper;
+import com.github.repository.api.IAbstractRepository;
 import com.github.service.api.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserService implements IUserService {
 
-    private final IAbstractDao<User> iUserDao;
+    private final IAbstractRepository<User> iUserDao;
 
     private final IMapper<UserDto, User> userMapper;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional

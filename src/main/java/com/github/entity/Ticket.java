@@ -1,18 +1,17 @@
 package com.github.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "tickets")
 @NamedEntityGraph(
         name = "ticket-entity-graph",
@@ -24,27 +23,20 @@ import java.util.Date;
 public class Ticket {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "order_date")
     private Date orderDate;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event eventHolding;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User owner;
-
-
-    public String toString() {
-        return String.format(
-                "Ticket [id=%d, " +
-                        "orderDate=%s]",
-                id,
-                orderDate
-        );
-    }
 
 }
