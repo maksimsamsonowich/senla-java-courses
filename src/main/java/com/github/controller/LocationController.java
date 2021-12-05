@@ -1,7 +1,7 @@
 package com.github.controller;
 
 import com.github.dto.LocationDto;
-import com.github.service.api.ILocationService;
+import com.github.service.ILocationService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

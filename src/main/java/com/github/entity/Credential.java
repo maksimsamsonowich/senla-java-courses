@@ -1,15 +1,14 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "creds")
@@ -26,7 +25,8 @@ public class Credential {
     private String password;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY,
+            cascade = CascadeType.MERGE)
     private User user;
 
     @ToString.Exclude

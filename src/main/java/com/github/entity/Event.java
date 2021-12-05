@@ -1,16 +1,15 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "events")

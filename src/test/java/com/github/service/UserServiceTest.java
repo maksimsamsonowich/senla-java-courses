@@ -2,8 +2,9 @@ package com.github.service;
 
 import com.github.dto.UserDto;
 import com.github.entity.User;
-import com.github.mapper.Mapper;
-import com.github.repository.UserRepository;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.UserRepository;
+import com.github.service.impl.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

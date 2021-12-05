@@ -2,6 +2,7 @@ package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Location;
+import com.github.repository.impl.LocationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

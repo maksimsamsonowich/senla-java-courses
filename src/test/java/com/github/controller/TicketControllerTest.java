@@ -4,7 +4,7 @@ import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.TicketDto;
-import com.github.mapper.JsonMapper;
+import com.github.mapper.impl.JsonMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;

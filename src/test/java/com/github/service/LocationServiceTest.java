@@ -2,8 +2,9 @@ package com.github.service;
 
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
-import com.github.mapper.Mapper;
-import com.github.repository.LocationRepository;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.LocationRepository;
+import com.github.service.impl.LocationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

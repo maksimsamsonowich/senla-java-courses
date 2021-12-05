@@ -1,13 +1,16 @@
 package com.github.entity;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 public class Role {
 
@@ -15,12 +18,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "role_name")
     private String role;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles",
             fetch = FetchType.LAZY)
-    private Set<User> users;
+    private Set<Credential> credentials;
 
 }

@@ -1,7 +1,7 @@
 package com.github.controller;
 
 import com.github.dto.TicketDto;
-import com.github.service.api.ITicketService;
+import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

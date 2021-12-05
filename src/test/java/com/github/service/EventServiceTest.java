@@ -2,8 +2,9 @@ package com.github.service;
 
 import com.github.dto.EventDto;
 import com.github.entity.Event;
-import com.github.mapper.Mapper;
-import com.github.repository.EventRepository;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.EventRepository;
+import com.github.service.impl.EventService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

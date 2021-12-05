@@ -2,8 +2,9 @@ package com.github.service;
 
 import com.github.dto.TicketDto;
 import com.github.entity.Ticket;
-import com.github.mapper.Mapper;
-import com.github.repository.TicketRepository;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.TicketRepository;
+import com.github.service.impl.TicketService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
