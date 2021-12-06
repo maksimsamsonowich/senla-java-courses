@@ -5,6 +5,7 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dao.EventDao;
 import com.github.dto.EventDto;
+import com.github.dto.LocationDto;
 import com.github.entity.Event;
 import com.github.mapper.JsonMapper;
 import org.hamcrest.CoreMatchers;
@@ -34,20 +35,22 @@ import java.sql.Date;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class EventControllerTest {
 
-    @Autowired
-    private JsonMapper jsonMapper;
+    private String jsonBody;
 
-    @Autowired
-    private EventController eventController;
+    private MockMvc mockMvc;
 
     @Autowired
     private EventDao eventDao;
 
     private EventDto eventDto;
 
-    private String jsonBody;
+    private LocationDto locationDto;
 
-    private MockMvc mockMvc;
+    @Autowired
+    private JsonMapper jsonMapper;
+
+    @Autowired
+    private EventController eventController;
 
     @Before
     public void setup() {
@@ -59,6 +62,9 @@ public class EventControllerTest {
         eventDto.setAgeLimit((short) 18);
         eventDto.setOccupiedPlace((short) 11);
         eventDto.setDate(Date.valueOf("2021-11-29"));
+
+        locationDto = new LocationDto();
+        locationDto.setId(1);
     }
 
     @Test
@@ -106,7 +112,7 @@ public class EventControllerTest {
     @Test
     public void updateEventSuccess() throws Exception {
 
-        eventDto.setId(2);
+        eventDto = eventController.createEvent(eventDto);
         eventDto.setTitle("Edited title");
 
         this.jsonBody = jsonMapper.toJson(eventDto);
@@ -137,12 +143,10 @@ public class EventControllerTest {
     @Transactional(readOnly = true)
     public void getEventsByLocationSuccess() throws Exception{
 
-        eventDto.setId(1);
-
-        Event event = eventDao.getEventsByLocation(eventDto.getId()).iterator().next();
+        Event event = eventDao.getEventsByLocation(locationDto.getId()).iterator().next();
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/event-management/by-location/{locationId}", eventDto.getId()))
+                .get("/event-management/by-location/{locationId}", locationDto.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].title",

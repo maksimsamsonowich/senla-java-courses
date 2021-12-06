@@ -30,17 +30,18 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class LocationControllerTest {
 
-    @Autowired
-    private JsonMapper jsonMapper;
-
-    @Autowired
-    private LocationController locationController;
-
-    private LocationDto locationDto;
 
     private String jsonBody;
 
     private MockMvc mockMvc;
+
+    @Autowired
+    private JsonMapper jsonMapper;
+
+    private LocationDto locationDto;
+
+    @Autowired
+    private LocationController locationController;
 
     @Before
     public void setup() {

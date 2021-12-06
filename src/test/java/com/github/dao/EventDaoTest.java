@@ -2,6 +2,7 @@ package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
+import com.github.entity.Location;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,78 +19,80 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Transactional
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
         classes = { DatabaseConfig.class },
         loader = AnnotationConfigContextLoader.class)
-@Transactional
 public class EventDaoTest {
 
     @Resource
     private EventDao eventDao;
 
     @Mock
-    private Event testEventEntity;
+    private Event expectedResult;
+
+    @Mock
+    private Location locationEntity;
 
     @Before
     public void getTestEntity() {
-        testEventEntity = new Event();
+        expectedResult = new Event();
 
-        testEventEntity.setTitle("Title");
-        testEventEntity.setDescription("Desc");
-        testEventEntity.setAgeLimit((short) 18);
-        testEventEntity.setOccupiedPlace((short) 11);
-        testEventEntity.setDate(Date.valueOf("2021-11-29"));
+        expectedResult.setTitle("Title");
+        expectedResult.setDescription("Desc");
+        expectedResult.setAgeLimit((short) 18);
+        expectedResult.setOccupiedPlace((short) 11);
+        expectedResult.setDate(Date.valueOf("2021-11-29"));
+
+        locationEntity = new Location();
+        locationEntity.setId(1);
     }
 
     @Test
     public void createEventSuccess() {
-        eventDao.create(testEventEntity);
-        testEventEntity.setId(1);
+        expectedResult = eventDao.create(expectedResult);
 
-        Event secondEvent = eventDao.read(1);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(testEventEntity, secondEvent);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteEventSuccess() {
-        eventDao.create(testEventEntity);
+        expectedResult = eventDao.create(expectedResult);
 
-        testEventEntity.setId(1);
-        eventDao.delete(testEventEntity);
+        eventDao.delete(expectedResult);
 
-        Event secondEvent = eventDao.read(2);
-        Assert.assertNull(secondEvent);
+        Event actualResult = eventDao.read(expectedResult.getId());
+        Assert.assertNull(actualResult);
     }
 
     @Test
     public void readEventSuccess() {
-        eventDao.create(testEventEntity);
-        testEventEntity.setId(1);
+        expectedResult = eventDao.create(expectedResult);
 
-        Event event = eventDao.read(1);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(event, testEventEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateEventSuccess() {
-        eventDao.create(testEventEntity);
+        expectedResult = eventDao.create(expectedResult);
 
-        testEventEntity.setId(1);
-        testEventEntity.setAgeLimit((short) 20);
-        eventDao.update(testEventEntity);
+        expectedResult.setAgeLimit((short) 20);
+        eventDao.update(expectedResult);
 
-        Event event = eventDao.read(1);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(event, testEventEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void getEventByLocationSuccess() {
-        Set<Event> events = eventDao.getEventsByLocation(1);
+        Set<Event> events = eventDao.getEventsByLocation(locationEntity.getId());
         Event eventMock = eventDao.read(1);
 
         Set<Event> eventSetMock = new HashSet<>();

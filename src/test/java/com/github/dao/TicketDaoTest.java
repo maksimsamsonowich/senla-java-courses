@@ -35,46 +35,45 @@ public class TicketDaoTest {
     @Before
     public void getTestEntity() {
         testTicketEntity = new Ticket();
-        testTicketEntity.setId(1);
         testTicketEntity.setOrderDate(Date.valueOf("2020-12-1"));
     }
 
     @Test
     public void createTicketSuccess() {
-        ticketDao.create(testTicketEntity);
+        testTicketEntity = ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
 
         Assert.assertEquals(testTicketEntity, secondTicket);
     }
 
     @Test
     public void deleteTicketSuccess() {
-        ticketDao.create(testTicketEntity);
+        testTicketEntity = ticketDao.create(testTicketEntity);
 
         ticketDao.delete(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
         Assert.assertNull(secondTicket);
     }
 
     @Test
     public void readTicketSuccess() {
-        ticketDao.create(testTicketEntity);
+        testTicketEntity = ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }
 
     @Test
     public void updateTicketSuccess() {
-        ticketDao.create(testTicketEntity);
+        testTicketEntity = ticketDao.create(testTicketEntity);
 
         testTicketEntity.setOrderDate(Date.valueOf("2021-11-12"));
         ticketDao.update(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }

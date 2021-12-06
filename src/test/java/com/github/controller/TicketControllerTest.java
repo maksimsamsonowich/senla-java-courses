@@ -3,8 +3,11 @@ package com.github.controller;
 import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
+import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
 import com.github.mapper.JsonMapper;
+import com.github.service.TicketService;
+import com.github.service.api.ITicketService;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,17 +35,22 @@ import java.sql.Date;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class TicketControllerTest {
 
+    private MockMvc mockMvc;
+
+    private String jsonBody;
+
+    private EventDto eventDto;
+
+    private TicketDto ticketDto;
+
     @Autowired
     private JsonMapper jsonMapper;
 
     @Autowired
+    private ITicketService ticketService;
+
+    @Autowired
     private TicketController ticketController;
-
-    private TicketDto ticketDto;
-
-    private String jsonBody;
-
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {
@@ -50,6 +58,9 @@ public class TicketControllerTest {
 
         ticketDto = new TicketDto();
         ticketDto.setOrderDate(Date.valueOf("2019-01-26"));
+
+        eventDto = new EventDto();
+        eventDto.setId(1);
     }
 
     @Test
@@ -73,19 +84,21 @@ public class TicketControllerTest {
     @Transactional(readOnly = true)
     public void readTicketSuccess() throws Exception {
 
+        ticketDto = ticketService.createTicket(ticketDto);
+
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/{ticketId}", 1))
+                        .get("/ticket-management/{ticketId}", ticketDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.orderDate",
-                                CoreMatchers.is(ticketDto.getOrderDate().toString())));
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.id",
+                                CoreMatchers.is(ticketDto.getId())));
 
     }
 
     @Test
     public void updateTicketSuccess() throws Exception {
 
-        ticketDto.setId(5);
+        ticketDto = ticketService.createTicket(ticketDto);
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
@@ -118,7 +131,7 @@ public class TicketControllerTest {
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/by-event/{eventId}", 1))
+                        .get("/ticket-management/by-event/{eventId}", eventDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk())
                         .andExpect(MockMvcResultMatchers.jsonPath("$.[0].orderDate",

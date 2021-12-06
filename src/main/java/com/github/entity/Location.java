@@ -41,8 +41,7 @@ public class Location {
 
     private int capacity;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY,
-                cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     private Set<Event> events;
 
     public String toString() {

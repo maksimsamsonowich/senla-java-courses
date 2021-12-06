@@ -30,17 +30,17 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class UserControllerTest {
 
+    private String jsonBody;
+
+    private UserDto userDto;
+
+    private MockMvc mockMvc;
+
     @Autowired
     private JsonMapper jsonMapper;
 
     @Autowired
     private UserController userController;
-
-    private UserDto userDto;
-
-    private String jsonBody;
-
-    private MockMvc mockMvc;
 
     @Before
     public void setup() {

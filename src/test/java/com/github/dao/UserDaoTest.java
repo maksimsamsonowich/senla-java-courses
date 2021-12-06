@@ -15,70 +15,69 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+@Transactional
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
         classes = { DatabaseConfig.class },
         loader = AnnotationConfigContextLoader.class)
-@Transactional
 public class UserDaoTest {
 
     @Resource
     private UserDao userDao;
 
     @Mock
-    private User testUserEntity;
+    private User expectedResult;
 
     @Before
     public void getTestEntity() {
-        testUserEntity = new User();
-        testUserEntity.setId(1);
-        testUserEntity.setLogin("max");
-        testUserEntity.setPassword("max");
-        testUserEntity.setEmail("max");
-        testUserEntity.setFirstName("max");
-        testUserEntity.setSurname("max");
-        testUserEntity.setPhoneNumber("+375999999999");
+        expectedResult = new User();
+        expectedResult.setLogin("max");
+        expectedResult.setPassword("max");
+        expectedResult.setEmail("max");
+        expectedResult.setFirstName("max");
+        expectedResult.setSurname("max");
+        expectedResult.setPhoneNumber("+375999999999");
     }
 
     @Test
     public void createUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        User secondUser = userDao.read(1);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(testUserEntity, secondUser);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        userDao.delete(testUserEntity);
+        userDao.delete(expectedResult);
 
-        User secondUser = userDao.read(1);
+        User secondUser = userDao.read(expectedResult.getId());
         Assert.assertNull(secondUser);
     }
 
     @Test
     public void readUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        User secondUser = userDao.read(1);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondUser, testUserEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        testUserEntity.setSurname("wow");
-        userDao.update(testUserEntity);
+        expectedResult.setSurname("wow");
+        userDao.update(expectedResult);
 
-        User secondUser = userDao.read(1);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondUser, testUserEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }
