@@ -62,7 +62,6 @@ public class EventControllerTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
     public void createEventSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(eventDto);

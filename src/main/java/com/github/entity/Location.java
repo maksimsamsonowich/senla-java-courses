@@ -32,6 +32,7 @@ import java.util.Set;
 public class Location {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
@@ -40,7 +41,8 @@ public class Location {
 
     private int capacity;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY,
+                cascade = CascadeType.MERGE)
     private Set<Event> events;
 
     public String toString() {

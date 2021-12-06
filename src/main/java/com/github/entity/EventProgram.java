@@ -33,6 +33,7 @@ import java.sql.Time;
 public class EventProgram {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private Time continuance;

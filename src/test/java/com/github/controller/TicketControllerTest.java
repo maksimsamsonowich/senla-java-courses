@@ -53,7 +53,6 @@ public class TicketControllerTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
     public void createTicketSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(ticketDto);
@@ -103,7 +102,7 @@ public class TicketControllerTest {
     @Test
     public void deleteTicketSuccess() throws Exception {
 
-        ticketController.createTicket(ticketDto);
+        ticketDto = ticketController.createTicket(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/ticket-management/{ticketId}", ticketDto.getId()))

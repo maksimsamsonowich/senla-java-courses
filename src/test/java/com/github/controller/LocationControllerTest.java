@@ -53,7 +53,6 @@ public class LocationControllerTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
     public void createLocationSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(locationDto);
@@ -77,13 +76,7 @@ public class LocationControllerTest {
     @Transactional(readOnly = true)
     public void readLocationSuccess() throws Exception {
 
-        LocationDto locationDtoMock = new LocationDto();
-        locationDtoMock.setId(2);
-        locationDtoMock.setAddress("Test");
-        locationDtoMock.setTitle("NN");
-        locationDtoMock.setCapacity(12);
-
-        LocationDto location = locationController.createLocation(locationDtoMock);
+        LocationDto location = locationController.createLocation(locationDto);
 
         this.jsonBody = jsonMapper.toJson(location);
 
@@ -92,18 +85,17 @@ public class LocationControllerTest {
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                         .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(locationDtoMock.getTitle())))
+                                CoreMatchers.is(locationDto.getTitle())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.address",
-                                CoreMatchers.is(locationDtoMock.getAddress())))
+                                CoreMatchers.is(locationDto.getAddress())))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.capacity",
-                                CoreMatchers.is(locationDtoMock.getCapacity())));
+                                CoreMatchers.is(locationDto.getCapacity())));
 
     }
 
     @Test
     public void updateLocationSuccess() throws Exception {
 
-        locationDto.setId(3);
         locationDto.setTitle("test123");
 
         LocationDto location = locationController.createLocation(locationDto);
@@ -123,13 +115,7 @@ public class LocationControllerTest {
     @Test
     public void deleteLocationSuccess() throws Exception {
 
-        LocationDto locationDto = new LocationDto();
-        locationDto.setId(5);
-        locationDto.setAddress("123");
-        locationDto.setTitle("1234");
-        locationDto.setCapacity(22);
-
-        locationController.createLocation(locationDto);
+        locationDto = locationController.createLocation(locationDto);
 
         this.jsonBody = jsonMapper.toJson(locationDto);
 

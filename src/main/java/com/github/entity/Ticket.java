@@ -24,6 +24,7 @@ import java.util.Date;
 public class Ticket {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "order_date")

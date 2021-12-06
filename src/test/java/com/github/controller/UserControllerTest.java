@@ -56,7 +56,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
     public void createUserSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(userDto);
@@ -129,16 +128,7 @@ public class UserControllerTest {
     @Test
     public void deleteUserSuccess() throws Exception {
 
-        UserDto userDto = new UserDto();
-        userDto.setId(5);
-        userDto.setEmail("user");
-        userDto.setLogin("user");
-        userDto.setPassword("user");
-        userDto.setFirstName("user");
-        userDto.setSurname("user");
-        userDto.setPhoneNumber("349219423");
-
-        userController.createUser(userDto);
+        userDto = userController.createUser(userDto);
 
         this.jsonBody = jsonMapper.toJson(userDto);
 
