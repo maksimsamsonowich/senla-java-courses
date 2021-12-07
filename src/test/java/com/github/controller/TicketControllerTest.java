@@ -88,7 +88,7 @@ public class TicketControllerTest {
     public void updateTicketSuccess() throws Exception {
 
         expectedTicketDto.setId(5);
-        expectedTicketDto = ticketController.createTicket(expectedTicketDto);
+        expectedTicketDto = ticketController.createTicket(expectedTicketDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedTicketDto);
 
@@ -106,7 +106,7 @@ public class TicketControllerTest {
     @Test
     public void deleteTicketSuccess() throws Exception {
 
-        expectedTicketDto = ticketController.createTicket(expectedTicketDto);
+        expectedTicketDto = ticketController.createTicket(expectedTicketDto).getBody();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/ticket-management/{ticketId}", expectedTicketDto.getId()))

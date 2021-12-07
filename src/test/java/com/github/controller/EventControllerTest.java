@@ -87,7 +87,7 @@ public class EventControllerTest {
     @Transactional(readOnly = true)
     public void readEventSuccess() throws Exception {
 
-        expectedEventDto = eventController.createEvent(expectedEventDto);
+        expectedEventDto = eventController.createEvent(expectedEventDto).getBody();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/event-management/{eventId}", expectedEventDto.getId()))
@@ -107,7 +107,7 @@ public class EventControllerTest {
     @Test
     public void updateEventSuccess() throws Exception {
 
-        expectedEventDto = eventController.createEvent(expectedEventDto);
+        expectedEventDto = eventController.createEvent(expectedEventDto).getBody();
         expectedEventDto.setTitle("Doom");
 
         this.jsonBody = jsonMapper.toJson(expectedEventDto);
@@ -125,7 +125,7 @@ public class EventControllerTest {
     @Test
     public void deleteEventSuccess() throws Exception {
 
-        expectedEventDto = eventController.createEvent(expectedEventDto);
+        expectedEventDto = eventController.createEvent(expectedEventDto).getBody();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .delete("/event-management/{eventId}", expectedEventDto.getId()))

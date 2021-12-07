@@ -77,7 +77,7 @@ public class LocationControllerTest {
     @Transactional(readOnly = true)
     public void readLocationSuccess() throws Exception {
 
-        expectedLocationDto = locationController.createLocation(expectedLocationDto);
+        expectedLocationDto = locationController.createLocation(expectedLocationDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedLocationDto);
 
@@ -97,7 +97,7 @@ public class LocationControllerTest {
     @Test
     public void updateLocationSuccess() throws Exception {
 
-        expectedLocationDto = locationController.createLocation(expectedLocationDto);
+        expectedLocationDto = locationController.createLocation(expectedLocationDto).getBody();
         expectedLocationDto.setTitle("I'm Still");
 
         this.jsonBody = jsonMapper.toJson(expectedLocationDto);
@@ -115,7 +115,7 @@ public class LocationControllerTest {
     @Test
     public void deleteLocationSuccess() throws Exception {
 
-        expectedLocationDto = locationController.createLocation(expectedLocationDto);
+        expectedLocationDto = locationController.createLocation(expectedLocationDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedLocationDto);
 

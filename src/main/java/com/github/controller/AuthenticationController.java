@@ -1,5 +1,6 @@
 package com.github.controller;
 
+import com.github.dto.AuthenticationAnswerDto;
 import com.github.dto.AuthenticationRequestDto;
 import com.github.service.impl.AuthenticationService;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto requestDto) {
-        return authenticationService.login(requestDto);
+    public ResponseEntity<AuthenticationAnswerDto> login(@RequestBody AuthenticationRequestDto requestDto) {
+        return ResponseEntity.ok(authenticationService.login(requestDto));
     }
 
 }

@@ -3,6 +3,8 @@ package com.github.controller;
 import com.github.dto.TicketDto;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -15,18 +17,19 @@ public class TicketController {
     private ITicketService iTicketService;
 
     @PostMapping
-    public TicketDto createTicket(@RequestBody TicketDto ticketDto) {
-        return iTicketService.createTicket(ticketDto);
+    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
+        return ResponseEntity.ok(iTicketService.createTicket(ticketDto));
     }
 
     @GetMapping("{ticketId}")
-    public TicketDto readTicket(@PathVariable Integer ticketId) {
-        return iTicketService.readTicket(ticketId);
+    public ResponseEntity<TicketDto> readTicket(@PathVariable Integer ticketId) {
+        return ResponseEntity.ok(iTicketService.readTicket(ticketId));
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping("{ticketId}")
-    public TicketDto updateTicket(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
-        return iTicketService.update(ticketId, ticketDto);
+    public ResponseEntity<TicketDto> updateTicket(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
+        return ResponseEntity.ok(iTicketService.update(ticketId, ticketDto));
     }
 
     @DeleteMapping("{ticketId}")
@@ -35,13 +38,13 @@ public class TicketController {
     }
 
     @GetMapping("by-event/{eventId}")
-    public Set<TicketDto> getEventTickets(@PathVariable Integer eventId) {
-        return iTicketService.getEventTickets(eventId);
+    public ResponseEntity<Set<TicketDto>> getEventTickets(@PathVariable Integer eventId) {
+        return ResponseEntity.ok(iTicketService.getEventTickets(eventId));
     }
 
     @GetMapping("by-user/{userId}")
-    public Set<TicketDto> getUserTickets(@PathVariable Integer userId) {
-        return iTicketService.getUserTickets(userId);
+    public ResponseEntity<Set<TicketDto>> getUserTickets(@PathVariable Integer userId) {
+        return ResponseEntity.ok(iTicketService.getUserTickets(userId));
     }
 
 }

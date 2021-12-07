@@ -2,6 +2,7 @@ package com.github.security;
 
 import com.github.entity.Credential;
 import com.github.repository.impl.CredentialRepository;
+import com.github.security.jwt.user.JwtUser;
 import com.github.security.jwt.user.JwtUserFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +22,13 @@ public class JwtCredentialDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Credential currentCredential = credentialRepository.getCredentialByEmail(username);
+        Credential user = credentialRepository.getCredentialByEmail(username);
 
-        if (currentCredential == null) {
-            throw new UsernameNotFoundException(String.format(USERNAME_EXCEPTION_MESSAGE, username));
+        if (user == null) {
+            throw new UsernameNotFoundException("User with username: " + username + " not found");
         }
 
-        return JwtUserFactory.jwtUserCreate(currentCredential);
+        return JwtUserFactory.jwtUserCreate(user);
     }
 
 }

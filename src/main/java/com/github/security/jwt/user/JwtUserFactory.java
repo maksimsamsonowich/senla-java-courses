@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 final public class JwtUserFactory {
 
+    private final static String ROLE_PREFIX = "ROLE_";
+
     public static JwtUser jwtUserCreate(Credential credential) {
         return new JwtUser(
                 credential.getId(),
@@ -29,7 +31,7 @@ final public class JwtUserFactory {
     public static List<GrantedAuthority> mapToGrantedAuthority(Set<Role> roleSet) {
         return  roleSet.stream()
                 .map(role ->
-                        new SimpleGrantedAuthority(role.getRole()))
+                        new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole()))
                 .collect(Collectors.toList());
 
     }

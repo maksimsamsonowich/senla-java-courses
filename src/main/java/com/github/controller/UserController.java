@@ -3,6 +3,8 @@ package com.github.controller;
 import com.github.dto.UserDto;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,18 +15,19 @@ public class UserController {
     private final IUserService iUserService;
 
     @PostMapping
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return iUserService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(iUserService.createUser(userDto));
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("{userId}")
-    public UserDto readUser(@PathVariable Integer userId) {
-        return iUserService.readUser(userId);
+    public ResponseEntity<UserDto> readUser(@PathVariable Integer userId) {
+        return ResponseEntity.ok(iUserService.readUser(userId));
     }
 
     @PutMapping("{userId}")
-    public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
-        return iUserService.update(userId, userDto);
+    public ResponseEntity<UserDto> updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(iUserService.update(userId, userDto));
     }
 
     @DeleteMapping("{userId}")

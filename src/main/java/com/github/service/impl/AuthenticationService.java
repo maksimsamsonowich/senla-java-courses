@@ -1,5 +1,6 @@
 package com.github.service.impl;
 
+import com.github.dto.AuthenticationAnswerDto;
 import com.github.dto.AuthenticationRequestDto;
 import com.github.entity.Credential;
 import com.github.repository.impl.CredentialRepository;
@@ -28,7 +29,7 @@ public class AuthenticationService implements IAuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public ResponseEntity<?> login(AuthenticationRequestDto requestDto) {
+    public AuthenticationAnswerDto login(AuthenticationRequestDto requestDto) {
         try {
             String email = requestDto.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, requestDto.getPassword()));
@@ -41,11 +42,9 @@ public class AuthenticationService implements IAuthenticationService {
 
             String token = tokenProvider.createToken(email, currentCredential.getRoles().stream().toList());
 
-            Map<Object, Object> response = new HashMap<>();
-            response.put("email", email);
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
+            return new AuthenticationAnswerDto()
+                    .setEmail(email)
+                    .setToken(token);
 
         } catch (AuthenticationException authenticationException) {
             throw new BadCredentialsException("Invalid email or password");

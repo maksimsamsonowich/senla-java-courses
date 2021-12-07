@@ -76,7 +76,7 @@ public class UserControllerTest {
     @Transactional(readOnly = true)
     public void readUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto);
+        expectedUserDto = userController.createUser(expectedUserDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
@@ -96,7 +96,7 @@ public class UserControllerTest {
     @Test
     public void updateUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto);
+        expectedUserDto = userController.createUser(expectedUserDto).getBody();
         expectedUserDto.setSurname("maxmax");
 
         this.jsonBody = jsonMapper.toJson(expectedUserDto);
@@ -115,7 +115,7 @@ public class UserControllerTest {
     @Test
     public void deleteUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto);
+        expectedUserDto = userController.createUser(expectedUserDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedUserDto);
 
