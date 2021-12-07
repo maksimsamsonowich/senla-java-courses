@@ -6,6 +6,7 @@ import com.github.configs.root.DatabaseConfig;
 import com.github.dto.UserDto;
 import com.github.mapper.JsonMapper;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,13 +47,13 @@ public class UserControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
-        userDto = new UserDto();
-        userDto.setLogin("max");
-        userDto.setPassword("max");
-        userDto.setEmail("max");
-        userDto.setFirstName("max");
-        userDto.setSurname("max");
-        userDto.setPhoneNumber("+375999999999");
+        userDto = new UserDto()
+                .setLogin("max")
+                .setPassword("max")
+                .setEmail("max")
+                .setFirstName("max")
+                .setSurname("max")
+                .setPhoneNumber("+375999999999");
     }
 
     @Test
@@ -136,6 +137,8 @@ public class UserControllerTest {
                         .delete("/user-management/{id}", userDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assert.assertNull(userController.readUser(userDto.getId()));
 
     }
 

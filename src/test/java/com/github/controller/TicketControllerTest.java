@@ -9,6 +9,7 @@ import com.github.mapper.JsonMapper;
 import com.github.service.TicketService;
 import com.github.service.api.ITicketService;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,11 +57,11 @@ public class TicketControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(ticketController).build();
 
-        ticketDto = new TicketDto();
-        ticketDto.setOrderDate(Date.valueOf("2019-01-26"));
+        ticketDto = new TicketDto()
+                .setOrderDate(Date.valueOf("2019-01-26"));
 
-        eventDto = new EventDto();
-        eventDto.setId(1);
+        eventDto = new EventDto()
+                .setId(1);
     }
 
     @Test
@@ -121,6 +122,8 @@ public class TicketControllerTest {
                         .delete("/ticket-management/{ticketId}", ticketDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assert.assertNull(ticketController.readTicket(ticketDto.getId()));
 
     }
 

@@ -34,12 +34,11 @@ public class EventServiceTest {
 
     @Before
     public void setup() {
-        eventMock = new Event();
-        eventMock.setId(1);
-        eventMock.setTitle("Wow");
-        eventMock.setAgeLimit((short) 18);
-        eventMock.setOccupiedPlace((short) 199);
-        eventMock.setDescription("Trust nobody");
+        eventMock = new Event()
+                .setTitle("Wow")
+                .setAgeLimit((short) 18)
+                .setOccupiedPlace((short) 199)
+                .setDescription("Trust nobody");
     }
 
     @Test

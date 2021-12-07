@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class UserDto {
 
     @JsonProperty(value = "id")

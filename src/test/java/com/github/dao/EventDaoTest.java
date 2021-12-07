@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Transactional
@@ -38,16 +40,15 @@ public class EventDaoTest {
 
     @Before
     public void getTestEntity() {
-        expectedResult = new Event();
+        expectedResult = new Event()
+                .setTitle("Title")
+                .setDescription("Desc")
+                .setAgeLimit((short) 18)
+                .setOccupiedPlace((short) 11)
+                .setDate(Date.valueOf("2021-11-29"));
 
-        expectedResult.setTitle("Title");
-        expectedResult.setDescription("Desc");
-        expectedResult.setAgeLimit((short) 18);
-        expectedResult.setOccupiedPlace((short) 11);
-        expectedResult.setDate(Date.valueOf("2021-11-29"));
-
-        locationEntity = new Location();
-        locationEntity.setId(1);
+        locationEntity = new Location()
+                .setId(1);
     }
 
     @Test
@@ -99,6 +100,27 @@ public class EventDaoTest {
         eventSetMock.add(eventMock);
 
         Assert.assertEquals(events, eventSetMock);
+    }
+
+    @Test
+    public void getAllEventsSuccess() {
+        List<Event> actualResult = eventDao.getAll();
+
+        int step = 1;
+        List<Event> expectedResult = new ArrayList<Event>();
+
+        while (true) {
+            Event event = eventDao.read(step);
+
+            if (event == null) {
+                break;
+            }
+
+            expectedResult.add(event);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

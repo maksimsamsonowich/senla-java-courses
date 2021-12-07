@@ -35,9 +35,8 @@ public class TicketServiceTest {
 
     @Before
     public void setup() {
-        ticketMock = new Ticket();
-        ticketMock.setId(1);
-        ticketMock.setOrderDate(Date.valueOf("2021-12-03"));
+        ticketMock = new Ticket()
+                .setOrderDate(Date.valueOf("2021-12-03"));
     }
 
     @Test

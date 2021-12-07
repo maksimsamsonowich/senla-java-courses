@@ -1,6 +1,7 @@
 package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
+import com.github.entity.Ticket;
 import com.github.entity.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @WebAppConfiguration
@@ -31,13 +34,13 @@ public class UserDaoTest {
 
     @Before
     public void getTestEntity() {
-        expectedResult = new User();
-        expectedResult.setLogin("max");
-        expectedResult.setPassword("max");
-        expectedResult.setEmail("max");
-        expectedResult.setFirstName("max");
-        expectedResult.setSurname("max");
-        expectedResult.setPhoneNumber("+375999999999");
+        expectedResult = new User()
+                .setLogin("max")
+                .setPassword("max")
+                .setEmail("max")
+                .setFirstName("max")
+                .setSurname("max")
+                .setPhoneNumber("+375999999999");
     }
 
     @Test
@@ -76,6 +79,27 @@ public class UserDaoTest {
         userDao.update(expectedResult);
 
         User actualResult = userDao.read(expectedResult.getId());
+
+        Assert.assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void getAllTicketsSuccess() {
+        List<User> actualResult = userDao.getAll();
+
+        int step = 1;
+        List<User> expectedResult = new ArrayList<>();
+
+        while (true) {
+            User user = userDao.read(step);
+
+            if (user == null) {
+                break;
+            }
+
+            expectedResult.add(user);
+            step += 1;
+        }
 
         Assert.assertEquals(expectedResult, actualResult);
     }

@@ -1,6 +1,7 @@
 package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
+import com.github.entity.Event;
 import com.github.entity.Location;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @WebAppConfiguration
@@ -31,10 +34,10 @@ public class LocationDaoTest {
 
     @Before
     public void getTestEntity() {
-        expectedResult = new Location();
-        expectedResult.setAddress("Кабяка 11");
-        expectedResult.setTitle("NN");
-        expectedResult.setCapacity(12);
+        expectedResult = new Location()
+                .setAddress("Кабяка 11")
+                .setTitle("NN")
+                .setCapacity(12);
     }
 
     @Test
@@ -75,6 +78,26 @@ public class LocationDaoTest {
         Location actualResult = locationDao.read(expectedResult.getId());
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void getAllLocationsSuccess() {
+        List<Location> actualResult = locationDao.getAll();
+
+        int step = 1;
+        List<Location> expectedResult = new ArrayList<>();
+
+        while (true) {
+            Location location = locationDao.read(step);
+
+            if (location == null)
+                break;
+
+            expectedResult.add(location);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

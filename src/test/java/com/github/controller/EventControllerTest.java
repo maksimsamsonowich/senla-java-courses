@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,9 +40,6 @@ public class EventControllerTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private EventDao eventDao;
-
     private EventDto eventDto;
 
     private LocationDto locationDto;
@@ -56,15 +54,14 @@ public class EventControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
 
-        eventDto = new EventDto();
-        eventDto.setTitle("Title");
-        eventDto.setDescription("Desc");
-        eventDto.setAgeLimit((short) 18);
-        eventDto.setOccupiedPlace((short) 11);
-        eventDto.setDate(Date.valueOf("2021-11-29"));
+        eventDto = new EventDto()
+                .setTitle("Title")
+                .setDescription("Desc")
+                .setAgeLimit((short) 18)
+                .setOccupiedPlace((short) 11)
+                .setDate(Date.valueOf("2021-11-29"));
 
-        locationDto = new LocationDto();
-        locationDto.setId(1);
+        locationDto = new LocationDto().setId(1);
     }
 
     @Test
@@ -137,26 +134,28 @@ public class EventControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
+        Assert.isNull(eventController.readEvent(eventDto.getId()));
+
     }
 
     @Test
     @Transactional(readOnly = true)
     public void getEventsByLocationSuccess() throws Exception{
 
-        Event event = eventDao.getEventsByLocation(locationDto.getId()).iterator().next();
+        eventDto = eventController.getEventsByLocation(locationDto.getId()).iterator().next();
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .get("/event-management/by-location/{locationId}", locationDto.getId()))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].title",
-                        CoreMatchers.is(event.getTitle())))
+                        CoreMatchers.is(eventDto.getTitle())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description",
-                        CoreMatchers.is(event.getDescription())))
+                        CoreMatchers.is(eventDto.getDescription())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].ageLimit",
-                        CoreMatchers.is((int) event.getAgeLimit())))
+                        CoreMatchers.is((int) eventDto.getAgeLimit())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].occupiedPlace",
-                        CoreMatchers.is((int) event.getOccupiedPlace())));
+                        CoreMatchers.is((int) eventDto.getOccupiedPlace())));
     }
 
 }

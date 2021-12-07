@@ -1,6 +1,7 @@
 package com.github.dao;
 
 import com.github.configs.root.DatabaseConfig;
+import com.github.entity.Event;
 import com.github.entity.Ticket;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @WebAppConfiguration
@@ -34,8 +37,8 @@ public class TicketDaoTest {
 
     @Before
     public void getTestEntity() {
-        testTicketEntity = new Ticket();
-        testTicketEntity.setOrderDate(Date.valueOf("2020-12-1"));
+        testTicketEntity = new Ticket()
+                .setOrderDate(Date.valueOf("2020-12-1"));
     }
 
     @Test
@@ -96,6 +99,27 @@ public class TicketDaoTest {
         ticketsSetMock.add(ticketDao.read(1));
 
         Assert.assertEquals(tickets, ticketsSetMock);
+    }
+
+    @Test
+    public void getAllTicketsSuccess() {
+        List<Ticket> actualResult = ticketDao.getAll();
+
+        int step = 1;
+        List<Ticket> expectedResult = new ArrayList<>();
+
+        while (true) {
+            Ticket ticket = ticketDao.read(step);
+
+            if (ticket == null) {
+                break;
+            }
+
+            expectedResult.add(ticket);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

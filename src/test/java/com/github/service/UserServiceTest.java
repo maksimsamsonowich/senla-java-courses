@@ -31,13 +31,12 @@ public class UserServiceTest {
 
     @Before
     public void setup() {
-        userMock = new User();
-        userMock.setId(1);
-        userMock.setLogin("manoftheyear");
-        userMock.setFirstName("manoftheyear");
-        userMock.setEmail("christmassavestheyear");
-        userMock.setSurname("Max");
-        userMock.setFirstName("Max");
+        userMock = new User()
+                .setLogin("manoftheyear")
+                .setFirstName("manoftheyear")
+                .setEmail("christmassavestheyear")
+                .setSurname("Max")
+                .setFirstName("Max");
     }
 
     @Test

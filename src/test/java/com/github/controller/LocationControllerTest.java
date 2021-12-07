@@ -6,6 +6,7 @@ import com.github.configs.root.DatabaseConfig;
 import com.github.dto.LocationDto;
 import com.github.mapper.JsonMapper;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,10 +48,10 @@ public class LocationControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(locationController).build();
 
-        locationDto = new LocationDto();
-        locationDto.setAddress("Test");
-        locationDto.setTitle("NN");
-        locationDto.setCapacity(12);
+        locationDto = new LocationDto()
+                .setAddress("Test")
+                .setTitle("NN")
+                .setCapacity(12);
     }
 
     @Test
@@ -124,6 +125,8 @@ public class LocationControllerTest {
                         .delete("/location-management/{locationId}", locationDto.getId()))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+
+        Assert.assertNull(locationController.readLocation(locationDto.getId()));
 
     }
 
