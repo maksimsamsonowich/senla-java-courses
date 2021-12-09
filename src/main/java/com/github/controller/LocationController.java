@@ -1,39 +1,40 @@
 package com.github.controller;
 
-
-import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.entity.Event;
 import com.github.service.api.ILocationService;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
-@Component
+@RestController
+@AllArgsConstructor
+@RequestMapping("location-management")
 public class LocationController {
 
     private ILocationService iLocationService;
 
-    public LocationController(ILocationService iLocationService) {
-        this.iLocationService = iLocationService;
+    @PostMapping
+    public LocationDto createLocation(@RequestBody LocationDto locationDto) {
+        return iLocationService.createLocation(locationDto);
     }
 
-    public void createLocation(LocationDto locationDto) {
-        iLocationService.createLocation(locationDto);
+    @GetMapping("{locationId}")
+    public LocationDto readLocation(@PathVariable Integer locationId) {
+        return iLocationService.readLocation(locationId);
     }
 
-    public LocationDto readLocation(LocationDto locationDto) {
-        return iLocationService.readLocation(locationDto);
+    @PutMapping("{locationId}")
+    public LocationDto updateLocation(@PathVariable Integer locationId, @RequestBody LocationDto locationDto) {
+        return iLocationService.update(locationId, locationDto);
     }
 
-    public LocationDto updateLocation(LocationDto locationDto) {
-        return iLocationService.update(locationDto);
+    @DeleteMapping("{locationId}")
+    public void deleteLocation(@PathVariable("locationId") Integer locationId) {
+        iLocationService.deleteLocation(locationId);
     }
 
-    public void deleteLocation(LocationDto locationDto) {
-        iLocationService.deleteLocation(locationDto);
-    }
-
-    public LocationDto getEventLocation(EventDto eventDto) {
-        return iLocationService.getEventLocation(eventDto);
+    @GetMapping("by-event/{eventId}")
+    public LocationDto getEventLocation(@PathVariable Integer eventId) {
+        return iLocationService.getEventLocation(eventId);
     }
 }
 

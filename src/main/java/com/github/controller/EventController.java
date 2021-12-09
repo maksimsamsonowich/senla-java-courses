@@ -1,37 +1,41 @@
 package com.github.controller;
 
 import com.github.dto.EventDto;
-import com.github.dto.LocationDto;
-import com.github.entity.Event;
 import com.github.service.api.IEventService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@Component
+@RestController
 @AllArgsConstructor
+@RequestMapping("event-management")
 public class EventController{
 
     private final IEventService iEventService;
-
-    public void createEvent(EventDto eventDto) {
-        iEventService.createEvent(eventDto);
+    
+    @PostMapping
+    public EventDto createEvent(@RequestBody EventDto eventDto) {
+        return iEventService.createEvent(eventDto);
     }
 
-    public EventDto readEvent(EventDto eventDto) {
-        return iEventService.readEvent(eventDto);
+    @GetMapping("{eventId}")
+    public EventDto readEvent(@PathVariable Integer eventId) {
+        return iEventService.readEvent(eventId);
     }
 
-    public EventDto updateEventDescription(EventDto eventDto) {
-        return iEventService.update(eventDto);
+    @PutMapping("{eventId}")
+    public EventDto updateEvent(@PathVariable Integer eventId, @RequestBody EventDto eventDto) {
+        return iEventService.update(eventId, eventDto);
     }
 
-    public void deleteEvent(EventDto eventDto) {
-        iEventService.deleteEvent(eventDto);
+    @DeleteMapping("{eventId}")
+    public void deleteEvent(@PathVariable("eventId") Integer eventId) {
+        iEventService.deleteEvent(eventId);
     }
 
-    public Set<EventDto> getEventsByLocation(LocationDto locationDto) {
-        return iEventService.getEventsByLocation(locationDto);
+    @GetMapping("by-location/{locationId}")
+    public Set<EventDto> getEventsByLocation(@PathVariable Integer locationId) {
+        return iEventService.getEventsByLocation(locationId);
     }
 }

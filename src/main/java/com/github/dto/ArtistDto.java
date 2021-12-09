@@ -6,20 +6,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Accessors(chain = true)
 public class ArtistDto {
 
     @JsonProperty(value = "id")
     private int id;
 
-    @JsonProperty(value = "nickanme")
+    @JsonProperty(value = "nickname")
     private String nickname;
 
     @JsonProperty(value = "genres")

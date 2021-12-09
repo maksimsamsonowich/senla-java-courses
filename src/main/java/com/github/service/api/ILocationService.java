@@ -1,18 +1,17 @@
 package com.github.service.api;
 
-import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 
 public interface ILocationService {
 
-    void createLocation(LocationDto locationDto);
+    LocationDto createLocation(LocationDto locationDto);
 
-    LocationDto readLocation(LocationDto locationDto);
+    LocationDto readLocation(Integer id);
 
-    LocationDto update(LocationDto locationDto);
+    LocationDto update(Integer id, LocationDto locationDto);
 
-    void deleteLocation(LocationDto locationDto);
+    void deleteLocation(Integer id);
 
-    LocationDto getEventLocation(EventDto eventDto);
+    LocationDto getEventLocation(Integer id);
 
 }

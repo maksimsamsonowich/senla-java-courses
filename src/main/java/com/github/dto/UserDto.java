@@ -2,20 +2,20 @@ package com.github.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.entity.Artist;
-import com.github.entity.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Accessors(chain = true)
 public class UserDto {
 
     @JsonProperty(value = "id")
@@ -40,9 +40,9 @@ public class UserDto {
     private String surname;
 
     @JsonProperty(value = "artistCard")
-    private Set<Artist> artistCard;
+    private Set<EventArtistDto> artistCard;
 
     @JsonProperty(value = "tickets")
-    private Set<Ticket> tickets;
+    private Set<UserTicketsDto> tickets;
 
 }

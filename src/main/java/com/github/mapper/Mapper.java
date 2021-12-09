@@ -42,6 +42,4 @@ public class Mapper<T, W> implements IMapper<T, W> {
                 .collect(Collectors.toSet());
     }
 
-
-
 }

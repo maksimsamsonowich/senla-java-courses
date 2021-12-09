@@ -1,44 +1,47 @@
 package com.github.controller;
 
-import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
-import com.github.dto.UserDto;
 import com.github.service.api.ITicketService;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@Component
+@RestController
+@AllArgsConstructor
+@RequestMapping("ticket-management")
 public class TicketController {
 
     private ITicketService iTicketService;
 
-    public TicketController(ITicketService iTicketService) {
-        this.iTicketService = iTicketService;
+    @PostMapping
+    public TicketDto createTicket(@RequestBody TicketDto ticketDto) {
+        return iTicketService.createTicket(ticketDto);
     }
 
-    public void createLocation(TicketDto ticketDto) {
-        iTicketService.createTicket(ticketDto);
+    @GetMapping("{ticketId}")
+    public TicketDto readTicket(@PathVariable Integer ticketId) {
+        return iTicketService.readTicket(ticketId);
     }
 
-    public TicketDto readLocation(TicketDto ticketDto) {
-        return iTicketService.readTicket(ticketDto);
+    @PutMapping("{ticketId}")
+    public TicketDto updateTicket(@PathVariable Integer ticketId, @RequestBody TicketDto ticketDto) {
+        return iTicketService.update(ticketId, ticketDto);
     }
 
-    public TicketDto updateLocation(TicketDto ticketDto) {
-        return iTicketService.update(ticketDto);
+    @DeleteMapping("{ticketId}")
+    public void deleteTicket(@PathVariable Integer ticketId) {
+        iTicketService.deleteTicket(ticketId);
     }
 
-    public void deleteLocation(TicketDto ticketDto) {
-        iTicketService.deleteTicket(ticketDto);
+    @GetMapping("by-event/{eventId}")
+    public Set<TicketDto> getEventTickets(@PathVariable Integer eventId) {
+        return iTicketService.getEventTickets(eventId);
     }
 
-    public Set<TicketDto> getEventTickets(EventDto eventDto) {
-        return iTicketService.getEventTickets(eventDto);
-    }
-
-    public Set<TicketDto> getUserTickets(UserDto userDto) {
-        return iTicketService.getUserTickets(userDto);
+    @GetMapping("by-user/{userId}")
+    public Set<TicketDto> getUserTickets(@PathVariable Integer userId) {
+        return iTicketService.getUserTickets(userId);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.github.service;
 
-import com.github.dao.IAbstractDao;
+import com.github.dao.api.IAbstractDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.api.IMapper;
@@ -21,25 +21,26 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public void createUser(UserDto userDto) {
-        iUserDao.create(userMapper.toEntity(userDto, User.class));
+    public UserDto createUser(UserDto userDto) {
+        return userMapper.toDto(iUserDao.create(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override
     @Transactional
-    public UserDto readUser(UserDto userDto) {
-        return userMapper.toDto(iUserDao.read(userMapper.toEntity(userDto, User.class).getId()), UserDto.class);
+    public UserDto readUser(Integer id) {
+        return userMapper.toDto(iUserDao.read(id), UserDto.class);
     }
 
     @Override
     @Transactional
-    public UserDto update(UserDto userDto) {
+    public UserDto update(Integer id, UserDto userDto) {
+        userDto.setId(id);
         return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override
     @Transactional
-    public void deleteUser(UserDto userDto) {
-        iUserDao.delete(userMapper.toEntity(userDto, User.class));
+    public void deleteUser(Integer id) {
+        iUserDao.delete(iUserDao.read(id));
     }
 }

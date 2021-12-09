@@ -3,27 +3,32 @@ package com.github.controller;
 import com.github.dto.UserDto;
 import com.github.service.api.IUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-@Component
+@RestController
 @AllArgsConstructor
+@RequestMapping("user-management")
 public class UserController {
 
     private final IUserService iUserService;
 
-    public void createUser(UserDto userDto) {
-        iUserService.createUser(userDto);
+    @PostMapping
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        return iUserService.createUser(userDto);
     }
 
-    public UserDto readUser(UserDto userDto) {
-        return iUserService.readUser(userDto);
+    @GetMapping("{userId}")
+    public UserDto readUser(@PathVariable Integer userId) {
+        return iUserService.readUser(userId);
     }
 
-    public UserDto update(UserDto userDto) {
-        return iUserService.update(userDto);
+    @PutMapping("{userId}")
+    public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+        return iUserService.update(userId, userDto);
     }
 
-    public void deleteUser(UserDto userDto) {
-        iUserService.deleteUser(userDto);
+    @DeleteMapping("{userId}")
+    public void deleteUser(@PathVariable Integer userId) {
+        iUserService.deleteUser(userId);
     }
 }

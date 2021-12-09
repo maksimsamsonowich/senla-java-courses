@@ -1,6 +1,10 @@
 package com.github.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -12,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "events")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "event-entity-graph",
         attributeNodes = {
@@ -33,6 +38,7 @@ import java.util.Set;
 public class Event {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "title", nullable = false)

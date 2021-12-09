@@ -10,11 +10,11 @@ import lombok.Setter;
 import java.sql.Time;
 import java.util.Date;
 
+@Getter
+@Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class EventProgramDto {
 
     @JsonProperty(value = "id")

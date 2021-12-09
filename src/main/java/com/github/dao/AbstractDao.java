@@ -1,10 +1,17 @@
 package com.github.dao;
 
+import com.github.dao.api.IAbstractDao;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 @AllArgsConstructor
@@ -12,6 +19,8 @@ public abstract class AbstractDao<T> implements IAbstractDao<T> {
 
     @PersistenceContext
     protected final EntityManager entityManager;
+
+    protected final CriteriaBuilder criteriaBuilder;
 
     private final Class<T> entityClass;
 
@@ -35,6 +44,15 @@ public abstract class AbstractDao<T> implements IAbstractDao<T> {
     @Override
     public void delete(T entity) {
         entityManager.remove(entity);
+    }
+
+    @Override
+    public List<T> getAll() {
+        CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
+        Root<T> rootEntry = cq.from(entityClass);
+        CriteriaQuery<T> all = cq.select(rootEntry);
+        TypedQuery<T> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
     }
 
 }
