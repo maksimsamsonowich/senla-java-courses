@@ -37,7 +37,7 @@ public class TicketServiceTest {
     @Before
     public void setup() {
         ticketMock = new Ticket();
-        ticketMock.setId(1);
+        ticketMock.setId(1L);
         ticketMock.setOrderDate(Date.valueOf("2021-12-03"));
     }
 
@@ -47,7 +47,7 @@ public class TicketServiceTest {
         Mockito.when(ticketDao.create(ticketMock)).thenReturn(ticketMock);
 
         TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
-        TicketDto actualResult = ticketService.createTicket(expectedResult);
+        TicketDto actualResult = ticketService.createTicket("", expectedResult);
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -58,7 +58,7 @@ public class TicketServiceTest {
         Mockito.when(ticketDao.read(ticketMock.getId())).thenReturn(ticketMock);
 
         TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
-        TicketDto actualResult = ticketService.readTicket(ticketMock.getId());
+        TicketDto actualResult = ticketService.readTicket(true,"", ticketMock.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
 

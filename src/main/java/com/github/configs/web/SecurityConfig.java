@@ -1,5 +1,7 @@
 package com.github.configs.web;
 
+import com.github.exception.AccessDeniedHandler;
+import com.github.exception.Http403ForbiddenEntryPoint;
 import com.github.security.jwt.JwtConfigurer;
 import com.github.security.jwt.token.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
 
     private static final String AUTH_ENDPOINT = "/senla/auth";
-    private static final String EVENT_ENDPOINT = "/senla/event-management/**";
-    private static final String LOCATION_ENDPOINT = "/senla/location-management/**";
-    private static final String TICKET_ENDPOINT = "/senla/ticket-management/**";
-    private static final String USER_ENDPOINT = "/senla/user-management/**";
-
-    private static final String USER_ROLE = "USER";
-    private static final String ADMIN_ROLE = "ADMIN";
-    private static final String ARTIST_ROLE = "ARTIST";
+    private static final String REGISTRATION_ENDPOINT = "/senla/register";
 
     @Bean
     @Override
@@ -50,23 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, AUTH_ENDPOINT).permitAll()
-                .antMatchers(HttpMethod.POST, EVENT_ENDPOINT).hasRole(ARTIST_ROLE)
-                .antMatchers(HttpMethod.POST, LOCATION_ENDPOINT).hasRole(ADMIN_ROLE)
-                .antMatchers(HttpMethod.POST, TICKET_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.POST, USER_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.GET, EVENT_ENDPOINT).permitAll()
-                .antMatchers(HttpMethod.GET, LOCATION_ENDPOINT).permitAll()
-                .antMatchers(HttpMethod.GET, TICKET_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.GET, USER_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.DELETE, EVENT_ENDPOINT).hasRole(ARTIST_ROLE)
-                .antMatchers(HttpMethod.DELETE, LOCATION_ENDPOINT).hasRole(ADMIN_ROLE)
-                .antMatchers(HttpMethod.DELETE, TICKET_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.DELETE, USER_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.PUT, EVENT_ENDPOINT).hasRole(ARTIST_ROLE)
-                .antMatchers(HttpMethod.PUT, LOCATION_ENDPOINT).hasRole(ADMIN_ROLE)
-                .antMatchers(HttpMethod.PUT, TICKET_ENDPOINT).hasRole(USER_ROLE)
-                .antMatchers(HttpMethod.PUT, USER_ENDPOINT).hasRole(USER_ROLE)
+                .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedHandler(new AccessDeniedHandler())
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }

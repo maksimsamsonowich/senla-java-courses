@@ -19,7 +19,7 @@ public class LocationRepository extends AbstractRepository<Location> {
         super(entityManager, criteriaBuilder, Location.class);
     }
 
-    public Location getLocationByEvent(Integer id) {
+    public Location getLocationByEvent(Long id) {
         EntityGraph<?> entityGraph = entityManager.getEntityGraph("event-entity-graph");
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

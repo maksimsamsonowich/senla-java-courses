@@ -33,7 +33,7 @@ public class LocationDaoTest {
     @Before
     public void getTestEntity() {
         testLocationEntity = new Location();
-        testLocationEntity.setId(1);
+        testLocationEntity.setId(1L);
         testLocationEntity.setAddress("Кабяка 11");
         testLocationEntity.setTitle("NN");
         testLocationEntity.setCapacity(12);
@@ -43,7 +43,7 @@ public class LocationDaoTest {
     public void createLocationSuccess() {
         locationDao.create(testLocationEntity);
 
-        Location secondLocation = locationDao.read(1);
+        Location secondLocation = locationDao.read(1L);
 
         Assert.assertEquals(testLocationEntity, secondLocation);
     }
@@ -54,7 +54,7 @@ public class LocationDaoTest {
 
         locationDao.delete(testLocationEntity);
 
-        Location secondLocation = locationDao.read(1);
+        Location secondLocation = locationDao.read(1L);
         Assert.assertNull(secondLocation);
     }
 
@@ -62,7 +62,7 @@ public class LocationDaoTest {
     public void readLocationSuccess() {
         locationDao.create(testLocationEntity);
 
-        Location secondLocation = locationDao.read(1);
+        Location secondLocation = locationDao.read(1L);
 
         Assert.assertEquals(secondLocation, testLocationEntity);
     }
@@ -74,7 +74,7 @@ public class LocationDaoTest {
         testLocationEntity.setTitle("KK");
         locationDao.update(testLocationEntity);
 
-        Location secondLocation = locationDao.read(1);
+        Location secondLocation = locationDao.read(1L);
 
         Assert.assertEquals(secondLocation, testLocationEntity);
     }

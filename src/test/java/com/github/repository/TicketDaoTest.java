@@ -36,7 +36,7 @@ public class TicketDaoTest {
     @Before
     public void getTestEntity() {
         testTicketEntity = new Ticket();
-        testTicketEntity.setId(1);
+        testTicketEntity.setId(1L);
         testTicketEntity.setOrderDate(Date.valueOf("2020-12-1"));
     }
 
@@ -44,7 +44,7 @@ public class TicketDaoTest {
     public void createTicketSuccess() {
         ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(1L);
 
         Assert.assertEquals(testTicketEntity, secondTicket);
     }
@@ -55,7 +55,7 @@ public class TicketDaoTest {
 
         ticketDao.delete(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(1L);
         Assert.assertNull(secondTicket);
     }
 
@@ -63,7 +63,7 @@ public class TicketDaoTest {
     public void readTicketSuccess() {
         ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(1L);
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }
@@ -75,27 +75,27 @@ public class TicketDaoTest {
         testTicketEntity.setOrderDate(Date.valueOf("2021-11-12"));
         ticketDao.update(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(1);
+        Ticket secondTicket = ticketDao.read(1L);
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }
 
     @Test
     public void getEventTicketsTicketSuccess() {
-        Set<Ticket> tickets = ticketDao.getEventTickets(1);
+        Set<Ticket> tickets = ticketDao.getEventTickets(1L);
         Set<Ticket> ticketsSetMock = new HashSet<>();
 
-        ticketsSetMock.add(ticketDao.read(1));
+        ticketsSetMock.add(ticketDao.read(1L));
 
         Assert.assertEquals(tickets, ticketsSetMock);
     }
 
     @Test
     public void getTicketsByUserTicketSuccess() {
-        Set<Ticket> tickets = ticketDao.getTicketsByUser(1);
+        Set<Ticket> tickets = ticketDao.getTicketsByUser(1L);
         Set<Ticket> ticketsSetMock = new HashSet<>();
 
-        ticketsSetMock.add(ticketDao.read(1));
+        ticketsSetMock.add(ticketDao.read(1L));
 
         Assert.assertEquals(tickets, ticketsSetMock);
     }

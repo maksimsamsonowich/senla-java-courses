@@ -18,7 +18,7 @@ import java.util.Date;
 public class EventProgramDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
     @JsonProperty(value = "continuance")
     private Time continuance;

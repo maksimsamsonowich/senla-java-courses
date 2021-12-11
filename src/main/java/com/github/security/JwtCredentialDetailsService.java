@@ -2,7 +2,6 @@ package com.github.security;
 
 import com.github.entity.Credential;
 import com.github.repository.impl.CredentialRepository;
-import com.github.security.jwt.user.JwtUser;
 import com.github.security.jwt.user.JwtUserFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -21,7 +21,7 @@ public class TicketRepository extends AbstractRepository<Ticket> {
         super(entityManager, criteriaBuilder, Ticket.class);
     }
 
-    public Set<Ticket> getEventTickets(Integer id){
+    public Set<Ticket> getEventTickets(Long id){
         CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
         Root<Event> rootEvent = criteriaQuery.from(Event.class);
         rootEvent.fetch("tickets", JoinType.LEFT).fetch("owner", JoinType.LEFT);
@@ -33,7 +33,7 @@ public class TicketRepository extends AbstractRepository<Ticket> {
         return typedQuery.getSingleResult().getTickets();
     }
 
-    public Set<Ticket> getTicketsByUser(Integer id) {
+    public Set<Ticket> getTicketsByUser(Long id) {
         String queryString = "select t from Ticket t join fetch t.owner own join fetch t.eventHolding eh where t.id = :id";
         TypedQuery<Ticket> query = entityManager.createQuery(queryString, Ticket.class);
         query.setParameter("id", id);

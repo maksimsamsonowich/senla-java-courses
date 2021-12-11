@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @Table(name = "tickets")
 @NamedEntityGraph(
         name = "ticket-entity-graph",
@@ -22,19 +24,25 @@ import java.util.Date;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "order_date")
     private Date orderDate;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE,
+                        CascadeType.REFRESH,
+                        CascadeType.DETACH })
     @JoinColumn(name = "event_id")
     private Event eventHolding;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE,
+                        CascadeType.REFRESH,
+                        CascadeType.DETACH })
     @JoinColumn(name = "user_id")
     private User owner;
 

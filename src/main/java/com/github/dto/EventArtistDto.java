@@ -15,7 +15,7 @@ import lombok.Setter;
 public class EventArtistDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
     @JsonProperty(value = "nickname")
     private String nickname;

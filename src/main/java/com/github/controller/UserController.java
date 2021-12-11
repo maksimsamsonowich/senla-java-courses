@@ -1,6 +1,8 @@
 package com.github.controller;
 
 import com.github.dto.UserDto;
+import com.github.metamodel.Roles;
+import com.github.service.ICredentialService;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +21,21 @@ public class UserController {
         return ResponseEntity.ok(iUserService.createUser(userDto));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured( Roles.ADMIN )
     @GetMapping("{userId}")
-    public ResponseEntity<UserDto> readUser(@PathVariable Integer userId) {
+    public ResponseEntity<UserDto> readUser(@PathVariable Long userId) {
         return ResponseEntity.ok(iUserService.readUser(userId));
     }
 
     @PutMapping("{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+    @Secured({ Roles.ADMIN, Roles.USER })
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
         return ResponseEntity.ok(iUserService.update(userId, userDto));
     }
 
     @DeleteMapping("{userId}")
-    public void deleteUser(@PathVariable Integer userId) {
+    @Secured({ Roles.ADMIN, Roles.USER })
+    public void deleteUser(@PathVariable Long userId) {
         iUserService.deleteUser(userId);
     }
 

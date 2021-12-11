@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserService implements IUserService {
 
@@ -20,30 +20,24 @@ public class UserService implements IUserService {
 
     private final IMapper<UserDto, User> userMapper;
 
-    private final BCryptPasswordEncoder passwordEncoder;
-
     @Override
-    @Transactional
     public UserDto createUser(UserDto userDto) {
         return userMapper.toDto(iUserDao.create(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override
-    @Transactional
-    public UserDto readUser(Integer id) {
+    public UserDto readUser(Long id) {
         return userMapper.toDto(iUserDao.read(id), UserDto.class);
     }
 
     @Override
-    @Transactional
-    public UserDto update(Integer id, UserDto userDto) {
+    public UserDto update(Long id, UserDto userDto) {
         userDto.setId(id);
         return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class)), UserDto.class);
     }
 
     @Override
-    @Transactional
-    public void deleteUser(Integer id) {
+    public void deleteUser(Long id) {
         iUserDao.delete(iUserDao.read(id));
     }
 }

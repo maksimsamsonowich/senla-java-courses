@@ -15,9 +15,9 @@ import lombok.Setter;
 public class RoleDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "role")
+    private String role;
 
 }

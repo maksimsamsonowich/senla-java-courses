@@ -17,7 +17,7 @@ import java.util.Set;
 public class UserDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
     @JsonProperty(value = "phoneNumber")
     private String phoneNumber;

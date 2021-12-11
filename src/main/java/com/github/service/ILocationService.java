@@ -6,12 +6,12 @@ public interface ILocationService {
 
     LocationDto createLocation(LocationDto locationDto);
 
-    LocationDto readLocation(Integer id);
+    LocationDto readLocation(Long id);
 
-    LocationDto update(Integer id, LocationDto locationDto);
+    LocationDto update(Long id, LocationDto locationDto);
 
-    void deleteLocation(Integer id);
+    void deleteLocation(Long id);
 
-    LocationDto getEventLocation(Integer id);
+    LocationDto getEventLocation(Long id);
 
 }

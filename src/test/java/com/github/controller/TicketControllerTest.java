@@ -87,7 +87,7 @@ public class TicketControllerTest {
     @Test
     public void updateTicketSuccess() throws Exception {
 
-        expectedTicketDto.setId(5);
+        expectedTicketDto.setId(5L);
         expectedTicketDto = ticketController.createTicket(expectedTicketDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(expectedTicketDto);

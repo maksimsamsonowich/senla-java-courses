@@ -47,9 +47,9 @@ public class EventDaoTest {
     @Test
     public void createEventSuccess() {
         eventDao.create(testEventEntity);
-        testEventEntity.setId(1);
+        testEventEntity.setId(1L);
 
-        Event secondEvent = eventDao.read(1);
+        Event secondEvent = eventDao.read(1L);
 
         Assert.assertEquals(testEventEntity, secondEvent);
     }
@@ -58,19 +58,19 @@ public class EventDaoTest {
     public void deleteEventSuccess() {
         eventDao.create(testEventEntity);
 
-        testEventEntity.setId(1);
+        testEventEntity.setId(1L);
         eventDao.delete(testEventEntity);
 
-        Event secondEvent = eventDao.read(2);
+        Event secondEvent = eventDao.read(2L);
         Assert.assertNull(secondEvent);
     }
 
     @Test
     public void readEventSuccess() {
         eventDao.create(testEventEntity);
-        testEventEntity.setId(1);
+        testEventEntity.setId(1L);
 
-        Event event = eventDao.read(1);
+        Event event = eventDao.read(1L);
 
         Assert.assertEquals(event, testEventEntity);
     }
@@ -79,19 +79,19 @@ public class EventDaoTest {
     public void updateEventSuccess() {
         eventDao.create(testEventEntity);
 
-        testEventEntity.setId(1);
+        testEventEntity.setId(1L);
         testEventEntity.setAgeLimit((short) 20);
         eventDao.update(testEventEntity);
 
-        Event event = eventDao.read(1);
+        Event event = eventDao.read(1L);
 
         Assert.assertEquals(event, testEventEntity);
     }
 
     @Test
     public void getEventByLocationSuccess() {
-        Set<Event> events = eventDao.getEventsByLocation(1);
-        Event eventMock = eventDao.read(1);
+        Set<Event> events = eventDao.getEventsByLocation(1L);
+        Event eventMock = eventDao.read(1L);
 
         Set<Event> eventSetMock = new HashSet<>();
         eventSetMock.add(eventMock);

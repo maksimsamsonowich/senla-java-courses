@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "user-entity-graph",
         attributeNodes = {
@@ -22,10 +24,10 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     private String firstName;
@@ -41,7 +43,8 @@ public class User {
     private Set<Ticket> tickets;
 
     @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.MERGE)
     @JoinColumn(name = "creds_id")
     private Credential credential;
 

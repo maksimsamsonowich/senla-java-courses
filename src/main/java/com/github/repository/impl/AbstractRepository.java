@@ -26,7 +26,7 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     }
 
     @Override
-    public T read(int id) {
+    public T read(Long id) {
         return entityManager.find(entityClass, id);
     }
 

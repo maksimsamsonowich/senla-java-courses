@@ -15,16 +15,7 @@ import lombok.Setter;
 public class UserTicketsDto {
 
     @JsonProperty(value = "id")
-    private int id;
-
-    @JsonProperty(value = "login")
-    private String login;
-
-    @JsonProperty(value = "password")
-    private String password;
-
-    @JsonProperty(value = "email")
-    private String email;
+    private Long id;
 
     @JsonProperty(value = "phoneNumber")
     private String phoneNumber;

@@ -31,8 +31,8 @@ import java.sql.Time;
 public class EventProgram {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private Time continuance;
 

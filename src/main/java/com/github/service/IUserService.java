@@ -6,10 +6,10 @@ public interface IUserService {
 
     UserDto createUser(UserDto user);
 
-    UserDto readUser(Integer id);
+    UserDto readUser(Long id);
 
-    UserDto update(Integer id, UserDto user);
+    UserDto update(Long id, UserDto user);
 
-    void deleteUser(Integer id);
+    void deleteUser(Long id);
 
 }

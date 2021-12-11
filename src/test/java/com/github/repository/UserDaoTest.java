@@ -33,7 +33,7 @@ public class UserDaoTest {
     @Before
     public void getTestEntity() {
         testUserEntity = new User();
-        testUserEntity.setId(1);
+        testUserEntity.setId(1L);
         testUserEntity.setFirstName("max");
         testUserEntity.setSurname("max");
         testUserEntity.setPhoneNumber("+375999999999");
@@ -43,7 +43,7 @@ public class UserDaoTest {
     public void createUserSuccess() {
         userDao.create(testUserEntity);
 
-        User secondUser = userDao.read(1);
+        User secondUser = userDao.read(1L);
 
         Assert.assertEquals(testUserEntity, secondUser);
     }
@@ -54,7 +54,7 @@ public class UserDaoTest {
 
         userDao.delete(testUserEntity);
 
-        User secondUser = userDao.read(1);
+        User secondUser = userDao.read(1L);
         Assert.assertNull(secondUser);
     }
 
@@ -62,7 +62,7 @@ public class UserDaoTest {
     public void readUserSuccess() {
         userDao.create(testUserEntity);
 
-        User secondUser = userDao.read(1);
+        User secondUser = userDao.read(1L);
 
         Assert.assertEquals(secondUser, testUserEntity);
     }
@@ -74,7 +74,7 @@ public class UserDaoTest {
         testUserEntity.setSurname("wow");
         userDao.update(testUserEntity);
 
-        User secondUser = userDao.read(1);
+        User secondUser = userDao.read(1L);
 
         Assert.assertEquals(secondUser, testUserEntity);
     }

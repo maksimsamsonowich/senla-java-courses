@@ -8,12 +8,12 @@ public interface IEventService {
 
     EventDto createEvent(EventDto eventDto);
 
-    EventDto readEvent(Integer  id);
+    EventDto readEvent(Long  id);
 
-    EventDto update(Integer id, EventDto eventDto);
+    EventDto update(Long id, EventDto eventDto);
 
-    void deleteEvent(Integer id);
+    void deleteEvent(Long id);
 
-    Set<EventDto> getEventsByLocation(Integer id);
+    Set<EventDto> getEventsByLocation(Long id);
 
 }

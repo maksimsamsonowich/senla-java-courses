@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Component
 @Transactional
 @AllArgsConstructor
 public class LocationService implements ILocationService {
@@ -26,24 +25,24 @@ public class LocationService implements ILocationService {
     }
 
     @Override
-    public LocationDto readLocation(Integer id) {
+    public LocationDto readLocation(Long id) {
         return locationMapper.toDto(iLocationDao.read(id), LocationDto.class);
     }
 
     @Override
-    public LocationDto update(Integer id, LocationDto locationDto) {
+    public LocationDto update(Long id, LocationDto locationDto) {
         locationDto.setId(id);
         return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
     }
 
     @Override
-    public void deleteLocation(Integer id) {
+    public void deleteLocation(Long id) {
         iLocationDao.delete(iLocationDao.read(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public LocationDto getEventLocation(Integer id) {
+    public LocationDto getEventLocation(Long id) {
         return locationMapper.toDto(iLocationDao.getLocationByEvent(id), LocationDto.class);
     }
 

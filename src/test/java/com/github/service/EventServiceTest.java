@@ -36,7 +36,7 @@ public class EventServiceTest {
     @Before
     public void setup() {
         eventMock = new Event();
-        eventMock.setId(1);
+        eventMock.setId(1L);
         eventMock.setTitle("Wow");
         eventMock.setAgeLimit((short) 18);
         eventMock.setOccupiedPlace((short) 199);

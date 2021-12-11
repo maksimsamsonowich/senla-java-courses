@@ -15,8 +15,8 @@ import java.util.Set;
 public class Credential {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email")
     private String email;
@@ -26,11 +26,12 @@ public class Credential {
 
     @ToString.Exclude
     @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE)
+                cascade = CascadeType.ALL)
     private User user;
 
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "cred_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;

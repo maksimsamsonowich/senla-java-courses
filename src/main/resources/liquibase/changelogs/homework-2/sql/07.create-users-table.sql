@@ -1,9 +1,9 @@
 CREATE TABLE users (
-    id serial unique,
+    id bigserial unique,
     creds_id integer,
-    phone_number varchar(15),
-    firstname varchar,
-    surname varchar,
+    phone_number varchar(15) null,
+    firstname varchar null,
+    surname varchar null,
     PRIMARY KEY (id),
     foreign key (creds_id) references creds(id)
 );

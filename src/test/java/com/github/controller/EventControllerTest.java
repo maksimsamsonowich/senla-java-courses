@@ -138,7 +138,7 @@ public class EventControllerTest {
     @Transactional(readOnly = true)
     public void getEventsByLocationSuccess() throws Exception{
 
-        expectedEventDto.setId(1);
+        expectedEventDto.setId(1L);
         Event expectedEventDto = eventDao.getEventsByLocation(this.expectedEventDto.getId()).iterator().next();
 
         this.mockMvc.perform(MockMvcRequestBuilders

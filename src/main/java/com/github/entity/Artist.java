@@ -35,7 +35,7 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private String nickname;
 
@@ -51,7 +51,8 @@ public class Artist {
     private Set<Event> events;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+                cascade = CascadeType.PERSIST)
     @JoinColumn(name = "users_id")
     private User cardOwner;
 

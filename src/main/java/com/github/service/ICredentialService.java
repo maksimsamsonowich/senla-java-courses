@@ -6,10 +6,10 @@ public interface ICredentialService {
 
     CredentialDto createCredential(CredentialDto credentialDto);
 
-    CredentialDto readCredential(Integer id);
+    CredentialDto readCredential(Long id);
 
-    CredentialDto updateCredential(Integer id, CredentialDto credentialDto);
+    CredentialDto updateCredential(Long id, CredentialDto credentialDto);
 
-    void deleteCredential(Integer id);
+    void deleteCredential(Long id);
 
 }

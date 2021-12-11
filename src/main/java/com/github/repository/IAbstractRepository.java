@@ -4,7 +4,7 @@ public interface IAbstractRepository<T> {
 
     T create(T entity);
 
-    T read(int id);
+    T read(Long id);
 
     T update(T entity);
 

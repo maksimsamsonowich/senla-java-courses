@@ -33,24 +33,24 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventDto readEvent(Integer id) {
+    public EventDto readEvent(Long id) {
         return eventMapper.toDto(iEventDao.read(id), EventDto.class);
     }
 
     @Override
-    public EventDto update(Integer id, EventDto eventDto) {
+    public EventDto update(Long id, EventDto eventDto) {
         eventDto.setId(id);
         return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
     }
 
     @Override
-    public void deleteEvent(Integer id) {
+    public void deleteEvent(Long id) {
         iEventDao.delete(iEventDao.read(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<EventDto> getEventsByLocation(Integer id) {
+    public Set<EventDto> getEventsByLocation(Long id) {
         return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(id));
     }
 

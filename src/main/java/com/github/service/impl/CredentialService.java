@@ -31,7 +31,7 @@ public class CredentialService implements ICredentialService {
     public CredentialDto createCredential(CredentialDto credentialDto) {
         Credential currentCredential = credentialMapper.toEntity(credentialDto, Credential.class);
 
-        currentCredential.setUser(new User());
+        currentCredential.setUser(new User().setCredential(currentCredential));
         currentCredential.setPassword(passwordEncoder.encode(currentCredential.getPassword()));
         currentCredential.setRoles(new HashSet<>(){{ add(roleRepository.findByName("USER")); }});
 
@@ -39,18 +39,18 @@ public class CredentialService implements ICredentialService {
     }
 
     @Override
-    public CredentialDto readCredential(Integer id) {
+    public CredentialDto readCredential(Long id) {
         return credentialMapper.toDto(credentialRepository.read(id), CredentialDto.class);
     }
 
     @Override
-    public CredentialDto updateCredential(Integer id, CredentialDto credentialDto) {
+    public CredentialDto updateCredential(Long id, CredentialDto credentialDto) {
         credentialDto.setId(id);
         return credentialMapper.toDto(credentialRepository.update(credentialMapper.toEntity(credentialDto, Credential.class)), CredentialDto.class);
     }
 
     @Override
-    public void deleteCredential(Integer id) {
+    public void deleteCredential(Long id) {
         credentialRepository.delete(credentialRepository.read(id));
     }
 

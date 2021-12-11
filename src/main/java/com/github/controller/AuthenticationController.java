@@ -2,6 +2,9 @@ package com.github.controller;
 
 import com.github.dto.AuthenticationAnswerDto;
 import com.github.dto.AuthenticationRequestDto;
+import com.github.dto.CredentialDto;
+import com.github.service.IAuthenticationService;
+import com.github.service.ICredentialService;
 import com.github.service.impl.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "auth")
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
+    private final IAuthenticationService iAuthenticationService;
 
-    @PostMapping
-    public ResponseEntity<AuthenticationAnswerDto> login(@RequestBody AuthenticationRequestDto requestDto) {
-        return ResponseEntity.ok(authenticationService.login(requestDto));
+    private final ICredentialService iCredentialService;
+
+    @PostMapping("auth")
+    public ResponseEntity<AuthenticationAnswerDto> customerAuthentication
+            (@RequestBody AuthenticationRequestDto requestDto) {
+
+        AuthenticationAnswerDto authenticationAnswer =
+                iAuthenticationService.login(requestDto);
+
+        return ResponseEntity.ok(authenticationAnswer);
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<AuthenticationAnswerDto> customerRegistration
+            (@RequestBody CredentialDto credentialDto) {
+
+        iCredentialService.createCredential(credentialDto);
+
+        AuthenticationRequestDto authenticationData =
+                new AuthenticationRequestDto()
+                        .setEmail(credentialDto.getEmail())
+                        .setPassword(credentialDto.getPassword());
+
+        AuthenticationAnswerDto authenticationAnswer =
+                iAuthenticationService.login(authenticationData);
+
+        return ResponseEntity.ok(authenticationAnswer);
     }
 
 }

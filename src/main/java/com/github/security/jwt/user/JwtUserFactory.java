@@ -2,7 +2,6 @@ package com.github.security.jwt.user;
 
 import com.github.entity.Credential;
 import com.github.entity.Role;
-import com.github.security.jwt.user.JwtUser;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

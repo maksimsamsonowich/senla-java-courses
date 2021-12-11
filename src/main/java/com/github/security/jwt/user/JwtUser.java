@@ -10,7 +10,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class JwtUser implements UserDetails {
 
-    private final int id;
+    private final Long id;
 
     private final String email;
 

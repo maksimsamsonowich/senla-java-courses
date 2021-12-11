@@ -15,6 +15,8 @@ import lombok.experimental.Accessors;
 @JsonAutoDetect
 public class AuthenticationAnswerDto {
 
+    private Integer status;
+
     private String email;
 
     private String token;

@@ -1,7 +1,6 @@
 package com.github.repository.impl;
 
 import com.github.entity.User;
-import com.github.repository.impl.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     public User findByUsername(String username) {
         return (User) entityManager.createQuery(
-                String.format("select u from User u where u.login = %s", username))
+                "select u from User u join fetch u.credential cr where cr.email = '" + username + "'")
                 .getSingleResult();
     }
 
