@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    id serial unique,
+    id serial,
     creds_id integer,
     phone_number varchar(15),
     firstname varchar,

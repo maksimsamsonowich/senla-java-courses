@@ -31,9 +31,9 @@ public class CredentialService implements ICredentialService {
     public CredentialDto createCredential(CredentialDto credentialDto) {
         Credential currentCredential = credentialMapper.toEntity(credentialDto, Credential.class);
 
-        currentCredential.setUser(new User().setCredential(currentCredential));
-        currentCredential.setPassword(passwordEncoder.encode(currentCredential.getPassword()));
-        currentCredential.setRoles(new HashSet<>(){{ add(roleRepository.findByName("USER")); }});
+        currentCredential.setUser(new User().setCredential(currentCredential))
+                .setPassword(passwordEncoder.encode(currentCredential.getPassword()))
+                .setRoles(new HashSet<>(){{ add(roleRepository.findByName("USER")); }});
 
         return credentialMapper.toDto(credentialRepository.create(currentCredential), CredentialDto.class);
     }

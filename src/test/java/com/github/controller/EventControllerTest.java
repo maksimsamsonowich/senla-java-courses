@@ -5,11 +5,15 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
-import com.github.dto.EventProgramDto;
 import com.github.dto.LocationDto;
-import com.github.entity.Event;
+import com.github.dto.UserDto;
+import com.github.entity.Credential;
+import com.github.entity.Role;
+import com.github.entity.User;
 import com.github.mapper.impl.JsonMapper;
-import com.github.repository.impl.EventRepository;
+import com.github.repository.impl.CredentialRepository;
+import com.github.repository.impl.RoleRepository;
+import com.github.repository.impl.UserRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -18,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,9 +35,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Objects;
 
-@Transactional
 @WebAppConfiguration
 @ExtendWith(SpringExtension.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,9 +67,7 @@ public class EventControllerTest {
                 .setDescription("Desc")
                 .setAgeLimit((short) 18)
                 .setOccupiedPlace((short) 11)
-                .setDate(Date.valueOf("2021-11-29"))
-                .setEventOrganizer(new EventArtistDto()
-                        .setId(1L));
+                .setDate(Date.valueOf("2021-11-29"));
 
         locationDto = new LocationDto().setId(1L);
     }

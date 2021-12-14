@@ -1,5 +1,5 @@
 CREATE TABLE genres (
-    id serial NOT NULL,
+    id serial,
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );

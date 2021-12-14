@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,11 +24,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@WebAppConfiguration
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
-        classes = { DatabaseConfig.class },
-        loader = AnnotationConfigContextLoader.class)
+        classes = { DatabaseConfig.class })
 @Transactional
 public class TicketDaoTest {
 

@@ -8,6 +8,7 @@ import com.github.repository.impl.TicketRepository;
 import com.github.repository.impl.UserRepository;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class TicketService implements ITicketService {
                 .setOwner(userRepository.findByUsername(email))
                 .setEventHolding(eventRepository.read(ticketDto.getEventHolding().getId()));
 
-        ticketRepository.create(currentTicket);
+        currentTicket = ticketRepository.create(currentTicket);
 
         return ticketMapper.toDto(currentTicket, TicketDto.class);
     }

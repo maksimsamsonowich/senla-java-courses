@@ -1,6 +1,5 @@
 package com.github.service.impl;
 
-import com.github.entity.Event;
 import com.github.metamodel.Roles;
 import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;

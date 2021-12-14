@@ -48,13 +48,11 @@ public class Artist {
     private Set<Genre> genres;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "eventOrganizer",
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "eventOrganizer")
     private Set<Event> events;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY,
-                cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User cardOwner;
 

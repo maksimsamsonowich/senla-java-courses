@@ -5,9 +5,6 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
-import com.github.dto.UserTicketsDto;
-import com.github.entity.Credential;
-import com.github.entity.User;
 import com.github.mapper.impl.JsonMapper;
 import com.github.service.ITicketService;
 import org.hamcrest.CoreMatchers;
@@ -133,23 +130,6 @@ public class TicketControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assert.assertNull(ticketService.readTicket(ticketDto.getId()));
-
-    }
-
-    @Test
-    @Transactional(readOnly = true)
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
-    public void getEventTicketsSuccess() throws Exception {
-
-        ticketDto = ticketService.createTicket("fightingdemons@gmail.com", ticketDto);
-        this.jsonBody = jsonMapper.toJson(ticketDto);
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/by-event/{eventId}", eventDto.getId()))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].id",
-                        CoreMatchers.is(Integer.parseInt(ticketDto.getId().toString()))));
 
     }
 

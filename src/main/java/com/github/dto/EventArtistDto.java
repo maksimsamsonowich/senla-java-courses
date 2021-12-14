@@ -22,4 +22,7 @@ public class EventArtistDto {
     @JsonProperty(value = "nickname")
     private String nickname;
 
+    @JsonProperty(value = "userInfo")
+    private UserDto user;
+
 }
