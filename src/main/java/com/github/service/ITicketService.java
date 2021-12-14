@@ -8,7 +8,7 @@ public interface ITicketService {
 
     TicketDto createTicket(String email, TicketDto ticketDto);
 
-    TicketDto readTicket(Boolean hasAdminRole, String email, Long id);
+    TicketDto readTicket(Long id);
 
     TicketDto update(Long id, TicketDto ticketDto);
 

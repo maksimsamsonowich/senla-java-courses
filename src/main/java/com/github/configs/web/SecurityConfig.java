@@ -2,9 +2,8 @@ package com.github.configs.web;
 
 import com.github.exception.AccessDeniedHandler;
 import com.github.exception.Http403ForbiddenEntryPoint;
-import com.github.security.jwt.JwtConfigurer;
-import com.github.security.jwt.token.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.security.jwt.token.JwtTokenFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,9 +13,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 @EnableGlobalMethodSecurity(
         prePostEnabled = true,
         securedEnabled = true,
@@ -24,11 +26,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    private static final String AUTH_ENDPOINT = "/senla/auth";
-    private static final String REGISTRATION_ENDPOINT = "/senla/register";
+    private JwtTokenFilter jwtTokenFilter;
 
     @Bean
     @Override
@@ -36,23 +34,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, AUTH_ENDPOINT).permitAll()
-                .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
+                .antMatchers("/senla/auth").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new AccessDeniedHandler())
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }
 
 }

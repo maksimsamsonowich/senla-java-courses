@@ -32,11 +32,10 @@ public class UserServiceTest {
 
     @Before
     public void setup() {
-        userMock = new User();
-        userMock.setId(1L);
-        userMock.setFirstName("manoftheyear");
-        userMock.setSurname("Max");
-        userMock.setFirstName("Max");
+        userMock = new User()
+                .setFirstName("manoftheyear")
+                .setSurname("Max")
+                .setFirstName("Max");
     }
 
     @Test

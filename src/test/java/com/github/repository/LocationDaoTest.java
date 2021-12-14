@@ -15,6 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
@@ -24,59 +26,78 @@ import javax.annotation.Resource;
 @Transactional
 public class LocationDaoTest {
 
+    @Mock
+    private Location expectedResult;
+
     @Resource
     private LocationRepository locationDao;
 
-    @Mock
-    private Location testLocationEntity;
-
     @Before
     public void getTestEntity() {
-        testLocationEntity = new Location();
-        testLocationEntity.setId(1L);
-        testLocationEntity.setAddress("Кабяка 11");
-        testLocationEntity.setTitle("NN");
-        testLocationEntity.setCapacity(12);
+        expectedResult = new Location()
+                .setAddress("Кабяка 11")
+                .setTitle("NN")
+                .setCapacity(12);
     }
 
     @Test
     public void createLocationSuccess() {
-        locationDao.create(testLocationEntity);
+        expectedResult = locationDao.create(expectedResult);
 
-        Location secondLocation = locationDao.read(1L);
+        Location actualResult = locationDao.read(expectedResult.getId());
 
-        Assert.assertEquals(testLocationEntity, secondLocation);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
     public void deleteLocationSuccess() {
-        locationDao.create(testLocationEntity);
+        expectedResult = locationDao.create(expectedResult);
 
-        locationDao.delete(testLocationEntity);
+        locationDao.delete(expectedResult);
 
-        Location secondLocation = locationDao.read(1L);
-        Assert.assertNull(secondLocation);
+        Location actualResult = locationDao.read(expectedResult.getId());
+        Assert.assertNull(actualResult);
     }
 
     @Test
     public void readLocationSuccess() {
-        locationDao.create(testLocationEntity);
+        expectedResult = locationDao.create(expectedResult);
 
-        Location secondLocation = locationDao.read(1L);
+        Location actualResult = locationDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondLocation, testLocationEntity);
+        Assert.assertEquals(actualResult, expectedResult);
     }
 
     @Test
     public void updateLocationSuccess() {
-        locationDao.create(testLocationEntity);
+        expectedResult = locationDao.create(expectedResult);
 
-        testLocationEntity.setTitle("KK");
-        locationDao.update(testLocationEntity);
+        expectedResult.setTitle("KK");
+        locationDao.update(expectedResult);
 
-        Location secondLocation = locationDao.read(1L);
+        Location actualResult = locationDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondLocation, testLocationEntity);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void getAllLocationsSuccess() {
+        List<Location> actualResult = locationDao.getAll();
+
+        long step = 1;
+        List<Location> expectedResult = new ArrayList<>();
+
+        while (true) {
+            Location location = locationDao.read(step);
+
+            if (location == null)
+                break;
+
+            expectedResult.add(location);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

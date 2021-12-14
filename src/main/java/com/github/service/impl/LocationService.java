@@ -6,7 +6,6 @@ import com.github.mapper.IMapper;
 import com.github.repository.impl.LocationRepository;
 import com.github.service.ILocationService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

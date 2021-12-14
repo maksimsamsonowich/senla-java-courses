@@ -5,6 +5,7 @@ import com.github.entity.Role;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 import java.util.Set;
@@ -15,20 +16,15 @@ final public class JwtUserFactory {
 
     private final static String ROLE_PREFIX = "ROLE_";
 
-    public static JwtUser jwtUserCreate(Credential credential) {
-        return new JwtUser(
-                credential.getId(),
+    public static User jwtUserCreate(Credential credential) {
+        return new User(
                 credential.getEmail(),
                 credential.getPassword(),
-                credential.getUser().getFirstName(),
-                credential.getUser().getSurname(),
-                credential.getUser().getPhoneNumber(),
-                mapToGrantedAuthority(credential.getRoles())
-        );
+                mapToGrantedAuthority(credential.getRoles()));
     }
 
     public static List<GrantedAuthority> mapToGrantedAuthority(Set<Role> roleSet) {
-        return  roleSet.stream()
+        return roleSet.stream()
                 .map(role ->
                         new SimpleGrantedAuthority(ROLE_PREFIX + role.getRole()))
                 .collect(Collectors.toList());

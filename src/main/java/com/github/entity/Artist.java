@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "artists")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "artists-entity-graph",
         attributeNodes = {
@@ -34,7 +36,7 @@ import java.util.Set;
 public class Artist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nickname;

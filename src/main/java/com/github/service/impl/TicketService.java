@@ -8,7 +8,6 @@ import com.github.repository.impl.TicketRepository;
 import com.github.repository.impl.UserRepository;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,21 +38,17 @@ public class TicketService implements ITicketService {
     }
 
     @Override
-    public TicketDto readTicket(Boolean hasAdminRole, String requestEmail, Long ticketId) {
-        Ticket currentTicket = ticketRepository.read(ticketId);
-
-        String ticketOwnerEmail = currentTicket.getOwner().getCredential().getEmail();
-
-        if (hasAdminRole || ticketOwnerEmail.equals(requestEmail) )
-            return ticketMapper.toDto(ticketRepository.read(ticketId), TicketDto.class);
-        else
-            throw new AccessDeniedException("Forbidden");
+    public TicketDto readTicket(Long ticketId) {
+        return ticketMapper.toDto(ticketRepository.read(ticketId), TicketDto.class);
     }
 
     @Override
     public TicketDto update(Long id, TicketDto ticketDto) {
-        ticketDto.setId(id);
-        return ticketMapper.toDto(ticketRepository.update(ticketMapper.toEntity(ticketDto, Ticket.class)), TicketDto.class);
+
+        Ticket currentTicket = ticketMapper.toEntity(ticketDto, Ticket.class);
+        ticketRepository.update(currentTicket);
+
+        return ticketMapper.toDto(currentTicket, TicketDto.class);
     }
 
     @Override

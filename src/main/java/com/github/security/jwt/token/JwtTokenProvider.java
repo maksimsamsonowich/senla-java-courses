@@ -12,10 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -32,11 +32,6 @@ public class JwtTokenProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @PostConstruct
     protected void init() {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
@@ -44,16 +39,17 @@ public class JwtTokenProvider {
 
     public String createToken(String email, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put("roles", getRolesNames(roles));
+        claims.put("roles", roles.stream().map(Role::getRole).toList());
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        long expirationLength = now.getTime() + validityInMilliseconds;
+        Date expiration = new Date(expirationLength);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
@@ -68,7 +64,7 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring("Bearer_".length());
         }
         return null;
@@ -87,16 +83,4 @@ public class JwtTokenProvider {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
     }
-
-    private List<String> getRolesNames(List<Role> userRoles) {
-        List<String> result = new ArrayList<>();
-
-        userRoles.forEach(role -> {
-            result.add(role.getRole());
-        });
-
-        return result;
-    }
-
-
 }

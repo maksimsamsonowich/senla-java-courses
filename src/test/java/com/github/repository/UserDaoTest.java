@@ -1,7 +1,9 @@
 package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
+import com.github.entity.Ticket;
 import com.github.entity.User;
+import com.github.repository.impl.TicketRepository;
 import com.github.repository.impl.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +17,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
@@ -24,59 +28,78 @@ import javax.annotation.Resource;
 @Transactional
 public class UserDaoTest {
 
+    @Mock
+    private User expectedResult;
+
     @Resource
     private UserRepository userDao;
 
-    @Mock
-    private User testUserEntity;
-
     @Before
     public void getTestEntity() {
-        testUserEntity = new User();
-        testUserEntity.setId(1L);
-        testUserEntity.setFirstName("max");
-        testUserEntity.setSurname("max");
-        testUserEntity.setPhoneNumber("+375999999999");
+        expectedResult = new User()
+                .setFirstName("max")
+                .setSurname("max")
+                .setPhoneNumber("+375999999999");
     }
 
     @Test
     public void createUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        User secondUser = userDao.read(1L);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(testUserEntity, secondUser);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        userDao.delete(testUserEntity);
+        userDao.delete(expectedResult);
 
-        User secondUser = userDao.read(1L);
+        User secondUser = userDao.read(expectedResult.getId());
         Assert.assertNull(secondUser);
     }
 
     @Test
     public void readUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        User secondUser = userDao.read(1L);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondUser, testUserEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateUserSuccess() {
-        userDao.create(testUserEntity);
+        expectedResult = userDao.create(expectedResult);
 
-        testUserEntity.setSurname("wow");
-        userDao.update(testUserEntity);
+        expectedResult.setSurname("wow");
+        userDao.update(expectedResult);
 
-        User secondUser = userDao.read(1L);
+        User actualResult = userDao.read(expectedResult.getId());
 
-        Assert.assertEquals(secondUser, testUserEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
+    @Test
+    public void getAllTicketsSuccess() {
+        List<User> actualResult = userDao.getAll();
+
+        long step = 1;
+        List<User> expectedResult = new ArrayList<>();
+
+        while (true) {
+            User user = userDao.read(step);
+
+            if (user == null) {
+                break;
+            }
+
+            expectedResult.add(user);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
+    }
 }

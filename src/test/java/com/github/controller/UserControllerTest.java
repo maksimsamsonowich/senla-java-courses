@@ -3,15 +3,18 @@ package com.github.controller;
 import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
+import com.github.dto.CredentialDto;
 import com.github.dto.UserDto;
 import com.github.mapper.impl.JsonMapper;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,9 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class UserControllerTest {
 
+
     private String jsonBody;
 
-    private UserDto expectedUserDto;
+    private UserDto userDto;
 
     private MockMvc mockMvc;
 
@@ -46,83 +50,90 @@ public class UserControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
-        expectedUserDto = new UserDto();
-        expectedUserDto.setFirstName("motzisudo");
-        expectedUserDto.setSurname("motzisudo");
-        expectedUserDto.setPhoneNumber("+375999999999");
+        userDto = new UserDto()
+                .setFirstName("max")
+                .setSurname("max")
+                .setPhoneNumber("+375999999999")
+                .setCredentials(new CredentialDto()
+                        .setId(1L));
     }
 
     @Test
-    @Transactional(readOnly = true)
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void createUserSuccess() throws Exception {
 
-        this.jsonBody = jsonMapper.toJson(expectedUserDto);
+        this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders.post("/user-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
-                                CoreMatchers.is(expectedUserDto.getFirstName())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
-                                CoreMatchers.is(expectedUserDto.getSurname())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
-                                CoreMatchers.is(expectedUserDto.getPhoneNumber())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
+                        CoreMatchers.is(userDto.getFirstName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
+                        CoreMatchers.is(userDto.getSurname())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
+                        CoreMatchers.is(userDto.getPhoneNumber())));
 
     }
 
     @Test
     @Transactional(readOnly = true)
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void readUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto).getBody();
+        userDto = userController.createUser(userDto).getBody();
 
-        this.jsonBody = jsonMapper.toJson(expectedUserDto);
+        this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/user-management/{id}", expectedUserDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
-                                CoreMatchers.is(expectedUserDto.getFirstName())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
-                                CoreMatchers.is(expectedUserDto.getSurname())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
-                                CoreMatchers.is(expectedUserDto.getPhoneNumber())));
+                        .get("/user-management/{id}", userDto.getId()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
+                        CoreMatchers.is(userDto.getFirstName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
+                        CoreMatchers.is(userDto.getSurname())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber",
+                        CoreMatchers.is(userDto.getPhoneNumber())));
 
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void updateUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto).getBody();
-        expectedUserDto.setSurname("maxmax");
+        userDto = userController.createUser(userDto).getBody();
+        userDto.setFirstName("maxmax");
 
-        this.jsonBody = jsonMapper.toJson(expectedUserDto);
+        this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/user-management/{id}", expectedUserDto.getId())
+                        .put("/user-management/{id}", userDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.surname",
-                        CoreMatchers.is(expectedUserDto.getSurname())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName",
+                        CoreMatchers.is(userDto.getFirstName())));
 
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void deleteUserSuccess() throws Exception {
 
-        expectedUserDto = userController.createUser(expectedUserDto).getBody();
+        userDto = userController.createUser(userDto).getBody();
 
-        this.jsonBody = jsonMapper.toJson(expectedUserDto);
+        this.jsonBody = jsonMapper.toJson(userDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/user-management/{id}", expectedUserDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().isOk());
+                        .delete("/user-management/{id}", userDto.getId()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assert.assertNull(userController.readUser(userDto.getId()).getBody());
 
     }
 

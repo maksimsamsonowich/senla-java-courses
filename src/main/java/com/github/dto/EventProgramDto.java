@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.sql.Time;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class EventProgramDto {
 
     @JsonProperty(value = "id")

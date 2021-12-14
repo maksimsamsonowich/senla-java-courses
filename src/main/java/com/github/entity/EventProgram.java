@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -11,6 +12,7 @@ import java.sql.Time;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "events-program-entity-graph",
         attributeNodes = {

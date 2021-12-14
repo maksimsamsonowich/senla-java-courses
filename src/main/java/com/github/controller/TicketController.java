@@ -1,20 +1,17 @@
 package com.github.controller;
 
 import com.github.dto.TicketDto;
-import com.github.entity.Credential;
 import com.github.metamodel.Roles;
+import com.github.service.IItemsSecurityExpressions;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @RestController
@@ -22,46 +19,50 @@ import java.util.Set;
 @RequestMapping("ticket-management")
 public class TicketController {
 
-    private ITicketService iTicketService;
+    private final ITicketService iTicketService;
+
+    private final IItemsSecurityExpressions iItemsSecurityExpressions;
 
     @PostMapping
-    @Secured( Roles.USER )
+    @Secured(Roles.USER)
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
-        String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(iTicketService.createTicket(currentEmail, ticketDto));
+        final String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        TicketDto returnValue = iTicketService.createTicket(currentEmail, ticketDto);
+
+        return ResponseEntity.ok(returnValue);
     }
 
     @GetMapping("{ticketId}")
-    @Secured( { Roles.USER, Roles.ADMIN })
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedTicket(#ticketId, authentication)")
     public ResponseEntity<TicketDto> readTicket(@PathVariable Long ticketId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String currentEmail = authentication.getName();
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+        TicketDto returnValue = iTicketService.readTicket(ticketId);
 
-        TicketDto ticketDto = iTicketService.readTicket(hasAdminRole, currentEmail, ticketId);
-
-        return ResponseEntity.ok(ticketDto);
+        return ResponseEntity.ok(returnValue);
     }
 
-    @Secured( Roles.ADMIN )
     @PutMapping("{ticketId}")
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedTicket(#ticketId, authentication)")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable Long ticketId, @RequestBody TicketDto ticketDto) {
-        return ResponseEntity.ok(iTicketService.update(ticketId, ticketDto));
+        TicketDto returnValue = iTicketService.update(ticketId, ticketDto);
+
+        return ResponseEntity.ok(returnValue);
     }
 
     @DeleteMapping("{ticketId}")
-    @Secured( { Roles.USER, Roles.ADMIN })
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedTicket(#ticketId, authentication)")
     public void deleteTicket(@PathVariable Long ticketId) {
         iTicketService.deleteTicket(ticketId);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("by-event/{eventId}")
     public ResponseEntity<Set<TicketDto>> getEventTickets(@PathVariable Long eventId) {
         return ResponseEntity.ok(iTicketService.getEventTickets(eventId));
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("by-user/{userId}")
     public ResponseEntity<Set<TicketDto>> getUserTickets(@PathVariable Long userId) {
         return ResponseEntity.ok(iTicketService.getUserTickets(userId));

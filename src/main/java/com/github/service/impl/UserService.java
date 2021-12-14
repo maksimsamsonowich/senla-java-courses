@@ -6,8 +6,6 @@ import com.github.mapper.IMapper;
 import com.github.repository.IAbstractRepository;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

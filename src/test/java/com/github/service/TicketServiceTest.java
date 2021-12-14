@@ -1,9 +1,12 @@
 package com.github.service;
 
 import com.github.dto.TicketDto;
+import com.github.entity.Credential;
 import com.github.entity.Ticket;
+import com.github.entity.User;
 import com.github.mapper.impl.Mapper;
 import com.github.repository.impl.TicketRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.impl.TicketService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,22 +35,30 @@ public class TicketServiceTest {
     private TicketService ticketService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private Mapper<TicketDto, Ticket> ticketMapper;
 
     @Before
     public void setup() {
-        ticketMock = new Ticket();
-        ticketMock.setId(1L);
-        ticketMock.setOrderDate(Date.valueOf("2021-12-03"));
+        ticketMock = new Ticket()
+                .setOrderDate(Date.valueOf("2021-12-03"))
+                .setOwner(new User()
+                        .setCredential(new Credential()
+                                .setEmail("motzisudo@mail.ru")));
     }
 
     @Test
     public void createTicketSuccess() {
 
         Mockito.when(ticketDao.create(ticketMock)).thenReturn(ticketMock);
+        Mockito.when(userRepository.findByUsername(ticketMock.getOwner().getCredential().getEmail()))
+                .thenReturn(ticketMock.getOwner());
 
         TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
-        TicketDto actualResult = ticketService.createTicket("", expectedResult);
+        TicketDto actualResult = ticketService.createTicket(ticketMock.getOwner().getCredential().getEmail(),
+                expectedResult);
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -58,7 +69,7 @@ public class TicketServiceTest {
         Mockito.when(ticketDao.read(ticketMock.getId())).thenReturn(ticketMock);
 
         TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
-        TicketDto actualResult = ticketService.readTicket(true,"", ticketMock.getId());
+        TicketDto actualResult = ticketService.readTicket(ticketMock.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
 
@@ -110,5 +121,4 @@ public class TicketServiceTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genres")
+@Accessors(chain = true)
 public class Genre {
 
     @Id

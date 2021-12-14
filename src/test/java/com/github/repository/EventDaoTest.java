@@ -2,6 +2,7 @@ package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
+import com.github.entity.Location;
 import com.github.repository.impl.EventRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @WebAppConfiguration
@@ -31,72 +34,94 @@ public class EventDaoTest {
     private EventRepository eventDao;
 
     @Mock
-    private Event testEventEntity;
+    private Event expectedResult;
+
+    @Mock
+    private Location locationEntity;
 
     @Before
     public void getTestEntity() {
-        testEventEntity = new Event();
+        expectedResult = new Event()
+                .setTitle("Title")
+                .setDescription("Desc")
+                .setAgeLimit((short) 18)
+                .setOccupiedPlace((short) 11)
+                .setDate(Date.valueOf("2021-11-29"));
 
-        testEventEntity.setTitle("Title");
-        testEventEntity.setDescription("Desc");
-        testEventEntity.setAgeLimit((short) 18);
-        testEventEntity.setOccupiedPlace((short) 11);
-        testEventEntity.setDate(Date.valueOf("2021-11-29"));
+        locationEntity = new Location()
+                .setId(1L);
     }
 
     @Test
     public void createEventSuccess() {
-        eventDao.create(testEventEntity);
-        testEventEntity.setId(1L);
+        expectedResult = eventDao.create(expectedResult);
 
-        Event secondEvent = eventDao.read(1L);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(testEventEntity, secondEvent);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteEventSuccess() {
-        eventDao.create(testEventEntity);
+        expectedResult = eventDao.create(expectedResult);
 
-        testEventEntity.setId(1L);
-        eventDao.delete(testEventEntity);
+        eventDao.delete(expectedResult);
 
-        Event secondEvent = eventDao.read(2L);
-        Assert.assertNull(secondEvent);
+        Event actualResult = eventDao.read(expectedResult.getId());
+        Assert.assertNull(actualResult);
     }
 
     @Test
     public void readEventSuccess() {
-        eventDao.create(testEventEntity);
-        testEventEntity.setId(1L);
+        expectedResult = eventDao.create(expectedResult);
 
-        Event event = eventDao.read(1L);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(event, testEventEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateEventSuccess() {
-        eventDao.create(testEventEntity);
+        expectedResult = eventDao.create(expectedResult);
 
-        testEventEntity.setId(1L);
-        testEventEntity.setAgeLimit((short) 20);
-        eventDao.update(testEventEntity);
+        expectedResult.setAgeLimit((short) 20);
+        eventDao.update(expectedResult);
 
-        Event event = eventDao.read(1L);
+        Event actualResult = eventDao.read(expectedResult.getId());
 
-        Assert.assertEquals(event, testEventEntity);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void getEventByLocationSuccess() {
-        Set<Event> events = eventDao.getEventsByLocation(1L);
+        Set<Event> events = eventDao.getEventsByLocation(locationEntity.getId());
         Event eventMock = eventDao.read(1L);
 
         Set<Event> eventSetMock = new HashSet<>();
         eventSetMock.add(eventMock);
 
         Assert.assertEquals(events, eventSetMock);
+    }
+
+    @Test
+    public void getAllEventsSuccess() {
+        List<Event> actualResult = eventDao.getAll();
+
+        long step = 1;
+        List<Event> expectedResult = new ArrayList<Event>();
+
+        while (true) {
+            Event event = eventDao.read(step);
+
+            if (event == null) {
+                break;
+            }
+
+            expectedResult.add(event);
+            step += 1;
+        }
+
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
 }

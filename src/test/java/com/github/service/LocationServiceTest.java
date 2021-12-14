@@ -32,11 +32,10 @@ public class LocationServiceTest {
 
     @Before
     public void setup() {
-        locationMock = new Location();
-        locationMock.setId(1L);
-        locationMock.setTitle("BAR");
-        locationMock.setCapacity(50);
-        locationMock.setAddress("FFF");
+        locationMock = new Location()
+                .setTitle("BAR")
+                .setCapacity(50)
+                .setAddress("FFF");
     }
 
     @Test
@@ -96,5 +95,4 @@ public class LocationServiceTest {
 
         Assert.assertEquals(expectedResult, actualResult);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.github.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -13,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "events")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "event-entity-graph",
         attributeNodes = {
@@ -54,8 +56,7 @@ public class Event {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "eventHolding",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE)
+            fetch = FetchType.LAZY)
     private Set<Ticket> tickets;
 
     @ToString.Exclude
