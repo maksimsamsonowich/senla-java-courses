@@ -1,18 +1,18 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.sql.Time;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "events-program-entity-graph",
         attributeNodes = {
@@ -34,24 +34,14 @@ public class EventProgram {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private Time continuance;
 
     private double price;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "eventProgram", fetch = FetchType.LAZY)
     private Event event;
-
-    public String toString() {
-        return String.format(
-                "EventProgram [id=%d " +
-                        "continuance=%s, " +
-                        "price=%d]",
-                id,
-                continuance,
-                price
-        );
-    }
 
 }

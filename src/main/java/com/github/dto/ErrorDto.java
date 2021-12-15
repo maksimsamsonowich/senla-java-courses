@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class ErrorDto {
 
     @JsonProperty(value = "statusCode")

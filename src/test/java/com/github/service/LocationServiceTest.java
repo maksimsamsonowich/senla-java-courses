@@ -1,9 +1,10 @@
 package com.github.service;
 
-import com.github.dao.LocationDao;
 import com.github.dto.LocationDto;
 import com.github.entity.Location;
-import com.github.mapper.Mapper;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.LocationRepository;
+import com.github.service.impl.LocationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class LocationServiceTest {
     private Location locationMock;
 
     @Mock
-    private LocationDao locationDao;
+    private LocationRepository locationDao;
 
     @InjectMocks
     private LocationService locationService;
@@ -94,5 +95,4 @@ public class LocationServiceTest {
 
         Assert.assertEquals(expectedResult, actualResult);
     }
-
 }

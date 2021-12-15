@@ -6,25 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class UserTicketsDto {
 
     @JsonProperty(value = "id")
-    private int id;
-
-    @JsonProperty(value = "login")
-    private String login;
-
-    @JsonProperty(value = "password")
-    private String password;
-
-    @JsonProperty(value = "email")
-    private String email;
+    private Long id;
 
     @JsonProperty(value = "phoneNumber")
     private String phoneNumber;

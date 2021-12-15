@@ -1,21 +1,19 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tickets")
 @Accessors(chain = true)
+@Table(name = "tickets")
 @NamedEntityGraph(
         name = "ticket-entity-graph",
         attributeNodes = {
@@ -27,27 +25,25 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "order_date")
     private Date orderDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE,
+                        CascadeType.REFRESH,
+                        CascadeType.DETACH })
     @JoinColumn(name = "event_id")
     private Event eventHolding;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE,
+                        CascadeType.REFRESH,
+                        CascadeType.DETACH })
     @JoinColumn(name = "user_id")
     private User owner;
-
-
-    public String toString() {
-        return String.format(
-                "Ticket [id=%d, " +
-                        "orderDate=%s]",
-                id,
-                orderDate
-        );
-    }
 
 }

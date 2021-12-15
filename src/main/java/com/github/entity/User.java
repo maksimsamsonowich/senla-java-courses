@@ -1,17 +1,15 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -19,58 +17,41 @@ import java.util.Set;
 @NamedEntityGraph(
         name = "user-entity-graph",
         attributeNodes = {
-                @NamedAttributeNode("artistCard"),
-                @NamedAttributeNode("tickets")
+                @NamedAttributeNode("tickets"),
+                @NamedAttributeNode("artistCard")
         }
 )
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    private String login;
-
-    private String password;
-
-    private String email;
-
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     private String firstName;
 
     private String surname;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "cardOwner")
     private Set<Artist> artistCard;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "owner")
     private Set<Ticket> tickets;
+
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.MERGE)
+    @JoinColumn(name = "creds_id")
+    private Credential credential;
 
     @Override
     public boolean equals(Object object) {
         User user = (User) object;
         return id == user.getId();
-    }
-
-    public String toString() {
-        return String.format(
-                "User [id=%d," +
-                        "login=%s," +
-                        "password=%s," +
-                        "email=%s," +
-                        "phoneNumber=%s," +
-                        "firstName=%s," +
-                        "surname=%s]",
-                id,
-                login,
-                password,
-                email,
-                phoneNumber,
-                firstName,
-                surname
-        );
     }
 
 }

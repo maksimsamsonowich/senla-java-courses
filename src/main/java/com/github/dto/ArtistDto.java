@@ -19,7 +19,7 @@ import java.util.Set;
 public class ArtistDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
     @JsonProperty(value = "nickname")
     private String nickname;

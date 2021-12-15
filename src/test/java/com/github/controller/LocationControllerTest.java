@@ -4,7 +4,7 @@ import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.LocationDto;
-import com.github.mapper.JsonMapper;
+import com.github.mapper.impl.JsonMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class, WebAppInitializer.class, DatabaseConfig.class })
 public class LocationControllerTest {
-
 
     private String jsonBody;
 
@@ -55,6 +55,7 @@ public class LocationControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void createLocationSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(locationDto);
@@ -63,44 +64,46 @@ public class LocationControllerTest {
                         .post("/location-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(locationDto.getTitle())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.address",
-                                CoreMatchers.is(locationDto.getAddress())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.capacity",
-                                CoreMatchers.is(locationDto.getCapacity())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                        CoreMatchers.is(locationDto.getTitle())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address",
+                        CoreMatchers.is(locationDto.getAddress())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.capacity",
+                        CoreMatchers.is(locationDto.getCapacity())));
 
     }
 
     @Test
     @Transactional(readOnly = true)
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void readLocationSuccess() throws Exception {
 
-        LocationDto location = locationController.createLocation(locationDto);
+        LocationDto location = locationController.createLocation(locationDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(location);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/location-management/{locationId}", location.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(locationDto.getTitle())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.address",
-                                CoreMatchers.is(locationDto.getAddress())))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.capacity",
-                                CoreMatchers.is(locationDto.getCapacity())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                        CoreMatchers.is(locationDto.getTitle())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address",
+                        CoreMatchers.is(locationDto.getAddress())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.capacity",
+                        CoreMatchers.is(locationDto.getCapacity())));
 
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void updateLocationSuccess() throws Exception {
 
         locationDto.setTitle("test123");
 
-        LocationDto location = locationController.createLocation(locationDto);
+        LocationDto location = locationController.createLocation(locationDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(location);
 
@@ -108,26 +111,26 @@ public class LocationControllerTest {
                         .put("/location-management/{locationId}", location.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.title",
-                                CoreMatchers.is(locationDto.getTitle())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title",
+                        CoreMatchers.is(locationDto.getTitle())));
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void deleteLocationSuccess() throws Exception {
 
-        locationDto = locationController.createLocation(locationDto);
+        locationDto = locationController.createLocation(locationDto).getBody();
 
         this.jsonBody = jsonMapper.toJson(locationDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/location-management/{locationId}", locationDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 
-        Assert.assertNull(locationController.readLocation(locationDto.getId()));
+        Assert.assertNull(locationController.readLocation(locationDto.getId()).getBody());
 
     }
-
 }

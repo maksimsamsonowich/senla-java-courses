@@ -1,9 +1,16 @@
 package com.github.service;
 
-import com.github.dao.TicketDao;
+import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
+import com.github.entity.Credential;
+import com.github.entity.Event;
 import com.github.entity.Ticket;
-import com.github.mapper.Mapper;
+import com.github.entity.User;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.EventRepository;
+import com.github.repository.impl.TicketRepository;
+import com.github.repository.impl.UserRepository;
+import com.github.service.impl.TicketService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +32,19 @@ public class TicketServiceTest {
     private Ticket ticketMock;
 
     @Mock
-    private TicketDao ticketDao;
+    private TicketRepository ticketDao;
 
     @InjectMocks
     private TicketService ticketService;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private TicketDto expectedResult;
+
+    @Mock
+    private EventRepository eventRepository;
 
     @Mock
     private Mapper<TicketDto, Ticket> ticketMapper;
@@ -36,16 +52,29 @@ public class TicketServiceTest {
     @Before
     public void setup() {
         ticketMock = new Ticket()
-                .setOrderDate(Date.valueOf("2021-12-03"));
+                .setOrderDate(Date.valueOf("2021-12-03"))
+                .setOwner(new User()
+                        .setCredential(new Credential()
+                                .setEmail("motzisudo@mail.ru")))
+                .setEventHolding(new Event()
+                        .setId(1L));
+
+        expectedResult = new TicketDto()
+                .setEventHolding(new EventDto());
     }
 
     @Test
     public void createTicketSuccess() {
 
+        Mockito.when(ticketMapper.toEntity(any(), any())).thenReturn(ticketMock);
+        Mockito.when(ticketMapper.toDto(any(), any())).thenReturn(expectedResult);
+        Mockito.when(userRepository.findByUsername(any()))
+                .thenReturn(ticketMock.getOwner());
+        Mockito.when(eventRepository.read(ticketMock.getEventHolding().getId())).thenReturn(ticketMock.getEventHolding());
         Mockito.when(ticketDao.create(ticketMock)).thenReturn(ticketMock);
 
-        TicketDto expectedResult = ticketMapper.toDto(ticketMock, TicketDto.class);
-        TicketDto actualResult = ticketService.createTicket(expectedResult);
+        TicketDto actualResult = ticketService.createTicket(ticketMock.getOwner().getCredential().getEmail(),
+                expectedResult);
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -108,5 +137,4 @@ public class TicketServiceTest {
 
         Assert.assertEquals(actualResult, expectedResult);
     }
-
 }

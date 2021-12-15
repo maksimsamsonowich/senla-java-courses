@@ -1,9 +1,10 @@
 package com.github.service;
 
-import com.github.dao.EventDao;
 import com.github.dto.EventDto;
 import com.github.entity.Event;
-import com.github.mapper.Mapper;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.EventRepository;
+import com.github.service.impl.EventService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +21,10 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class EventServiceTest {
-
     private Event eventMock;
 
     @Mock
-    private EventDao eventDaoMock;
+    private EventRepository eventDaoMock;
 
     @InjectMocks
     private EventService eventService;

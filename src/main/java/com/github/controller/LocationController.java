@@ -1,8 +1,12 @@
 package com.github.controller;
 
 import com.github.dto.LocationDto;
-import com.github.service.api.ILocationService;
+import com.github.metamodel.Roles;
+import com.github.service.ILocationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,28 +17,33 @@ public class LocationController {
     private ILocationService iLocationService;
 
     @PostMapping
-    public LocationDto createLocation(@RequestBody LocationDto locationDto) {
-        return iLocationService.createLocation(locationDto);
+    @Secured(Roles.ADMIN)
+    public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
+        return ResponseEntity.ok(iLocationService.createLocation(locationDto));
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("{locationId}")
-    public LocationDto readLocation(@PathVariable Integer locationId) {
-        return iLocationService.readLocation(locationId);
+    public ResponseEntity<LocationDto> readLocation(@PathVariable Long locationId) {
+        return ResponseEntity.ok(iLocationService.readLocation(locationId));
     }
 
+    @Secured(Roles.ADMIN)
     @PutMapping("{locationId}")
-    public LocationDto updateLocation(@PathVariable Integer locationId, @RequestBody LocationDto locationDto) {
-        return iLocationService.update(locationId, locationDto);
+    public ResponseEntity<LocationDto> updateLocation(@PathVariable Long locationId, @RequestBody LocationDto locationDto) {
+        return ResponseEntity.ok(iLocationService.update(locationId, locationDto));
     }
 
+    @Secured(Roles.ADMIN)
     @DeleteMapping("{locationId}")
-    public void deleteLocation(@PathVariable("locationId") Integer locationId) {
+    public void deleteLocation(@PathVariable("locationId") Long locationId) {
         iLocationService.deleteLocation(locationId);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("by-event/{eventId}")
-    public LocationDto getEventLocation(@PathVariable Integer eventId) {
-        return iLocationService.getEventLocation(eventId);
+    public ResponseEntity<LocationDto> getEventLocation(@PathVariable Long eventId) {
+        return ResponseEntity.ok(iLocationService.getEventLocation(eventId));
     }
 }
 

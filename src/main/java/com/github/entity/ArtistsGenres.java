@@ -1,9 +1,12 @@
 package com.github.entity;
 
+import lombok.experimental.Accessors;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Accessors(chain = true)
 @Table(name = "artists_genres")
 public class ArtistsGenres {
 

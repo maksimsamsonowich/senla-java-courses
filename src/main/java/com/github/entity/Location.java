@@ -1,21 +1,19 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
 @Table(name = "locations")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "location-entity-graph",
         attributeNodes = {
@@ -35,7 +33,7 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String title;
 
@@ -43,20 +41,9 @@ public class Location {
 
     private int capacity;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "location",
+            fetch = FetchType.LAZY)
     private Set<Event> events;
-
-    public String toString() {
-        return String.format(
-                "Location [id=%d, " +
-                        "title=%s, " +
-                        "address=%s, " +
-                        "capacity=%d]",
-                id,
-                title,
-                address,
-                capacity
-        );
-    }
 
 }

@@ -20,9 +20,8 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-@EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.github.dao"})
+@ComponentScan(basePackages = {"com.github.repository"})
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
@@ -44,12 +43,17 @@ public class DatabaseConfig {
     @Value("${packagesToScan}")
     private String packagesToScan;
 
-    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.MySQLDialect'}}")
+    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.PostgreSQLDialect'}}")
     private Map<String, String> hibernateAdditionalProperties;
 
     @Bean
     public DataSource dataSource()  {
-        return new DriverManagerDataSource(url, username, password);
+        DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
+        managerDataSource.setUrl(url);
+        managerDataSource.setUsername(username);
+        managerDataSource.setPassword(password);
+        managerDataSource.setDriverClassName(driver);
+        return  managerDataSource;
     }
 
     @Bean
@@ -91,7 +95,7 @@ public class DatabaseConfig {
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put(Environment.SHOW_SQL, "true");
         return properties;
     }

@@ -1,8 +1,11 @@
 package com.github.controller;
 
 import com.github.dto.UserDto;
-import com.github.service.api.IUserService;
+import com.github.service.IItemsSecurityExpressions;
+import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,23 +15,30 @@ public class UserController {
 
     private final IUserService iUserService;
 
+    private final IItemsSecurityExpressions iItemsSecurityExpressions;
+
     @PostMapping
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return iUserService.createUser(userDto);
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(iUserService.createUser(userDto));
     }
 
     @GetMapping("{userId}")
-    public UserDto readUser(@PathVariable Integer userId) {
-        return iUserService.readUser(userId);
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedAccount(#userId, authentication)")
+    public ResponseEntity<UserDto> readUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(iUserService.readUser(userId));
     }
 
     @PutMapping("{userId}")
-    public UserDto updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
-        return iUserService.update(userId, userDto);
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedAccount(#userId, authentication)")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(iUserService.update(userId, userDto));
     }
 
     @DeleteMapping("{userId}")
-    public void deleteUser(@PathVariable Integer userId) {
+    @PreAuthorize("@itemsSecurityExpressions.isUserOwnedAccount(#userId, authentication)")
+    public void deleteUser(@PathVariable Long userId) {
         iUserService.deleteUser(userId);
     }
+
 }

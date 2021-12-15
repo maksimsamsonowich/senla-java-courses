@@ -1,9 +1,10 @@
 package com.github.service;
 
-import com.github.dao.UserDao;
 import com.github.dto.UserDto;
 import com.github.entity.User;
-import com.github.mapper.Mapper;
+import com.github.mapper.impl.Mapper;
+import com.github.repository.impl.UserRepository;
+import com.github.service.impl.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class UserServiceTest {
     private User userMock;
 
     @Mock
-    private UserDao userDao;
+    private UserRepository userDao;
 
     @InjectMocks
     private UserService userService;
@@ -32,9 +33,7 @@ public class UserServiceTest {
     @Before
     public void setup() {
         userMock = new User()
-                .setLogin("manoftheyear")
                 .setFirstName("manoftheyear")
-                .setEmail("christmassavestheyear")
                 .setSurname("Max")
                 .setFirstName("Max");
     }

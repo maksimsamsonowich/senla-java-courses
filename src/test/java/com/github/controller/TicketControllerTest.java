@@ -5,9 +5,8 @@ import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
 import com.github.dto.EventDto;
 import com.github.dto.TicketDto;
-import com.github.mapper.JsonMapper;
-import com.github.service.TicketService;
-import com.github.service.api.ITicketService;
+import com.github.mapper.impl.JsonMapper;
+import com.github.service.ITicketService;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -58,13 +58,16 @@ public class TicketControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(ticketController).build();
 
         ticketDto = new TicketDto()
-                .setOrderDate(Date.valueOf("2019-01-26"));
+                .setOrderDate(Date.valueOf("2019-01-26"))
+                .setEventHolding(new EventDto()
+                        .setId(1L));
 
         eventDto = new EventDto()
-                .setId(1);
+                .setId(1L);
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "USER")
     public void createTicketSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(ticketDto);
@@ -74,72 +77,61 @@ public class TicketControllerTest {
                         .post("/ticket-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.orderDate",
-                                CoreMatchers.is(ticketDto.getOrderDate().toString())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.orderDate",
+                        CoreMatchers.is(ticketDto.getOrderDate().toString())));
 
     }
 
     @Test
     @Transactional(readOnly = true)
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void readTicketSuccess() throws Exception {
 
-        ticketDto = ticketService.createTicket(ticketDto);
+        ticketDto = ticketService.createTicket("fightingdemons@gmail.com", ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/ticket-management/{ticketId}", ticketDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.id",
-                                CoreMatchers.is(ticketDto.getId())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id",
+                        CoreMatchers.is(Integer.parseInt(ticketDto.getId().toString()))));
 
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
     public void updateTicketSuccess() throws Exception {
 
-        ticketDto = ticketService.createTicket(ticketDto);
+        ticketDto = ticketService.createTicket("fightingdemons@gmail.com", ticketDto);
         this.jsonBody = jsonMapper.toJson(ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/ticket-management/{ticketId}", ticketDto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.id",
-                                CoreMatchers.is(ticketDto.getId())));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id",
+                        CoreMatchers.is(Integer.parseInt(ticketDto.getId().toString()))));
 
     }
 
     @Test
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "USER")
     public void deleteTicketSuccess() throws Exception {
 
-        ticketDto = ticketController.createTicket(ticketDto);
+        ticketDto = ticketService.createTicket("fightingdemons@gmail.com", ticketDto);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/ticket-management/{ticketId}", ticketDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
-        Assert.assertNull(ticketController.readTicket(ticketDto.getId()));
-
-    }
-
-    @Test
-    @Transactional(readOnly = true)
-    public void getEventTicketsSuccess() throws Exception {
-
-        this.jsonBody = jsonMapper.toJson(ticketDto);
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/ticket-management/by-event/{eventId}", eventDto.getId()))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.[0].orderDate",
-                                CoreMatchers.is(ticketDto.getOrderDate().toString())));
+        Assert.assertNull(ticketService.readTicket(ticketDto.getId()));
 
     }
+
 
 }

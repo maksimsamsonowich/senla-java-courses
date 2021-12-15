@@ -19,7 +19,7 @@ import java.util.Date;
 public class EventDto {
 
     @JsonProperty(value = "id")
-    private int id;
+    private Long id;
 
     @JsonProperty(value = "title")
     private String title;

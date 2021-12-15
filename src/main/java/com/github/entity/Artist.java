@@ -1,19 +1,19 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "artists")
+@Accessors(chain = true)
 @NamedEntityGraph(
         name = "artists-entity-graph",
         attributeNodes = {
@@ -37,33 +37,24 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String nickname;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "artists_genres",
-            joinColumns = @JoinColumn(name = "artist_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
+    @JoinTable(name = "artists_genres", joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
 
-    @OneToMany(mappedBy = "eventOrganizer", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "eventOrganizer")
     private Set<Event> events;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User cardOwner;
 
-
-    public String toString() {
-        return String.format(
-                "Artist [id=%d, " +
-                        "nickname=%s]",
-                id,
-                nickname
-        );
-    }
 
 }

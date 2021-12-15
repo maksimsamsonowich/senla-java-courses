@@ -1,37 +1,29 @@
 package com.github.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Getter
 @Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "genres")
+@Accessors(chain = true)
 public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "genres")
     private Set<Artist> artists;
-
-    public String toString() {
-        return String.format(
-                "Genre [id=%d, " +
-                        "name=%s]",
-                id,
-                name
-        );
-    }
 
 }
