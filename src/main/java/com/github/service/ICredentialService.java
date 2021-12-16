@@ -12,4 +12,5 @@ public interface ICredentialService {
 
     void deleteCredential(Long id);
 
+    CredentialDto findByEmail(String email);
 }

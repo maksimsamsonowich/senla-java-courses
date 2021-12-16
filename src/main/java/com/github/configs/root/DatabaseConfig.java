@@ -43,9 +43,6 @@ public class DatabaseConfig {
     @Value("${packagesToScan}")
     private String packagesToScan;
 
-    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.PostgreSQLDialect'}}")
-    private Map<String, String> hibernateAdditionalProperties;
-
     @Bean
     public DataSource dataSource()  {
         DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
@@ -78,7 +75,6 @@ public class DatabaseConfig {
         localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
         localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         localContainerEntityManagerFactoryBean.setDataSource(dataSource);
-        //localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
         localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
         return localContainerEntityManagerFactoryBean;
     }
@@ -93,7 +89,7 @@ public class DatabaseConfig {
         return entityManager.getCriteriaBuilder();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put(Environment.SHOW_SQL, "true");

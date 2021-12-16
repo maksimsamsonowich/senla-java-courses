@@ -30,7 +30,7 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     }
 
     @Override
-    public T read(Long id) {
+    public T readById(Long id) {
         return entityManager.find(entityClass, id);
     }
 
@@ -41,8 +41,8 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     }
 
     @Override
-    public void delete(T entity) {
-        entityManager.remove(entity);
+    public void deleteById(Long id) {
+        entityManager.remove(readById(id));
     }
 
     @Override

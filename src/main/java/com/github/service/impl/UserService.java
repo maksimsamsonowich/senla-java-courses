@@ -3,7 +3,7 @@ package com.github.service.impl;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.IMapper;
-import com.github.repository.IAbstractRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,28 +14,36 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserService implements IUserService {
 
-    private final IAbstractRepository<User> iUserDao;
+    private final UserRepository userRepository;
 
     private final IMapper<UserDto, User> userMapper;
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        return userMapper.toDto(iUserDao.create(userMapper.toEntity(userDto, User.class)), UserDto.class);
+        User currentUser = userMapper.toEntity(userDto, User.class);
+
+        userRepository.create(currentUser);
+
+        return userMapper.toDto(currentUser, UserDto.class);
     }
 
     @Override
-    public UserDto readUser(Long id) {
-        return userMapper.toDto(iUserDao.read(id), UserDto.class);
+    public UserDto readUser(Long userId) {
+        return userMapper.toDto(userRepository.readById(userId), UserDto.class);
     }
 
     @Override
-    public UserDto update(Long id, UserDto userDto) {
-        userDto.setId(id);
-        return userMapper.toDto(iUserDao.update(userMapper.toEntity(userDto, User.class)), UserDto.class);
+    public UserDto update(Long userId, UserDto userDto) {
+        userDto.setId(userId);
+        User currentUser = userMapper.toEntity(userDto, User.class);
+
+        userRepository.update(currentUser);
+
+        return userMapper.toDto(currentUser, UserDto.class);
     }
 
     @Override
     public void deleteUser(Long id) {
-        iUserDao.delete(iUserDao.read(id));
+        userRepository.deleteById(id);
     }
 }

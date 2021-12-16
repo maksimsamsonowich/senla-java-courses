@@ -39,19 +39,24 @@ public class CredentialService implements ICredentialService {
     }
 
     @Override
-    public CredentialDto readCredential(Long id) {
-        return credentialMapper.toDto(credentialRepository.read(id), CredentialDto.class);
+    public CredentialDto readCredential(Long credentialId) {
+        return credentialMapper.toDto(credentialRepository.readById(credentialId), CredentialDto.class);
     }
 
     @Override
-    public CredentialDto updateCredential(Long id, CredentialDto credentialDto) {
-        credentialDto.setId(id);
-        return credentialMapper.toDto(credentialRepository.update(credentialMapper.toEntity(credentialDto, Credential.class)), CredentialDto.class);
+    public CredentialDto updateCredential(Long credentialId, CredentialDto credentialDto) {
+        credentialDto.setId(credentialId);
+
+        Credential currentCredential = credentialMapper.toEntity(credentialDto, Credential.class);
+
+        currentCredential = credentialRepository.update(currentCredential);
+
+        return credentialMapper.toDto(currentCredential, CredentialDto.class);
     }
 
     @Override
-    public void deleteCredential(Long id) {
-        credentialRepository.delete(credentialRepository.read(id));
+    public void deleteCredential(Long credentialId) {
+        credentialRepository.deleteById(credentialId);
     }
 
     public CredentialDto findByEmail(String email) {

@@ -52,7 +52,7 @@ public class UserServiceTest {
     @Test
     public void readUserSuccess() {
 
-        Mockito.when(userDao.read(userMock.getId())).thenReturn(userMock);
+        Mockito.when(userDao.readById(userMock.getId())).thenReturn(userMock);
 
         UserDto expectedResult = userMapper.toDto(userMock, UserDto.class);
         UserDto actualResult = userService.readUser(userMock.getId());
@@ -75,12 +75,12 @@ public class UserServiceTest {
     @Test
     public void deleteUserSuccess() {
 
-        doNothing().when(userDao).delete(userMock);
-        Mockito.when(userDao.read(userMock.getId())).thenReturn(userMock);
+        doNothing().when(userDao).deleteById(userMock);
+        Mockito.when(userDao.readById(userMock.getId())).thenReturn(userMock);
 
         userService.deleteUser(userMock.getId());
 
-        verify(userDao, times(1)).delete(userMock);
+        verify(userDao, times(1)).deleteById(userMock);
     }
 
 }

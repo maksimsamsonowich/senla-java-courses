@@ -15,21 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
 
-    private final TicketRepository ticketRepository;
-
     private final UserRepository userRepository;
 
     private final EventRepository eventRepository;
 
+    private final TicketRepository ticketRepository;
+
     @Override
     public Boolean isUserOwnedTicket(Long ticketId, Authentication authentication) {
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
 
-        if (hasAdminRole)
+        if (isAdmin(authentication))
             return true;
 
-        String ownerEmail = ticketRepository.read(ticketId).getOwner()
+        String ownerEmail = ticketRepository.readById(ticketId).getOwner()
                 .getCredential().getEmail();
 
         final String currentUserEmail = authentication.getName();
@@ -39,13 +37,11 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
 
     @Override
     public Boolean isUserOwnedAccount(Long userId, Authentication authentication) {
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
 
-        if (hasAdminRole)
+        if (isAdmin(authentication))
             return true;
 
-        String ownerEmail = userRepository.read(userId).getCredential().getEmail();
+        String ownerEmail = userRepository.readById(userId).getCredential().getEmail();
 
         final String currentUserEmail = authentication.getName();
 
@@ -55,13 +51,10 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
     @Override
     public Boolean isUserOwnedEvent(Long eventId, Authentication authentication) {
 
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
-
-        if (hasAdminRole)
+        if (isAdmin(authentication))
             return true;
 
-        String ownerEmail = eventRepository.read(eventId).getEventOrganizer()
+        String ownerEmail = eventRepository.readById(eventId).getEventOrganizer()
                 .getCardOwner().getCredential().getEmail();
 
         final String currentUserEmail = authentication.getName();
@@ -69,4 +62,13 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
         return ownerEmail.equals(currentUserEmail);
     }
 
+    private Boolean isAdmin(Authentication authentication) {
+        boolean hasAdminRole = authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
+
+        if (hasAdminRole)
+            return true;
+        else
+            return false;
+    }
 }

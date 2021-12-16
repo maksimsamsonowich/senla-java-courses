@@ -10,9 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -43,7 +40,7 @@ public class LocationDaoTest {
     public void createLocationSuccess() {
         expectedResult = locationDao.create(expectedResult);
 
-        Location actualResult = locationDao.read(expectedResult.getId());
+        Location actualResult = locationDao.readById(expectedResult.getId());
 
         Assert.assertEquals(actualResult, expectedResult);
     }
@@ -52,9 +49,9 @@ public class LocationDaoTest {
     public void deleteLocationSuccess() {
         expectedResult = locationDao.create(expectedResult);
 
-        locationDao.delete(expectedResult);
+        locationDao.deleteById(expectedResult);
 
-        Location actualResult = locationDao.read(expectedResult.getId());
+        Location actualResult = locationDao.readById(expectedResult.getId());
         Assert.assertNull(actualResult);
     }
 
@@ -62,7 +59,7 @@ public class LocationDaoTest {
     public void readLocationSuccess() {
         expectedResult = locationDao.create(expectedResult);
 
-        Location actualResult = locationDao.read(expectedResult.getId());
+        Location actualResult = locationDao.readById(expectedResult.getId());
 
         Assert.assertEquals(actualResult, expectedResult);
     }
@@ -74,7 +71,7 @@ public class LocationDaoTest {
         expectedResult.setTitle("KK");
         locationDao.update(expectedResult);
 
-        Location actualResult = locationDao.read(expectedResult.getId());
+        Location actualResult = locationDao.readById(expectedResult.getId());
 
         Assert.assertEquals(actualResult, expectedResult);
     }
@@ -87,7 +84,7 @@ public class LocationDaoTest {
         List<Location> expectedResult = new ArrayList<>();
 
         while (true) {
-            Location location = locationDao.read(step);
+            Location location = locationDao.readById(step);
 
             if (location == null)
                 break;

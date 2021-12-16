@@ -1,7 +1,7 @@
 package com.github.configs.web;
 
-import com.github.exception.AccessDeniedHandler;
-import com.github.exception.Http403ForbiddenEntryPoint;
+import com.github.exception.security.AccessDeniedHandler;
+import com.github.exception.security.Http403ForbiddenEntryPoint;
 import com.github.security.jwt.token.JwtTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -21,42 +21,56 @@ import java.util.Set;
 @AllArgsConstructor
 public class EventService implements IEventService {
 
-    private final EventRepository iEventDao;
+    private final EventRepository eventRepository;
 
     private final IMapper<EventDto, Event> eventMapper;
+
     private final IMapper<EventArtistDto, Artist> artistMapper;
+
     private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
 
     @Override
     public EventDto createEvent(EventDto eventDto) {
-        return eventMapper.toDto(iEventDao.create(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
+        Event currentEvent = eventMapper.toEntity(eventDto, Event.class);
+
+        eventRepository.create(currentEvent);
+
+        return eventMapper.toDto(currentEvent, EventDto.class);
     }
 
     @Override
-    public EventDto readEvent(Long id) {
-        return eventMapper.toDto(iEventDao.read(id), EventDto.class);
+    public EventDto readEvent(Long eventId) {
+        return eventMapper.toDto(eventRepository.readById(eventId), EventDto.class);
     }
 
     @Override
-    public EventDto update(Long id, EventDto eventDto) {
-        eventDto.setId(id);
-        return eventMapper.toDto(iEventDao.update(eventMapper.toEntity(eventDto, Event.class)), EventDto.class);
+    public EventDto update(Long eventId, EventDto eventDto) {
+        eventDto.setId(eventId);
+        Event currentEvent = eventMapper.toEntity(eventDto, Event.class);
+
+        eventRepository.update(currentEvent);
+
+        return eventMapper.toDto(currentEvent, EventDto.class);
     }
 
     @Override
-    public void deleteEvent(Long id) {
-        iEventDao.delete(iEventDao.read(id));
+    public void deleteEvent(Long eventId) {
+        eventRepository.deleteById(eventId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<EventDto> getEventsByLocation(Long id) {
-        return convertSetOfEntitiesToDto(iEventDao.getEventsByLocation(id));
+    public Set<EventDto> getEventsByLocation(Long eventId) {
+        Set<Event> currentEvents = eventRepository.getEventsByLocation(eventId);
+
+        return convertSetOfEntitiesToDto(currentEvents);
     }
 
     @Transactional(readOnly = true)
-    public Set<EventDto> getLimitCheapestEvents(Integer resultLimit) {
-        return convertSetOfEntitiesToDto(iEventDao.getCheapestEvents(resultLimit));
+    public Set<EventDto> getLimitedCheapestEvents(Integer resultLimit) {
+        Set<Event> currentEvents = eventRepository.getCheapestEvents(resultLimit);
+
+        return convertSetOfEntitiesToDto(currentEvents);
     }
 
     private Set<EventDto> convertSetOfEntitiesToDto(Set<Event> events) {

@@ -10,9 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -43,7 +40,7 @@ public class UserDaoTest {
     public void createUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -52,9 +49,9 @@ public class UserDaoTest {
     public void deleteUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        userDao.delete(expectedResult);
+        userDao.deleteById(expectedResult);
 
-        User secondUser = userDao.read(expectedResult.getId());
+        User secondUser = userDao.readById(expectedResult.getId());
         Assert.assertNull(secondUser);
     }
 
@@ -62,7 +59,7 @@ public class UserDaoTest {
     public void readUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -74,7 +71,7 @@ public class UserDaoTest {
         expectedResult.setSurname("wow");
         userDao.update(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -87,7 +84,7 @@ public class UserDaoTest {
         List<User> expectedResult = new ArrayList<>();
 
         while (true) {
-            User user = userDao.read(step);
+            User user = userDao.readById(step);
 
             if (user == null) {
                 break;

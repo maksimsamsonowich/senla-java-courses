@@ -25,12 +25,20 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({ NoSuchUserException.class,
                         NoSuchEventException.class,
                         NoSuchLocationException.class,
-                        EntityNotFoundException.class,
-                        WrongPasswordException.class,
+                        EntityNotFoundException.class })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public ResponseEntity<ErrorDto> resourceNotFoundException(RuntimeException exception) {
+        return ResponseEntity.ok(new ErrorDto(
+                HttpStatus.NO_CONTENT.value(),
+                exception.getMessage()
+        ));
+    }
+
+    @ExceptionHandler({ WrongPasswordException.class,
                         UsernameNotFoundException.class,
                         BadCredentialsException.class })
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDto> resourceNotFoundException(RuntimeException exception) {
+    public ResponseEntity<ErrorDto> wrongDataException(RuntimeException exception) {
         return ResponseEntity.ok(new ErrorDto(
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage()

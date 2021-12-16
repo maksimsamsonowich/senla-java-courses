@@ -55,7 +55,7 @@ public class EventServiceTest {
     @Test
     public void readEventSuccess() {
 
-        Mockito.when(eventDaoMock.read(eventMock.getId())).thenReturn(eventMock);
+        Mockito.when(eventDaoMock.readById(eventMock.getId())).thenReturn(eventMock);
 
         EventDto expectedResult = eventMapper.toDto(eventMock, EventDto.class);
         EventDto actualResult = eventService.readEvent(eventMock.getId());
@@ -78,12 +78,12 @@ public class EventServiceTest {
     @Test
     public void deleteEventSuccess() {
 
-        doNothing().when(eventDaoMock).delete(eventMock);
-        Mockito.when(eventDaoMock.read(eventMock.getId())).thenReturn(eventMock);
+        doNothing().when(eventDaoMock).deleteById(eventMock);
+        Mockito.when(eventDaoMock.readById(eventMock.getId())).thenReturn(eventMock);
 
         eventService.deleteEvent(eventMock.getId());
 
-        verify(eventDaoMock, times(1)).delete(eventMock);
+        verify(eventDaoMock, times(1)).deleteById(eventMock);
 
     }
 

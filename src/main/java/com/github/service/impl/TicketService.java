@@ -8,7 +8,6 @@ import com.github.repository.impl.TicketRepository;
 import com.github.repository.impl.UserRepository;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,19 +18,19 @@ import java.util.Set;
 @AllArgsConstructor
 public class TicketService implements ITicketService {
 
-    private final IMapper<TicketDto, Ticket> ticketMapper;
-
-    private final TicketRepository ticketRepository;
-
     private final UserRepository userRepository;
 
     private final EventRepository eventRepository;
+
+    private final TicketRepository ticketRepository;
+
+    private final IMapper<TicketDto, Ticket> ticketMapper;
 
     @Override
     public TicketDto createTicket(String email, TicketDto ticketDto) {
         Ticket currentTicket = ticketMapper.toEntity(ticketDto, Ticket.class)
                 .setOwner(userRepository.findByUsername(email))
-                .setEventHolding(eventRepository.read(ticketDto.getEventHolding().getId()));
+                .setEventHolding(eventRepository.readById(ticketDto.getEventHolding().getId()));
 
         currentTicket = ticketRepository.create(currentTicket);
 
@@ -40,13 +39,13 @@ public class TicketService implements ITicketService {
 
     @Override
     public TicketDto readTicket(Long ticketId) {
-        return ticketMapper.toDto(ticketRepository.read(ticketId), TicketDto.class);
+        return ticketMapper.toDto(ticketRepository.readById(ticketId), TicketDto.class);
     }
 
     @Override
     public TicketDto update(Long id, TicketDto ticketDto) {
-
         Ticket currentTicket = ticketMapper.toEntity(ticketDto, Ticket.class);
+
         ticketRepository.update(currentTicket);
 
         return ticketMapper.toDto(currentTicket, TicketDto.class);
@@ -54,7 +53,7 @@ public class TicketService implements ITicketService {
 
     @Override
     public void deleteTicket(Long id) {
-        ticketRepository.delete(ticketRepository.read(id));
+        ticketRepository.deleteById(id);
     }
 
     @Override

@@ -16,4 +16,5 @@ public interface IEventService {
 
     Set<EventDto> getEventsByLocation(Long id);
 
+    Set<EventDto> getLimitedCheapestEvents(Integer resultLimit);
 }
