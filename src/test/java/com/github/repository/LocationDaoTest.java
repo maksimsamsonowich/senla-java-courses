@@ -49,7 +49,7 @@ public class LocationDaoTest {
     public void deleteLocationSuccess() {
         expectedResult = locationDao.create(expectedResult);
 
-        locationDao.deleteById(expectedResult);
+        locationDao.deleteById(expectedResult.getId());
 
         Location actualResult = locationDao.readById(expectedResult.getId());
         Assert.assertNull(actualResult);

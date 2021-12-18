@@ -18,7 +18,7 @@ import java.util.Set;
         name = "user-entity-graph",
         attributeNodes = {
                 @NamedAttributeNode("tickets"),
-                @NamedAttributeNode("artistCard")
+                @NamedAttributeNode("credential")
         }
 )
 public class User {

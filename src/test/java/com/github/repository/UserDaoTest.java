@@ -2,7 +2,6 @@ package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.User;
-import com.github.repository.impl.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,61 +37,40 @@ public class UserDaoTest {
 
     @Test
     public void createUserSuccess() {
-        expectedResult = userDao.create(expectedResult);
+        expectedResult = userDao.save(expectedResult);
 
-        User actualResult = userDao.readById(expectedResult.getId());
+        User actualResult = userDao.findById(expectedResult.getId()).get();
 
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteUserSuccess() {
-        expectedResult = userDao.create(expectedResult);
+        expectedResult = userDao.save(expectedResult);
 
-        userDao.deleteById(expectedResult);
+        userDao.deleteById(expectedResult.getId());
 
-        User secondUser = userDao.readById(expectedResult.getId());
+        User secondUser = userDao.findById(expectedResult.getId()).get();
         Assert.assertNull(secondUser);
     }
 
     @Test
     public void readUserSuccess() {
-        expectedResult = userDao.create(expectedResult);
+        expectedResult = userDao.save(expectedResult);
 
-        User actualResult = userDao.readById(expectedResult.getId());
+        User actualResult = userDao.findById(expectedResult.getId()).get();
 
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateUserSuccess() {
-        expectedResult = userDao.create(expectedResult);
+        expectedResult = userDao.save(expectedResult);
 
         expectedResult.setSurname("wow");
-        userDao.update(expectedResult);
+        userDao.save(expectedResult);
 
-        User actualResult = userDao.readById(expectedResult.getId());
-
-        Assert.assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    public void getAllTicketsSuccess() {
-        List<User> actualResult = userDao.getAll();
-
-        long step = 1;
-        List<User> expectedResult = new ArrayList<>();
-
-        while (true) {
-            User user = userDao.readById(step);
-
-            if (user == null) {
-                break;
-            }
-
-            expectedResult.add(user);
-            step += 1;
-        }
+        User actualResult = userDao.findById(expectedResult.getId()).get();
 
         Assert.assertEquals(expectedResult, actualResult);
     }

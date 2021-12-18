@@ -77,12 +77,12 @@ public class LocationServiceTest {
     @Test
     public void deleteLocationSuccess() {
 
-        doNothing().when(locationDao).deleteById(locationMock);
+        doNothing().when(locationDao).deleteById(locationMock.getId());
         Mockito.when(locationDao.readById(locationMock.getId())).thenReturn(locationMock);
 
         locationService.deleteLocation(locationMock.getId());
 
-        verify(locationDao, times(1)).deleteById(locationMock);
+        verify(locationDao, times(1)).deleteById(locationMock.getId());
     }
 
     @Test

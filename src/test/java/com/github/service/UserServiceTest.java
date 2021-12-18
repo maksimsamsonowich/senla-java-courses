@@ -2,8 +2,9 @@ package com.github.service;
 
 import com.github.dto.UserDto;
 import com.github.entity.User;
+import com.github.exception.user.NoSuchUserException;
 import com.github.mapper.impl.Mapper;
-import com.github.repository.impl.UserRepository;
+import com.github.repository.UserRepository;
 import com.github.service.impl.UserService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -41,7 +44,7 @@ public class UserServiceTest {
     @Test
     public void createUserSuccess() {
 
-        Mockito.when(userDao.create(userMock)).thenReturn(userMock);
+        Mockito.when(userDao.save(userMock)).thenReturn(userMock);
 
         UserDto expectedResult = userMapper.toDto(userMock, UserDto.class);
         UserDto actualResult = userService.createUser(expectedResult);
@@ -52,9 +55,11 @@ public class UserServiceTest {
     @Test
     public void readUserSuccess() {
 
-        Mockito.when(userDao.readById(userMock.getId())).thenReturn(userMock);
+        Optional<User> optionalUserObject = Optional.of(userMock);
+        Mockito.when(userDao.findById(userMock.getId()))
+                .thenReturn(optionalUserObject);
 
-        UserDto expectedResult = userMapper.toDto(userMock, UserDto.class);
+        UserDto expectedResult = userMapper.toDto(optionalUserObject.get(), UserDto.class);
         UserDto actualResult = userService.readUser(userMock.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
@@ -64,7 +69,7 @@ public class UserServiceTest {
     @Test
     public void updateUserSuccess() {
 
-        Mockito.when(userDao.update(userMock)).thenReturn(userMock);
+        Mockito.when(userDao.save(userMock)).thenReturn(userMock);
 
         UserDto expectedResult = new UserDto();
         UserDto actualResult = userService.update(userMock.getId(), expectedResult);
@@ -75,12 +80,11 @@ public class UserServiceTest {
     @Test
     public void deleteUserSuccess() {
 
-        doNothing().when(userDao).deleteById(userMock);
-        Mockito.when(userDao.readById(userMock.getId())).thenReturn(userMock);
+        doNothing().when(userDao).deleteById(userMock.getId());
 
         userService.deleteUser(userMock.getId());
 
-        verify(userDao, times(1)).deleteById(userMock);
+        verify(userDao, times(1)).deleteById(userMock.getId());
     }
 
 }

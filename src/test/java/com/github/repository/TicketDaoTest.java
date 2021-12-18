@@ -56,7 +56,7 @@ public class TicketDaoTest {
     public void deleteTicketSuccess() {
         testTicketEntity = ticketDao.create(testTicketEntity);
 
-        ticketDao.deleteById(testTicketEntity);
+        ticketDao.deleteById(testTicketEntity.getId());
 
         Ticket secondTicket = ticketDao.readById(testTicketEntity.getId());
         Assert.assertNull(secondTicket);

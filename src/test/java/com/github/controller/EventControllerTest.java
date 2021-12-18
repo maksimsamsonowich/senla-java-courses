@@ -3,17 +3,9 @@ package com.github.controller;
 import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
-import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.dto.UserDto;
-import com.github.entity.Credential;
-import com.github.entity.Role;
-import com.github.entity.User;
 import com.github.mapper.impl.JsonMapper;
-import com.github.repository.impl.CredentialRepository;
-import com.github.repository.impl.RoleRepository;
-import com.github.repository.impl.UserRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -35,7 +27,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.Objects;
 
 @WebAppConfiguration

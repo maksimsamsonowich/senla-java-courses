@@ -60,7 +60,7 @@ public class EventDaoTest {
     public void deleteEventSuccess() {
         expectedResult = eventDao.create(expectedResult);
 
-        eventDao.deleteById(expectedResult);
+        eventDao.deleteById(expectedResult.getId());
 
         Event actualResult = eventDao.readById(expectedResult.getId());
         Assert.assertNull(actualResult);

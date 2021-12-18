@@ -3,9 +3,9 @@ package com.github.service.impl;
 import com.github.dto.TicketDto;
 import com.github.entity.Ticket;
 import com.github.mapper.IMapper;
+import com.github.repository.UserRepository;
 import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;
-import com.github.repository.impl.UserRepository;
 import com.github.service.ITicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class TicketService implements ITicketService {
     @Override
     public TicketDto createTicket(String email, TicketDto ticketDto) {
         Ticket currentTicket = ticketMapper.toEntity(ticketDto, Ticket.class)
-                .setOwner(userRepository.findByUsername(email))
+                .setOwner(userRepository.findByCredential_Email(email))
                 .setEventHolding(eventRepository.readById(ticketDto.getEventHolding().getId()));
 
         currentTicket = ticketRepository.create(currentTicket);

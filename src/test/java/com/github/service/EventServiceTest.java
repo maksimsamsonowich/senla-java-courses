@@ -78,12 +78,12 @@ public class EventServiceTest {
     @Test
     public void deleteEventSuccess() {
 
-        doNothing().when(eventDaoMock).deleteById(eventMock);
+        doNothing().when(eventDaoMock).deleteById(eventMock.getId());
         Mockito.when(eventDaoMock.readById(eventMock.getId())).thenReturn(eventMock);
 
         eventService.deleteEvent(eventMock.getId());
 
-        verify(eventDaoMock, times(1)).deleteById(eventMock);
+        verify(eventDaoMock, times(1)).deleteById(eventMock.getId());
 
     }
 

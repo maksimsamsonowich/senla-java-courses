@@ -14,6 +14,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "creds")
 @Accessors(chain = true)
+@NamedEntityGraph(
+        name = "credential-graph",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("roles")
+        }
+)
 public class Credential {
 
     @Id

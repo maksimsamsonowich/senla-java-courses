@@ -2,8 +2,9 @@ package com.github.service.impl;
 
 import com.github.dto.UserDto;
 import com.github.entity.User;
+import com.github.exception.user.NoSuchUserException;
 import com.github.mapper.IMapper;
-import com.github.repository.impl.UserRepository;
+import com.github.repository.UserRepository;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,17 @@ public class UserService implements IUserService {
     public UserDto createUser(UserDto userDto) {
         User currentUser = userMapper.toEntity(userDto, User.class);
 
-        userRepository.create(currentUser);
+        userRepository.save(currentUser);
 
         return userMapper.toDto(currentUser, UserDto.class);
     }
 
     @Override
     public UserDto readUser(Long userId) {
-        return userMapper.toDto(userRepository.readById(userId), UserDto.class);
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchUserException("There is no such user"));
+
+        return userMapper.toDto(currentUser, UserDto.class);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class UserService implements IUserService {
         userDto.setId(userId);
         User currentUser = userMapper.toEntity(userDto, User.class);
 
-        userRepository.update(currentUser);
+        userRepository.save(currentUser);
 
         return userMapper.toDto(currentUser, UserDto.class);
     }
