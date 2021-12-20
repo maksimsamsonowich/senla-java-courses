@@ -22,7 +22,7 @@ public class EventController{
     private final IItemsSecurityExpressions iItemsSecurityExpressions;
 
     @PostMapping
-    @Secured(Roles.ADMIN)
+    @Secured(Roles.ARTIST)
     public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
         return ResponseEntity.ok(iEventService.createEvent(eventDto));
     }
@@ -33,12 +33,14 @@ public class EventController{
         return ResponseEntity.ok(iEventService.readEvent(eventId));
     }
 
+    @Secured(Roles.ARTIST)
     @PutMapping("{eventId}")
     @PreAuthorize("@itemsSecurityExpressions.isUserOwnedEvent(#eventId, authentication)")
     public ResponseEntity<EventDto> updateEvent(@PathVariable Long eventId, @RequestBody EventDto eventDto) {
         return ResponseEntity.ok(iEventService.update(eventId, eventDto));
     }
 
+    @Secured(Roles.ARTIST)
     @DeleteMapping("{eventId}")
     @PreAuthorize("@itemsSecurityExpressions.isUserOwnedEvent(#eventId, authentication)")
     public void deleteEvent(@PathVariable Long eventId) {

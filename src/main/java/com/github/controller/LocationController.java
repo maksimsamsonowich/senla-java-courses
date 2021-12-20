@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("location-management")
 public class LocationController {
 
-    private ILocationService iLocationService;
+    private final ILocationService iLocationService;
 
     @PostMapping
     @Secured(Roles.ADMIN)

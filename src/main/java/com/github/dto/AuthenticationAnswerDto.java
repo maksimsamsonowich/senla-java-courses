@@ -9,10 +9,10 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Setter
-@Accessors(chain = true)
+@JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonAutoDetect
+@Accessors(chain = true)
 public class AuthenticationAnswerDto {
 
     private Integer status;

@@ -4,7 +4,7 @@ import com.github.dto.CredentialDto;
 
 public interface ICredentialService {
 
-    CredentialDto createCredential(CredentialDto credentialDto);
+    void createCredential(CredentialDto credentialDto);
 
     CredentialDto readCredential(Long id);
 
@@ -12,5 +12,5 @@ public interface ICredentialService {
 
     void deleteCredential(Long id);
 
-    CredentialDto findByEmail(String email);
+    CredentialDto findCredentialByEmail(String email);
 }

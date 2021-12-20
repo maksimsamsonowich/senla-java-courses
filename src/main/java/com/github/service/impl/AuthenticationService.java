@@ -3,7 +3,7 @@ package com.github.service.impl;
 import com.github.dto.AuthenticationAnswerDto;
 import com.github.dto.AuthenticationRequestDto;
 import com.github.entity.Credential;
-import com.github.repository.impl.CredentialRepository;
+import com.github.repository.CredentialRepository;
 import com.github.security.jwt.token.JwtTokenProvider;
 import com.github.service.IAuthenticationService;
 import lombok.AllArgsConstructor;
@@ -14,8 +14,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class AuthenticationService implements IAuthenticationService {
 

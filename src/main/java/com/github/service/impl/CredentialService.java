@@ -3,8 +3,9 @@ package com.github.service.impl;
 import com.github.dto.CredentialDto;
 import com.github.entity.Credential;
 import com.github.entity.User;
+import com.github.exception.security.CredentialNotFoundException;
 import com.github.mapper.IMapper;
-import com.github.repository.impl.CredentialRepository;
+import com.github.repository.CredentialRepository;
 import com.github.repository.impl.RoleRepository;
 import com.github.service.ICredentialService;
 import lombok.AllArgsConstructor;
@@ -28,19 +29,22 @@ public class CredentialService implements ICredentialService {
     private final IMapper<CredentialDto, Credential> credentialMapper;
 
     @Override
-    public CredentialDto createCredential(CredentialDto credentialDto) {
+    public void createCredential(CredentialDto credentialDto) {
         Credential currentCredential = credentialMapper.toEntity(credentialDto, Credential.class);
 
         currentCredential.setUser(new User().setCredential(currentCredential))
                 .setPassword(passwordEncoder.encode(currentCredential.getPassword()))
                 .setRoles(new HashSet<>(){{ add(roleRepository.findByName("USER")); }});
 
-        return credentialMapper.toDto(credentialRepository.create(currentCredential), CredentialDto.class);
+        credentialRepository.save(currentCredential);
     }
 
     @Override
     public CredentialDto readCredential(Long credentialId) {
-        return credentialMapper.toDto(credentialRepository.readById(credentialId), CredentialDto.class);
+        Credential currentCredential = credentialRepository.findById(credentialId)
+                .orElseThrow(() -> new CredentialNotFoundException("Credential exception"));
+
+        return credentialMapper.toDto(currentCredential, CredentialDto.class);
     }
 
     @Override
@@ -49,9 +53,7 @@ public class CredentialService implements ICredentialService {
 
         Credential currentCredential = credentialMapper.toEntity(credentialDto, Credential.class);
 
-        currentCredential = credentialRepository.update(currentCredential);
-
-        return credentialMapper.toDto(currentCredential, CredentialDto.class);
+        return credentialMapper.toDto(credentialRepository.save(currentCredential), CredentialDto.class);
     }
 
     @Override
@@ -59,7 +61,8 @@ public class CredentialService implements ICredentialService {
         credentialRepository.deleteById(credentialId);
     }
 
-    public CredentialDto findByEmail(String email) {
+    @Override
+    public CredentialDto findCredentialByEmail(String email) {
         return credentialMapper.toDto(credentialRepository.getCredentialByEmail(email), CredentialDto.class);
     }
 

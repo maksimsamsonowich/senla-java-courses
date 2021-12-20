@@ -25,10 +25,6 @@ public class EventService implements IEventService {
 
     private final IMapper<EventDto, Event> eventMapper;
 
-    private final IMapper<EventArtistDto, Artist> artistMapper;
-
-    private final IMapper<EventProgramDto, EventProgram> eventProgramMapper;
-
     @Override
     public EventDto createEvent(EventDto eventDto) {
         Event currentEvent = eventMapper.toEntity(eventDto, Event.class);
@@ -63,40 +59,15 @@ public class EventService implements IEventService {
     public Set<EventDto> getEventsByLocation(Long eventId) {
         Set<Event> currentEvents = eventRepository.getEventsByLocation(eventId);
 
-        return convertSetOfEntitiesToDto(currentEvents);
+        return eventMapper.setToDto(currentEvents, EventDto.class);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Set<EventDto> getLimitedCheapestEvents(Integer resultLimit) {
         Set<Event> currentEvents = eventRepository.getCheapestEvents(resultLimit);
 
-        return convertSetOfEntitiesToDto(currentEvents);
+        return eventMapper.setToDto(currentEvents, EventDto.class);
     }
 
-    private Set<EventDto> convertSetOfEntitiesToDto(Set<Event> events) {
-        Set<EventDto> retSet = eventMapper.setToDto(events, EventDto.class);
-
-        for (EventDto eventDto : retSet) {
-            eventDto.setEventOrganizer(
-                    artistMapper.toDto(
-                            events.stream()
-                            .filter((entity) -> entity.getId() == eventDto.getId())
-                            .findFirst()
-                            .orElseThrow(() -> new NoSuchEntityException("There is no such entity"))
-                            .getEventOrganizer(),
-                             EventArtistDto.class)
-            );
-            eventDto.setEventProgram(
-                    eventProgramMapper.toDto(
-                            events.stream()
-                                    .filter((entity) -> entity.getId() == eventDto.getId())
-                                    .findFirst()
-                                    .orElseThrow(() -> new NoSuchEntityException("There is no such entity"))
-                                    .getEventProgram(),
-                                    EventProgramDto.class)
-            );
-        }
-
-        return retSet;
-    }
 }

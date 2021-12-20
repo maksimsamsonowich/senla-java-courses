@@ -1,9 +1,14 @@
 package com.github.dto;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.*;
 import lombok.experimental.Accessors;
 
-@Data
+@Getter
+@Setter
+@JsonAutoDetect
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class AuthenticationRequestDto {
 

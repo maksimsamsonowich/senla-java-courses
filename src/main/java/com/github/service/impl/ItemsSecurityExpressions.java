@@ -43,7 +43,7 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
             return true;
 
         String ownerEmail = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Email not found."))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."))
                 .getCredential()
                 .getEmail();
 
@@ -67,12 +67,7 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
     }
 
     private Boolean isAdmin(Authentication authentication) {
-        boolean hasAdminRole = authentication.getAuthorities().stream()
+        return authentication.getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
-
-        if (hasAdminRole)
-            return true;
-        else
-            return false;
     }
 }

@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 
 import java.sql.Date;
 
-
 @Getter
 @Setter
 @JsonAutoDetect
