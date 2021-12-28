@@ -6,6 +6,7 @@ import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;
 import com.github.service.IItemsSecurityExpressions;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -66,8 +67,9 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
         return ownerEmail.equals(currentUserEmail);
     }
 
-    private Boolean isAdmin(Authentication authentication) {
+
+    private Boolean isAdmin(@NotNull Authentication authentication) {
         return authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(Roles.ADMIN));
+                .anyMatch(role -> role.getAuthority().equals(Roles.ADMIN));
     }
 }

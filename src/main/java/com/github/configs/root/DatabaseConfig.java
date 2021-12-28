@@ -27,19 +27,19 @@ import java.util.Properties;
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
-    @Value("${login}")
+    @Value("${db.login}")
     private String username;
 
-    @Value("${password}")
+    @Value("${db.password}")
     private String password;
 
-    @Value("${url}")
+    @Value("${db.url}")
     private String url;
 
-    @Value("${driver}")
+    @Value("${postgre.driver}")
     private String driver;
 
-    @Value("${spring.liquibase.change-log}")
+    @Value("${liquibase.change-log}")
     private String changeLogFile;
 
     @Value("${packagesToScan}")

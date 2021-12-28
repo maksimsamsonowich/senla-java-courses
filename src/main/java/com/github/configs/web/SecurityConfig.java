@@ -6,6 +6,7 @@ import com.github.security.jwt.token.JwtTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String AUTH_ENDPOINT = "/senla/auth";
+    private static final String REGISTRATION_ENDPOINT = "/senla/register";
 
     private JwtTokenFilter jwtTokenFilter;
 
@@ -47,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, AUTH_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new AccessDeniedHandler())

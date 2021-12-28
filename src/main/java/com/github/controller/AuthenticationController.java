@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AuthenticationController {
 
-    private final IAuthenticationService iAuthenticationService;
-
     private final ICredentialService iCredentialService;
+
+    private final IAuthenticationService iAuthenticationService;
 
     @PostMapping("auth")
     public ResponseEntity<AuthenticationAnswerDto> customerAuthentication

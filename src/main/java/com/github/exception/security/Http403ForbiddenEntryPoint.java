@@ -1,6 +1,8 @@
 package com.github.exception.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dto.ErrorDto;
+import com.github.mapper.impl.JsonMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -18,6 +20,8 @@ public class Http403ForbiddenEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException)
             throws IOException {
 
+        JsonMapper jsonMapper = new JsonMapper(new ObjectMapper());
+
         ErrorDto errorDto = new ErrorDto(
                 HttpStatus.FORBIDDEN.value(),
                 "You need to login first in order to perform this action."
@@ -26,7 +30,7 @@ public class Http403ForbiddenEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        response.getWriter().print(errorDto);
+        response.getWriter().print(jsonMapper.toJson(errorDto));
     }
 
 }

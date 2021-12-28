@@ -13,7 +13,7 @@ import java.util.Objects;
 @Component
 public class JsonMapper {
 
-    @Value("${error.message.param}")
+    @Value("${no.constructor.error.message}")
     private String ERROR_MESSAGE;
 
     private final ObjectMapper objectMapper;
