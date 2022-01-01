@@ -2,7 +2,6 @@ package com.github.service;
 
 import com.github.dto.UserDto;
 import com.github.entity.User;
-import com.github.exception.user.NoSuchUserException;
 import com.github.mapper.impl.Mapper;
 import com.github.repository.UserRepository;
 import com.github.service.impl.UserService;

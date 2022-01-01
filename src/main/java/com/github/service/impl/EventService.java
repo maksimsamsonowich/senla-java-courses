@@ -1,12 +1,7 @@
 package com.github.service.impl;
 
-import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
-import com.github.dto.EventProgramDto;
-import com.github.entity.Artist;
 import com.github.entity.Event;
-import com.github.entity.EventProgram;
-import com.github.exception.entities.NoSuchEntityException;
 import com.github.mapper.IMapper;
 import com.github.repository.impl.EventRepository;
 import com.github.service.IEventService;

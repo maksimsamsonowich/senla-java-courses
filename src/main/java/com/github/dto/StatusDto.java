@@ -8,20 +8,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @JsonAutoDetect
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ArtistDto {
+public class StatusDto {
 
-    @JsonProperty(value = "id")
-    private Long id;
+    @JsonProperty(value = "statusId")
+    private int statusId;
 
-    @JsonProperty(value = "nickname")
-    private String nickname;
+    @JsonProperty(value = "message")
+    private String message;
 
 }

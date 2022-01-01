@@ -1,6 +1,7 @@
 package com.github.exception;
 
 import com.github.dto.ErrorDto;
+import com.github.exception.artist.NoSuchArtistException;
 import com.github.exception.database.DatabaseAccessException;
 import com.github.exception.database.DatabaseCloseConnectionException;
 import com.github.exception.event.NoSuchEventException;
@@ -25,7 +26,8 @@ public class ControllerExceptionHandler {
     @ExceptionHandler({ NoSuchUserException.class,
                         NoSuchEventException.class,
                         NoSuchLocationException.class,
-                        EntityNotFoundException.class })
+                        EntityNotFoundException.class,
+                        NoSuchArtistException.class })
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<ErrorDto> resourceNotFoundException(RuntimeException exception) {
         return ResponseEntity.ok(new ErrorDto(

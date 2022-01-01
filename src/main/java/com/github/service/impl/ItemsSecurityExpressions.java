@@ -1,6 +1,8 @@
 package com.github.service.impl;
 
+import com.github.exception.artist.NoSuchArtistException;
 import com.github.metamodel.Roles;
+import com.github.repository.ArtistRepository;
 import com.github.repository.UserRepository;
 import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;
@@ -22,6 +24,8 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
     private final EventRepository eventRepository;
 
     private final TicketRepository ticketRepository;
+
+    private final ArtistRepository artistRepository;
 
     @Override
     public Boolean isUserOwnedTicket(Long ticketId, Authentication authentication) {
@@ -67,6 +71,19 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
         return ownerEmail.equals(currentUserEmail);
     }
 
+    @Override
+    public Boolean isUserOwnedArtistCard(Long artistId, Authentication authentication) {
+        if (isAdmin(authentication))
+            return true;
+
+        String ownerEmail = artistRepository.findById(artistId)
+                .orElseThrow(() -> new NoSuchArtistException("There is no such artist"))
+                .getCardOwner().getCredential().getEmail();
+
+        final String currentUserEmail = authentication.getName();
+
+        return ownerEmail.equals(currentUserEmail);
+    }
 
     private Boolean isAdmin(@NotNull Authentication authentication) {
         return authentication.getAuthorities().stream()
