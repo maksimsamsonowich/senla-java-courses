@@ -1,6 +1,7 @@
 package com.github.service;
 
 import com.github.dto.EventDto;
+import com.github.filter.PaginationDto;
 
 import java.util.Set;
 
@@ -16,5 +17,6 @@ public interface IEventService {
 
     Set<EventDto> getEventsByLocation(Long id);
 
-    Set<EventDto> getLimitedCheapestEvents(Integer resultLimit);
+    Set<EventDto> getAllEvents(PaginationDto additionalProperties);
+
 }

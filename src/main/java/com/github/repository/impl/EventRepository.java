@@ -1,8 +1,13 @@
 package com.github.repository.impl;
 
 import com.github.entity.Event;
+import com.github.entity.Event_;
 import com.github.entity.Location;
 import com.github.entity.Location_;
+import com.github.filter.EventFilterDto;
+import com.github.filter.PaginationDto;
+import com.github.filter.fields.enums.SortDirection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;
@@ -10,9 +15,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Repository
 public class EventRepository extends AbstractRepository<Event> {
 
@@ -35,12 +44,76 @@ public class EventRepository extends AbstractRepository<Event> {
         return typedQuery.getSingleResult().getEvents();
     }
 
-    @SuppressWarnings("unchecked")
-    public Set<Event> getCheapestEvents(int numOfResults) {
-        return (Set<Event>) entityManager
-                .createQuery("select e from Event e order by e.eventProgram.price")
-                .setMaxResults(numOfResults)
-                .getResultList();
+    @Override
+    public List<Event> getAll(PaginationDto pagination) {
+        CriteriaQuery<Event> cq = criteriaBuilder.createQuery(entityClass);
+        Root<Event> rootEntry = cq.from(entityClass);
+        CriteriaQuery<Event> all = cq.select(rootEntry);
+        all.orderBy(createOrder((EventFilterDto) pagination, rootEntry));
+        TypedQuery<Event> allQuery = entityManager.createQuery(all);
+        allQuery.setMaxResults(pagination.getPageSize());
+        allQuery.setFirstResult(pagination.getPageNumber());
+        return allQuery.getResultList();
+    }
+
+    private List<Order> createOrder(EventFilterDto pagination, Root<Event> root) {
+        List<Order> orders = new ArrayList<>();
+
+        if (pagination.getByOccupiedPlace().getIsSorted()) {
+            log.info("Sort by occupied places are enabled.");
+
+            if (pagination.getByOccupiedPlace().getSortDirection() == SortDirection.ASCENDING) {
+                orders.add(criteriaBuilder.asc(root.get(Event_.OCCUPIED_PLACE)));
+            } else {
+                orders.add(criteriaBuilder.desc(root.get(Event_.OCCUPIED_PLACE)));
+            }
+        }
+
+        if (pagination.getByAgeLimit().getIsSorted()) {
+            log.info("Sort by age limit are enabled.");
+
+            if (pagination.getByAgeLimit().getSortDirection() == SortDirection.ASCENDING) {
+                orders.add(criteriaBuilder.asc(root.get(Event_.AGE_LIMIT)));
+            } else {
+                orders.add(criteriaBuilder.desc(root.get(Event_.AGE_LIMIT)));
+            }
+        }
+
+        if (pagination.getByDate().getIsSorted()) {
+            log.info("Sort by date are enabled.");
+
+            if (pagination.getByDate().getSortDirection() == SortDirection.ASCENDING) {
+                orders.add(criteriaBuilder.asc(root.get(Event_.DATE)));
+            } else {
+                orders.add(criteriaBuilder.desc(root.get(Event_.DATE)));
+            }
+        }
+
+        if (pagination.getByEventOrganizer().getIsSorted()) {
+            log.info("Sort by event organizer are enabled.");
+
+            if (pagination.getByEventOrganizer().getSortDirection() == SortDirection.ASCENDING) {
+                orders.add(criteriaBuilder.asc(root.get(Event_.EVENT_ORGANIZER)));
+            } else {
+                orders.add(criteriaBuilder.desc(root.get(Event_.EVENT_ORGANIZER)));
+            }
+        }
+
+        if (pagination.getByPrice().getIsSorted()) {
+            log.info("Sort by price are enabled.");
+
+            if (pagination.getByPrice().getSortDirection() == SortDirection.ASCENDING) {
+                orders.add(criteriaBuilder.asc(root.get(Event_.EVENT_PROGRAM)));
+            } else {
+                orders.add(criteriaBuilder.desc(root.get(Event_.EVENT_PROGRAM)));
+            }
+        }
+        if (orders.size() == 0) {
+            log.info("There is no sort`s, enabled sort by id.");
+
+            orders.add(criteriaBuilder.asc(root.get(Event_.ID)));
+        }
+        return orders;
     }
 
 }

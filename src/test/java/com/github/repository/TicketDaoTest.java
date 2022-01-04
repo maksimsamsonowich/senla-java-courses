@@ -4,6 +4,7 @@ import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
 import com.github.entity.Ticket;
 import com.github.entity.User;
+import com.github.filter.EventFilterDto;
 import com.github.repository.impl.TicketRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -105,7 +106,7 @@ public class TicketDaoTest {
 
     @Test
     public void getAllTicketsSuccess() {
-        List<Ticket> actualResult = ticketDao.getAll();
+        List<Ticket> actualResult = ticketDao.getAll(new EventFilterDto());
 
         long step = 1;
         List<Ticket> expectedResult = new ArrayList<>();

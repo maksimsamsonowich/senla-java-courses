@@ -1,5 +1,6 @@
 package com.github.repository.impl;
 
+import com.github.filter.PaginationDto;
 import com.github.repository.IAbstractRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,7 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
 
     protected final CriteriaBuilder criteriaBuilder;
 
-    private final Class<T> entityClass;
+    protected final Class<T> entityClass;
 
     @Override
     public T create(T entity) {
@@ -46,11 +47,13 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> getAll(PaginationDto pagination) {
         CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
         Root<T> rootEntry = cq.from(entityClass);
         CriteriaQuery<T> all = cq.select(rootEntry);
         TypedQuery<T> allQuery = entityManager.createQuery(all);
+        allQuery.setMaxResults(pagination.getPageSize());
+        allQuery.setFirstResult(pagination.getPageNumber());
         return allQuery.getResultList();
     }
 }

@@ -46,10 +46,10 @@ public class Event {
     private String description;
 
     @Column(name = "age_limit", nullable = false)
-    private short ageLimit;
+    private Short ageLimit;
 
     @Column(name = "occupied_places", nullable = false)
-    private short occupiedPlace;
+    private Short occupiedPlace;
 
     @Column(name = "date", nullable = false)
     private Date date;

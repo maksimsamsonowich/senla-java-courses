@@ -2,6 +2,7 @@ package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Location;
+import com.github.filter.EventFilterDto;
 import com.github.repository.impl.LocationRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,7 +79,7 @@ public class LocationDaoTest {
 
     @Test
     public void getAllLocationsSuccess() {
-        List<Location> actualResult = locationDao.getAll();
+        List<Location> actualResult = locationDao.getAll(new EventFilterDto());
 
         long step = 1;
         List<Location> expectedResult = new ArrayList<>();

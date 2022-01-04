@@ -3,6 +3,7 @@ package com.github.repository;
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
 import com.github.entity.Location;
+import com.github.filter.EventFilterDto;
 import com.github.repository.impl.EventRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -100,7 +101,7 @@ public class EventDaoTest {
 
     @Test
     public void getAllEventsSuccess() {
-        List<Event> actualResult = eventDao.getAll();
+        List<Event> actualResult = eventDao.getAll(new EventFilterDto().setPageSize(1));
 
         long step = 1;
         List<Event> expectedResult = new ArrayList<Event>();

@@ -1,5 +1,7 @@
 package com.github.repository;
 
+import com.github.filter.PaginationDto;
+
 import java.util.List;
 
 public interface IAbstractRepository<T> {
@@ -12,6 +14,6 @@ public interface IAbstractRepository<T> {
 
     void deleteById(Long id);
 
-    List<T> getAll();
+    List<T> getAll(PaginationDto pagination);
 
 }

@@ -6,11 +6,13 @@ import com.github.dto.CredentialDto;
 import com.github.service.IAuthenticationService;
 import com.github.service.ICredentialService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 public class AuthenticationController {
@@ -22,6 +24,7 @@ public class AuthenticationController {
     @PostMapping("auth")
     public ResponseEntity<AuthenticationAnswerDto> customerAuthentication
             (@RequestBody AuthenticationRequestDto requestDto) {
+        log.info("Authentication controller received the post request (customerAuthentication).");
 
         AuthenticationAnswerDto authenticationAnswer =
                 iAuthenticationService.login(requestDto);
@@ -32,6 +35,7 @@ public class AuthenticationController {
     @PostMapping("register")
     public ResponseEntity<AuthenticationAnswerDto> customerRegistration
             (@RequestBody CredentialDto credentialDto) {
+        log.info("Authentication controller received the post request (customerRegistration).");
 
         iCredentialService.createCredential(credentialDto);
 
