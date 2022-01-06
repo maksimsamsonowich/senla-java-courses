@@ -33,7 +33,6 @@ public class EventController{
     }
 
     @GetMapping("{eventId}")
-    @PreAuthorize("permitAll()")
     public ResponseEntity<EventDto> readEvent(@PathVariable Long eventId) {
         log.info("Event controller received the get request (readEvent).");
 

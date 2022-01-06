@@ -3,6 +3,7 @@ package com.github.controller;
 import com.github.WebAppInitializer;
 import com.github.configs.root.ApplicationConfig;
 import com.github.configs.root.DatabaseConfig;
+import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
 import com.github.mapper.impl.JsonMapper;
@@ -58,13 +59,14 @@ public class EventControllerTest {
                 .setDescription("Desc")
                 .setAgeLimit((short) 18)
                 .setOccupiedPlace((short) 11)
-                .setDate(Date.valueOf("2021-11-29"));
+                .setDate(Date.valueOf("2021-11-29"))
+                .setEventOrganizer(new EventArtistDto().setId(1L));
 
         locationDto = new LocationDto().setId(1L);
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void createEventSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(eventDto);
@@ -108,7 +110,7 @@ public class EventControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void updateEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();
@@ -127,7 +129,7 @@ public class EventControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void deleteEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();

@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @JsonAutoDetect

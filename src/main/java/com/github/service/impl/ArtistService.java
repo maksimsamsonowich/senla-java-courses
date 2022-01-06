@@ -5,11 +5,10 @@ import com.github.entity.Artist;
 import com.github.entity.Role;
 import com.github.entity.User;
 import com.github.exception.artist.NoSuchArtistException;
-import com.github.exception.user.NoSuchUserException;
 import com.github.mapper.IMapper;
 import com.github.repository.ArtistRepository;
-import com.github.repository.UserRepository;
 import com.github.repository.impl.RoleRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.IArtistService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,8 +34,7 @@ public class ArtistService implements IArtistService {
 
         Role artistRole = roleRepository.findByName("ARTIST");
 
-        User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchUserException("There is no such user"));
+        User currentUser = userRepository.readById(userId);
 
         Artist currentArtistEntity = artistMapper.toEntity(artistDto, Artist.class);
 
@@ -44,9 +42,9 @@ public class ArtistService implements IArtistService {
                 .noneMatch(role -> role.getRole().equals(artistRole.getRole())))
             currentUser.getCredential().getRoles().add(artistRole);
 
-        currentUser.getArtistCard().add(currentArtistEntity);
+        currentArtistEntity.setCardOwner(currentUser);
 
-        userRepository.save(currentUser);
+        artistRepository.save(currentArtistEntity);
 
     }
 

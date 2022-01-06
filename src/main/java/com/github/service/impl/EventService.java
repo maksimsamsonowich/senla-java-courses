@@ -36,6 +36,7 @@ public class EventService implements IEventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventDto readEvent(Long eventId) {
         return eventMapper.toDto(eventRepository.readById(eventId), EventDto.class);
     }

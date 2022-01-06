@@ -47,6 +47,7 @@ public class EventServiceTest {
         Mockito.when(eventDaoMock.create(eventMock)).thenReturn(eventMock);
 
         EventDto expectedResult = eventMapper.toDto(eventMock, EventDto.class);
+        Mockito.when(expectedResult.getId()).thenReturn(1L);
         EventDto actualResult = eventService.createEvent(expectedResult);
 
         Assert.assertEquals(expectedResult, actualResult);

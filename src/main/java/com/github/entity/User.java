@@ -30,8 +30,10 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "firstName")
     private String firstName;
 
+    @Column(name = "surname")
     private String surname;
 
     @ToString.Exclude

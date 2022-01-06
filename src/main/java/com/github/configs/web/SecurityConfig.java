@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String AUTH_ENDPOINT = "/senla/auth";
     private static final String REGISTRATION_ENDPOINT = "/senla/register";
+    private static final String GET_EVENT_ENDPOINT = "/senla/event-management/**";
 
     private JwtTokenFilter jwtTokenFilter;
 
@@ -53,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, AUTH_ENDPOINT).permitAll()
                 .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.GET, GET_EVENT_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new AccessDeniedHandler())

@@ -7,9 +7,9 @@ import com.github.entity.Event;
 import com.github.entity.Ticket;
 import com.github.entity.User;
 import com.github.mapper.impl.Mapper;
-import com.github.repository.UserRepository;
 import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.impl.TicketService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class TicketServiceTest {
 
         Mockito.when(ticketMapper.toEntity(any(), any())).thenReturn(ticketMock);
         Mockito.when(ticketMapper.toDto(any(), any())).thenReturn(expectedResult);
-        Mockito.when(userRepository.findByCredential_Email(any()))
+        Mockito.when(userRepository.findByUsername(any()))
                 .thenReturn(ticketMock.getOwner());
         Mockito.when(eventRepository.readById(ticketMock.getEventHolding().getId())).thenReturn(ticketMock.getEventHolding());
         Mockito.when(ticketDao.create(ticketMock)).thenReturn(ticketMock);

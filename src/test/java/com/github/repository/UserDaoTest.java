@@ -2,6 +2,7 @@ package com.github.repository;
 
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.User;
+import com.github.repository.impl.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,40 +36,40 @@ public class UserDaoTest {
 
     @Test
     public void createUserSuccess() {
-        expectedResult = userDao.save(expectedResult);
+        expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.findById(expectedResult.getId()).get();
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void deleteUserSuccess() {
-        expectedResult = userDao.save(expectedResult);
+        expectedResult = userDao.create(expectedResult);
 
         userDao.deleteById(expectedResult.getId());
 
-        User secondUser = userDao.findById(expectedResult.getId()).get();
+        User secondUser = userDao.readById(expectedResult.getId());
         Assert.assertNull(secondUser);
     }
 
     @Test
     public void readUserSuccess() {
-        expectedResult = userDao.save(expectedResult);
+        expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.findById(expectedResult.getId()).get();
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
 
     @Test
     public void updateUserSuccess() {
-        expectedResult = userDao.save(expectedResult);
+        expectedResult = userDao.create(expectedResult);
 
         expectedResult.setSurname("wow");
-        userDao.save(expectedResult);
+        userDao.update(expectedResult);
 
-        User actualResult = userDao.findById(expectedResult.getId()).get();
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }

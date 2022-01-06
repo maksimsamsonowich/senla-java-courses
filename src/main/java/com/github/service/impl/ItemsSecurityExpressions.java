@@ -3,14 +3,13 @@ package com.github.service.impl;
 import com.github.exception.artist.NoSuchArtistException;
 import com.github.metamodel.Roles;
 import com.github.repository.ArtistRepository;
-import com.github.repository.UserRepository;
 import com.github.repository.impl.EventRepository;
 import com.github.repository.impl.TicketRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.IItemsSecurityExpressions;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,10 +46,7 @@ public class ItemsSecurityExpressions implements IItemsSecurityExpressions {
         if (isAdmin(authentication))
             return true;
 
-        String ownerEmail = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."))
-                .getCredential()
-                .getEmail();
+        String ownerEmail = userRepository.readById(userId).getCredential().getEmail();
 
         final String currentUserEmail = authentication.getName();
 

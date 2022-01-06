@@ -3,6 +3,7 @@ package com.github.repository.impl;
 import com.github.filter.PaginationDto;
 import com.github.repository.IAbstractRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Slf4j
 @Repository
 @AllArgsConstructor
 public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
@@ -27,6 +29,9 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     @Override
     public T create(T entity) {
         entityManager.persist(entity);
+
+        log.info("Repository: " + entityClass.getName() + " created.");
+
         return entity;
     }
 
@@ -38,12 +43,17 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
     @Override
     public T update(T entity) {
         entityManager.merge(entity);
+
+        log.info("Repository: " + entityClass.getName() + " updated.");
+
         return entity;
     }
 
     @Override
     public void deleteById(Long id) {
         entityManager.remove(readById(id));
+
+        log.info("Repository: " + entityClass.getName() + " deleted.");
     }
 
     @Override
@@ -54,6 +64,9 @@ public abstract class AbstractRepository<T> implements IAbstractRepository<T> {
         TypedQuery<T> allQuery = entityManager.createQuery(all);
         allQuery.setMaxResults(pagination.getPageSize());
         allQuery.setFirstResult(pagination.getPageNumber());
+
+        log.info("Repository: " + entityClass.getName() + " set pulled.");
+
         return allQuery.getResultList();
     }
 }

@@ -3,7 +3,7 @@ package com.github.service;
 import com.github.dto.UserDto;
 import com.github.entity.User;
 import com.github.mapper.impl.Mapper;
-import com.github.repository.UserRepository;
+import com.github.repository.impl.UserRepository;
 import com.github.service.impl.UserService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class UserServiceTest {
     @Test
     public void createUserSuccess() {
 
-        Mockito.when(userDao.save(userMock)).thenReturn(userMock);
+        Mockito.when(userDao.create(userMock)).thenReturn(userMock);
 
         UserDto expectedResult = userMapper.toDto(userMock, UserDto.class);
         UserDto actualResult = userService.createUser(expectedResult);
@@ -54,11 +54,10 @@ public class UserServiceTest {
     @Test
     public void readUserSuccess() {
 
-        Optional<User> optionalUserObject = Optional.of(userMock);
-        Mockito.when(userDao.findById(userMock.getId()))
-                .thenReturn(optionalUserObject);
+        Mockito.when(userDao.readById(userMock.getId()))
+                .thenReturn(userMock);
 
-        UserDto expectedResult = userMapper.toDto(optionalUserObject.get(), UserDto.class);
+        UserDto expectedResult = userMapper.toDto(userMock, UserDto.class);
         UserDto actualResult = userService.readUser(userMock.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
@@ -68,7 +67,7 @@ public class UserServiceTest {
     @Test
     public void updateUserSuccess() {
 
-        Mockito.when(userDao.save(userMock)).thenReturn(userMock);
+        Mockito.when(userDao.update(userMock)).thenReturn(userMock);
 
         UserDto expectedResult = new UserDto();
         UserDto actualResult = userService.update(userMock.getId(), expectedResult);
