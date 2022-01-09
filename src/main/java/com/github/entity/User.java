@@ -46,7 +46,7 @@ public class User {
 
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE)
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "creds_id")
     private Credential credential;
 

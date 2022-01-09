@@ -89,7 +89,7 @@ public class EventControllerTest {
 
     @Test
     @Transactional(readOnly = true)
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void readEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();

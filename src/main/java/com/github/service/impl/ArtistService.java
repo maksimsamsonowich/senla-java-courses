@@ -7,6 +7,7 @@ import com.github.entity.User;
 import com.github.exception.artist.NoSuchArtistException;
 import com.github.mapper.IMapper;
 import com.github.repository.ArtistRepository;
+import com.github.repository.CredentialRepository;
 import com.github.repository.impl.RoleRepository;
 import com.github.repository.impl.UserRepository;
 import com.github.service.IArtistService;
@@ -21,13 +22,15 @@ import java.util.Objects;
 @AllArgsConstructor
 public class ArtistService implements IArtistService {
 
+    private final RoleRepository roleRepository;
+
     private final UserRepository userRepository;
 
     private final ArtistRepository artistRepository;
 
     private final IMapper<ArtistDto, Artist> artistMapper;
 
-    private final RoleRepository roleRepository;
+    private final CredentialRepository credentialRepository;
 
     @Override
     public void createArtist(Long userId, ArtistDto artistDto) {
@@ -39,9 +42,11 @@ public class ArtistService implements IArtistService {
         Artist currentArtistEntity = artistMapper.toEntity(artistDto, Artist.class);
 
         if (currentUser.getCredential().getRoles().stream()
-                .noneMatch(role -> role.getRole().equals(artistRole.getRole())))
-            currentUser.getCredential().getRoles().add(artistRole);
+                .noneMatch(role -> role.getRole().equals(artistRole.getRole()))) {
 
+            currentUser.getCredential().getRoles().add(artistRole);
+            //credentialRepository.save(currentUser.getCredential());
+        }
         currentArtistEntity.setCardOwner(currentUser);
 
         artistRepository.save(currentArtistEntity);

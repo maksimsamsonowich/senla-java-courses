@@ -6,12 +6,12 @@ import com.github.filter.PaginationDto;
 import com.github.mapper.IMapper;
 import com.github.repository.impl.EventRepository;
 import com.github.service.IEventService;
-import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -72,11 +72,11 @@ public class EventService implements IEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<EventDto> getAllEvents(PaginationDto additionalProperties) {
-        Set<Event> currentEvents = Sets.newHashSet(eventRepository.getAll(additionalProperties));
+    public List<EventDto> getAllEvents(PaginationDto additionalProperties) {
+        List<Event> currentEvents = eventRepository.getAll(additionalProperties);
 
         log.info("Events successfully pulled.");
 
-        return eventMapper.setToDto(currentEvents, EventDto.class);
+        return eventMapper.listToDto(currentEvents, EventDto.class);
     }
 }

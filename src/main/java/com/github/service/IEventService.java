@@ -3,6 +3,7 @@ package com.github.service;
 import com.github.dto.EventDto;
 import com.github.filter.PaginationDto;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IEventService {
@@ -17,6 +18,6 @@ public interface IEventService {
 
     Set<EventDto> getEventsByLocation(Long id);
 
-    Set<EventDto> getAllEvents(PaginationDto additionalProperties);
+    List<EventDto> getAllEvents(PaginationDto additionalProperties);
 
 }

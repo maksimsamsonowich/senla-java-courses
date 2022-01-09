@@ -55,13 +55,13 @@ public class TicketController {
         iTicketService.deleteTicket(ticketId);
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll")
     @GetMapping("by-event/{eventId}")
     public ResponseEntity<Set<TicketDto>> getEventTickets(@PathVariable Long eventId) {
         return ResponseEntity.ok(iTicketService.getEventTickets(eventId));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll")
     @GetMapping("by-user/{userId}")
     public ResponseEntity<Set<TicketDto>> getUserTickets(@PathVariable Long userId) {
         return ResponseEntity.ok(iTicketService.getUserTickets(userId));

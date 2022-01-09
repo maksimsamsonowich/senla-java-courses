@@ -38,7 +38,7 @@ public class TicketService implements ITicketService {
         if (currentEvent.getOccupiedPlace() + 1 > currentEvent.getLocation().getCapacity())
             throw new NotEnoughLocationSpace("Sorry, but all tickets are sold out.");
 
-        currentEvent.getLocation().setCapacity(currentEvent.getLocation().getCapacity() + 1);
+        currentEvent.setOccupiedPlace((short) (currentEvent.getOccupiedPlace() + ((short) 1)));
 
         Ticket currentTicket = ticketMapper.toEntity(ticketDto, Ticket.class)
                 .setOwner(userRepository.findByUsername(email))

@@ -1,9 +1,6 @@
 package com.github.repository.impl;
 
-import com.github.entity.Event;
-import com.github.entity.Event_;
-import com.github.entity.Location;
-import com.github.entity.Location_;
+import com.github.entity.*;
 import com.github.filter.EventFilterDto;
 import com.github.filter.PaginationDto;
 import com.github.filter.fields.enums.SortDirection;
@@ -93,9 +90,9 @@ public class EventRepository extends AbstractRepository<Event> {
             log.info("Sort by event organizer are enabled.");
 
             if (pagination.getByEventOrganizer().getSortDirection() == SortDirection.ASCENDING) {
-                orders.add(criteriaBuilder.asc(root.get(Event_.EVENT_ORGANIZER)));
+                orders.add(criteriaBuilder.asc(root.join(Event_.eventProgram).get(EventProgram_.PRICE)));
             } else {
-                orders.add(criteriaBuilder.desc(root.get(Event_.EVENT_ORGANIZER)));
+                orders.add(criteriaBuilder.desc(root.join(Event_.eventProgram).get(EventProgram_.PRICE)));
             }
         }
 

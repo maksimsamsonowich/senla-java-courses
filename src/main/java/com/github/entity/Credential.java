@@ -35,7 +35,7 @@ public class Credential {
 
     @ToString.Exclude
     @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY,
-                cascade = CascadeType.ALL)
+                cascade = { CascadeType.ALL })
     private User user;
 
     @ToString.Exclude

@@ -1,5 +1,6 @@
 package com.github.mapper;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IMapper<Dto, Entity> {
@@ -12,4 +13,7 @@ public interface IMapper<Dto, Entity> {
 
     Set<Entity> setToEntities(Set<Dto> setOfDto, Class<?> entity);
 
+    List<Entity> listToEntities(List<Dto> listOfDto, Class<?> entity);
+
+    List<Dto> listToDto(List<Entity> listOfEntities, Class<?> dto);
 }

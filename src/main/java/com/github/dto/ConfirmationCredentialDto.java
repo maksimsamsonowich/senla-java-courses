@@ -14,9 +14,15 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class RoleDto {
+public class ConfirmationCredentialDto {
 
-    @JsonProperty(value = "role")
-    private String role;
+    @JsonProperty("username")
+    private String username;
+
+    @JsonProperty("newPassword")
+    private String password;
+
+    @JsonProperty("passwordConfirmation")
+    private String passwordConfirmation;
 
 }

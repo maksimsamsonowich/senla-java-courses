@@ -34,6 +34,7 @@ public class ArtistController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("permitAll")
     public ResponseEntity<ArtistDto> readArtist(@PathVariable("id") Long artistId) {
 
         ArtistDto currentArtist = iArtistService.getArtist(artistId);
@@ -60,6 +61,7 @@ public class ArtistController {
                 .setMessage("Success"));
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("by-event/{id}")
     public ResponseEntity<ArtistDto> getArtistByEventId(@PathVariable("id") Long eventId) {
         ArtistDto currentArtist = iArtistService.getArtistByEventId(eventId);

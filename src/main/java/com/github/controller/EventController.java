@@ -1,7 +1,7 @@
 package com.github.controller;
 
 import com.github.dto.EventDto;
-import com.github.filter.PaginationDto;
+import com.github.filter.EventFilterDto;
 import com.github.metamodel.Roles;
 import com.github.service.IEventService;
 import com.github.service.IItemsSecurityExpressions;
@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -32,6 +33,7 @@ public class EventController{
         return ResponseEntity.ok(iEventService.createEvent(eventDto));
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("{eventId}")
     public ResponseEntity<EventDto> readEvent(@PathVariable Long eventId) {
         log.info("Event controller received the get request (readEvent).");
@@ -57,7 +59,7 @@ public class EventController{
         iEventService.deleteEvent(eventId);
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll")
     @GetMapping("by-location/{locationId}")
     public ResponseEntity<Set<EventDto>> getEventsByLocation(@PathVariable Long locationId) {
         log.info("Event controller received the get request (getEventsByLocation).");
@@ -66,8 +68,8 @@ public class EventController{
     }
 
     @GetMapping("events")
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<Set<EventDto>> getAllEventsSorted(@RequestBody PaginationDto paginationDto) {
+    @PreAuthorize("permitAll")
+    public ResponseEntity<List<EventDto>> getAllEventsSorted(@RequestBody(required = false) EventFilterDto paginationDto) {
         log.info("Event controller received the get request (getAllEventsSorted).");
 
         return ResponseEntity.ok(iEventService.getAllEvents(paginationDto));
