@@ -4,6 +4,7 @@ import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
 import com.github.entity.Ticket;
 import com.github.entity.User;
+import com.github.filter.EventFilterDto;
 import com.github.repository.impl.TicketRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,9 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -50,7 +48,7 @@ public class TicketDaoTest {
     public void createTicketSuccess() {
         testTicketEntity = ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
+        Ticket secondTicket = ticketDao.readById(testTicketEntity.getId());
 
         Assert.assertEquals(testTicketEntity, secondTicket);
     }
@@ -59,9 +57,9 @@ public class TicketDaoTest {
     public void deleteTicketSuccess() {
         testTicketEntity = ticketDao.create(testTicketEntity);
 
-        ticketDao.delete(testTicketEntity);
+        ticketDao.deleteById(testTicketEntity.getId());
 
-        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
+        Ticket secondTicket = ticketDao.readById(testTicketEntity.getId());
         Assert.assertNull(secondTicket);
     }
 
@@ -69,7 +67,7 @@ public class TicketDaoTest {
     public void readTicketSuccess() {
         testTicketEntity = ticketDao.create(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
+        Ticket secondTicket = ticketDao.readById(testTicketEntity.getId());
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }
@@ -81,7 +79,7 @@ public class TicketDaoTest {
         testTicketEntity.setOrderDate(Date.valueOf("2021-11-12"));
         ticketDao.update(testTicketEntity);
 
-        Ticket secondTicket = ticketDao.read(testTicketEntity.getId());
+        Ticket secondTicket = ticketDao.readById(testTicketEntity.getId());
 
         Assert.assertEquals(secondTicket, testTicketEntity);
     }
@@ -91,7 +89,7 @@ public class TicketDaoTest {
         Set<Ticket> tickets = ticketDao.getEventTickets(1L);
         Set<Ticket> ticketsSetMock = new HashSet<>();
 
-        ticketsSetMock.add(ticketDao.read(1L));
+        ticketsSetMock.add(ticketDao.readById(1L));
 
         Assert.assertEquals(tickets, ticketsSetMock);
     }
@@ -101,20 +99,20 @@ public class TicketDaoTest {
         Set<Ticket> tickets = ticketDao.getTicketsByUser(1L);
         Set<Ticket> ticketsSetMock = new HashSet<>();
 
-        ticketsSetMock.add(ticketDao.read(1L));
+        ticketsSetMock.add(ticketDao.readById(1L));
 
         Assert.assertEquals(tickets, ticketsSetMock);
     }
 
     @Test
     public void getAllTicketsSuccess() {
-        List<Ticket> actualResult = ticketDao.getAll();
+        List<Ticket> actualResult = ticketDao.getAll(new EventFilterDto());
 
         long step = 1;
         List<Ticket> expectedResult = new ArrayList<>();
 
         while (true) {
-            Ticket ticket = ticketDao.read(step);
+            Ticket ticket = ticketDao.readById(step);
 
             if (ticket == null) {
                 break;

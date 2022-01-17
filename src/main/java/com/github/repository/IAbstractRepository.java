@@ -1,17 +1,19 @@
 package com.github.repository;
 
+import com.github.filter.PaginationDto;
+
 import java.util.List;
 
 public interface IAbstractRepository<T> {
 
     T create(T entity);
 
-    T read(Long id);
+    T readById(Long id);
 
     T update(T entity);
 
-    void delete(T entity);
+    void deleteById(Long id);
 
-    List<T> getAll();
+    List<T> getAll(PaginationDto pagination);
 
 }

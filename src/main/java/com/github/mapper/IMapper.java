@@ -1,15 +1,19 @@
 package com.github.mapper;
 
+import java.util.List;
 import java.util.Set;
 
-public interface IMapper<T, W> {
+public interface IMapper<Dto, Entity> {
 
-    W toEntity(T dto, Class<?> entity);
+    Entity toEntity(Dto dto, Class<?> entity);
 
-    T toDto(W entity, Class<?> dto);
+    Dto toDto(Entity entity, Class<?> dto);
 
-    Set<T> setToDto(Set<W> setOfEntities, Class<?> dto);
+    Set<Dto> setToDto(Set<Entity> setOfEntities, Class<?> dto);
 
-    Set<W> setToEntities(Set<T> setOfDto, Class<?> entity);
+    Set<Entity> setToEntities(Set<Dto> setOfDto, Class<?> entity);
 
+    List<Entity> listToEntities(List<Dto> listOfDto, Class<?> entity);
+
+    List<Dto> listToDto(List<Entity> listOfEntities, Class<?> dto);
 }

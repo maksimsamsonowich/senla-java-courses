@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @JsonAutoDetect
@@ -23,11 +21,5 @@ public class ArtistDto {
 
     @JsonProperty(value = "nickname")
     private String nickname;
-
-    @JsonProperty(value = "genres")
-    private Set<GenreDto> genres;
-
-    @JsonProperty(value = "cardOwner")
-    private UserDto cardOwner;
 
 }

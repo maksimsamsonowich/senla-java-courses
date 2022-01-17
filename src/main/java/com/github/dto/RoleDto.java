@@ -16,9 +16,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class RoleDto {
 
-    @JsonProperty(value = "id")
-    private Long id;
-
     @JsonProperty(value = "role")
     private String role;
 

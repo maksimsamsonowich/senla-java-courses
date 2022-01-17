@@ -1,7 +1,9 @@
 package com.github.service;
 
 import com.github.dto.EventDto;
+import com.github.filter.PaginationDto;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IEventService {
@@ -15,5 +17,7 @@ public interface IEventService {
     void deleteEvent(Long id);
 
     Set<EventDto> getEventsByLocation(Long id);
+
+    List<EventDto> getAllEvents(PaginationDto additionalProperties);
 
 }

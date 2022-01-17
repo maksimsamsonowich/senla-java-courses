@@ -1,4 +1,4 @@
-package com.github.exception;
+package com.github.exception.security;
 
 import com.github.dto.ErrorDto;
 import org.springframework.http.HttpStatus;

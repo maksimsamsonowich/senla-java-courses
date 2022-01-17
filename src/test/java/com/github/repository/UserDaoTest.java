@@ -10,14 +10,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
@@ -43,7 +38,7 @@ public class UserDaoTest {
     public void createUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -52,9 +47,9 @@ public class UserDaoTest {
     public void deleteUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        userDao.delete(expectedResult);
+        userDao.deleteById(expectedResult.getId());
 
-        User secondUser = userDao.read(expectedResult.getId());
+        User secondUser = userDao.readById(expectedResult.getId());
         Assert.assertNull(secondUser);
     }
 
@@ -62,7 +57,7 @@ public class UserDaoTest {
     public void readUserSuccess() {
         expectedResult = userDao.create(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -74,28 +69,7 @@ public class UserDaoTest {
         expectedResult.setSurname("wow");
         userDao.update(expectedResult);
 
-        User actualResult = userDao.read(expectedResult.getId());
-
-        Assert.assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    public void getAllTicketsSuccess() {
-        List<User> actualResult = userDao.getAll();
-
-        long step = 1;
-        List<User> expectedResult = new ArrayList<>();
-
-        while (true) {
-            User user = userDao.read(step);
-
-            if (user == null) {
-                break;
-            }
-
-            expectedResult.add(user);
-            step += 1;
-        }
+        User actualResult = userDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }

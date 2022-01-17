@@ -14,35 +14,44 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class LocationService implements ILocationService {
 
-    private final IMapper<LocationDto, Location> locationMapper;
+    private final LocationRepository locationRepository;
 
-    private final LocationRepository iLocationDao;
+    private final IMapper<LocationDto, Location> locationMapper;
 
     @Override
     public LocationDto createLocation(LocationDto locationDto) {
-        return locationMapper.toDto(iLocationDao.create(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
+        Location currentLocation = locationMapper.toEntity(locationDto, Location.class);
+
+        locationRepository.create(currentLocation);
+
+        return locationMapper.toDto(currentLocation, LocationDto.class);
     }
 
     @Override
-    public LocationDto readLocation(Long id) {
-        return locationMapper.toDto(iLocationDao.read(id), LocationDto.class);
+    public LocationDto readLocation(Long locationId) {
+        return locationMapper.toDto(locationRepository.readById(locationId), LocationDto.class);
     }
 
     @Override
-    public LocationDto update(Long id, LocationDto locationDto) {
-        locationDto.setId(id);
-        return locationMapper.toDto(iLocationDao.update(locationMapper.toEntity(locationDto, Location.class)), LocationDto.class);
+    public LocationDto update(Long locationId, LocationDto locationDto) {
+        locationDto.setId(locationId);
+
+        Location currentLocation = locationMapper.toEntity(locationDto, Location.class);
+
+        locationRepository.update(currentLocation);
+
+        return locationMapper.toDto(currentLocation, LocationDto.class);
     }
 
     @Override
-    public void deleteLocation(Long id) {
-        iLocationDao.delete(iLocationDao.read(id));
+    public void deleteLocation(Long locationId) {
+        locationRepository.deleteById(locationId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public LocationDto getEventLocation(Long id) {
-        return locationMapper.toDto(iLocationDao.getLocationByEvent(id), LocationDto.class);
+    public LocationDto getEventLocation(Long locationId) {
+        return locationMapper.toDto(locationRepository.getLocationByEvent(locationId), LocationDto.class);
     }
 
 }

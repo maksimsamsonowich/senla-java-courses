@@ -14,6 +14,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "creds")
 @Accessors(chain = true)
+@NamedEntityGraph(
+        name = "credential-graph",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("roles")
+        }
+)
 public class Credential {
 
     @Id
@@ -28,7 +35,7 @@ public class Credential {
 
     @ToString.Exclude
     @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY,
-                cascade = CascadeType.ALL)
+                cascade = { CascadeType.ALL })
     private User user;
 
     @ToString.Exclude

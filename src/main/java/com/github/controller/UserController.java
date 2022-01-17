@@ -1,10 +1,14 @@
 package com.github.controller;
 
+import com.github.dto.RoleDto;
+import com.github.dto.StatusDto;
 import com.github.dto.UserDto;
-import com.github.service.IItemsSecurityExpressions;
+import com.github.metamodel.Roles;
 import com.github.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final IUserService iUserService;
-
-    private final IItemsSecurityExpressions iItemsSecurityExpressions;
 
     @PostMapping
     @PreAuthorize("permitAll()")
@@ -41,4 +43,13 @@ public class UserController {
         iUserService.deleteUser(userId);
     }
 
+    @Secured(Roles.ADMIN)
+    @PutMapping("grant-role/{userId}")
+    public ResponseEntity<StatusDto> grantRole(@PathVariable Long userId, @RequestBody RoleDto roleDto) {
+        iUserService.grantRole(userId, roleDto);
+
+        return ResponseEntity.ok(new StatusDto()
+                .setStatusId(HttpStatus.OK.value())
+                .setMessage("Success!"));
+    }
 }

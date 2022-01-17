@@ -15,7 +15,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     public User findByUsername(String username) {
         return (User) entityManager.createQuery(
-                "select u from User u join fetch u.credential cr where cr.email = '" + username + "'")
+                        "select u from User u join fetch u.credential cr where cr.email = '" + username + "'")
                 .getSingleResult();
     }
 

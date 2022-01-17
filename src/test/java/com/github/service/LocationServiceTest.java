@@ -53,7 +53,7 @@ public class LocationServiceTest {
     @Test
     public void readLocationSuccess() {
 
-        Mockito.when(locationDao.read(locationMock.getId())).thenReturn(locationMock);
+        Mockito.when(locationDao.readById(locationMock.getId())).thenReturn(locationMock);
 
         LocationDto expectedResult = locationMapper.toDto(locationMock, LocationDto.class);
         LocationDto actualResult = locationService.readLocation(locationMock.getId());
@@ -77,12 +77,12 @@ public class LocationServiceTest {
     @Test
     public void deleteLocationSuccess() {
 
-        doNothing().when(locationDao).delete(locationMock);
-        Mockito.when(locationDao.read(locationMock.getId())).thenReturn(locationMock);
+        doNothing().when(locationDao).deleteById(locationMock.getId());
+        Mockito.when(locationDao.readById(locationMock.getId())).thenReturn(locationMock);
 
         locationService.deleteLocation(locationMock.getId());
 
-        verify(locationDao, times(1)).delete(locationMock);
+        verify(locationDao, times(1)).deleteById(locationMock.getId());
     }
 
     @Test

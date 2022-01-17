@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("location-management")
 public class LocationController {
 
-    private ILocationService iLocationService;
+    private final ILocationService iLocationService;
 
     @PostMapping
     @Secured(Roles.ADMIN)
@@ -22,7 +22,7 @@ public class LocationController {
         return ResponseEntity.ok(iLocationService.createLocation(locationDto));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll")
     @GetMapping("{locationId}")
     public ResponseEntity<LocationDto> readLocation(@PathVariable Long locationId) {
         return ResponseEntity.ok(iLocationService.readLocation(locationId));
@@ -40,7 +40,7 @@ public class LocationController {
         iLocationService.deleteLocation(locationId);
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll")
     @GetMapping("by-event/{eventId}")
     public ResponseEntity<LocationDto> getEventLocation(@PathVariable Long eventId) {
         return ResponseEntity.ok(iLocationService.getEventLocation(eventId));

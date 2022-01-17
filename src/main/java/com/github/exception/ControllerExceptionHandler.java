@@ -1,11 +1,14 @@
 package com.github.exception;
 
 import com.github.dto.ErrorDto;
+import com.github.exception.artist.NoSuchArtistException;
 import com.github.exception.database.DatabaseAccessException;
 import com.github.exception.database.DatabaseCloseConnectionException;
 import com.github.exception.event.NoSuchEventException;
 import com.github.exception.jwt.JwtAuthenticationException;
 import com.github.exception.location.NoSuchLocationException;
+import com.github.exception.role.RoleNotFoundException;
+import com.github.exception.role.RoleRepetitionException;
 import com.github.exception.user.NoSuchUserException;
 import com.github.exception.user.WrongPasswordException;
 import org.springframework.http.HttpStatus;
@@ -26,20 +29,31 @@ public class ControllerExceptionHandler {
                         NoSuchEventException.class,
                         NoSuchLocationException.class,
                         EntityNotFoundException.class,
-                        WrongPasswordException.class,
-                        UsernameNotFoundException.class,
-                        BadCredentialsException.class })
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+                        NoSuchArtistException.class })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<ErrorDto> resourceNotFoundException(RuntimeException exception) {
+        return ResponseEntity.ok(new ErrorDto(
+                HttpStatus.NO_CONTENT.value(),
+                exception.getMessage()
+        ));
+    }
+
+    @ExceptionHandler({ WrongPasswordException.class,
+                        UsernameNotFoundException.class,
+                        BadCredentialsException.class,
+                        RoleNotFoundException.class })
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorDto> wrongDataException(RuntimeException exception) {
         return ResponseEntity.ok(new ErrorDto(
                 HttpStatus.NOT_FOUND.value(),
                 exception.getMessage()
         ));
     }
 
-    @ExceptionHandler(DatabaseAccessException.class)
+    @ExceptionHandler( { DatabaseAccessException.class,
+                        RoleRepetitionException.class } )
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorDto> databaseAccessException(DatabaseAccessException exception) {
+    public ResponseEntity<ErrorDto> databaseAccessException(RuntimeException exception) {
         return ResponseEntity.ok(new ErrorDto(
                 HttpStatus.BAD_REQUEST.value(),
                 exception.getMessage()

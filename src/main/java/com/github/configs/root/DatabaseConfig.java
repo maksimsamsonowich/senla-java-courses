@@ -5,7 +5,10 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,7 +19,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -25,26 +27,23 @@ import java.util.Properties;
 @PropertySource("classpath:application.properties")
 public class DatabaseConfig {
 
-    @Value("${login}")
+    @Value("${db.login}")
     private String username;
 
-    @Value("${password}")
+    @Value("${db.password}")
     private String password;
 
-    @Value("${url}")
+    @Value("${db.url}")
     private String url;
 
-    @Value("${driver}")
+    @Value("${postgre.driver}")
     private String driver;
 
-    @Value("${spring.liquibase.change-log}")
+    @Value("${liquibase.change-log}")
     private String changeLogFile;
 
     @Value("${packagesToScan}")
     private String packagesToScan;
-
-    @Value("#{{'hibernate.dialect': 'org.hibernate.dialect.PostgreSQLDialect'}}")
-    private Map<String, String> hibernateAdditionalProperties;
 
     @Bean
     public DataSource dataSource()  {
@@ -78,7 +77,6 @@ public class DatabaseConfig {
         localContainerEntityManagerFactoryBean.setPackagesToScan(packagesToScan);
         localContainerEntityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         localContainerEntityManagerFactoryBean.setDataSource(dataSource);
-        //localContainerEntityManagerFactoryBean.setJpaPropertyMap(hibernateAdditionalProperties);
         localContainerEntityManagerFactoryBean.setJpaProperties(additionalProperties());
         return localContainerEntityManagerFactoryBean;
     }
@@ -93,7 +91,7 @@ public class DatabaseConfig {
         return entityManager.getCriteriaBuilder();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put(Environment.SHOW_SQL, "true");

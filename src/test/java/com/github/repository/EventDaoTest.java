@@ -3,6 +3,7 @@ package com.github.repository;
 import com.github.configs.root.DatabaseConfig;
 import com.github.entity.Event;
 import com.github.entity.Location;
+import com.github.filter.EventFilterDto;
 import com.github.repository.impl.EventRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,9 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -54,7 +52,7 @@ public class EventDaoTest {
     public void createEventSuccess() {
         expectedResult = eventDao.create(expectedResult);
 
-        Event actualResult = eventDao.read(expectedResult.getId());
+        Event actualResult = eventDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -63,9 +61,9 @@ public class EventDaoTest {
     public void deleteEventSuccess() {
         expectedResult = eventDao.create(expectedResult);
 
-        eventDao.delete(expectedResult);
+        eventDao.deleteById(expectedResult.getId());
 
-        Event actualResult = eventDao.read(expectedResult.getId());
+        Event actualResult = eventDao.readById(expectedResult.getId());
         Assert.assertNull(actualResult);
     }
 
@@ -73,7 +71,7 @@ public class EventDaoTest {
     public void readEventSuccess() {
         expectedResult = eventDao.create(expectedResult);
 
-        Event actualResult = eventDao.read(expectedResult.getId());
+        Event actualResult = eventDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -85,7 +83,7 @@ public class EventDaoTest {
         expectedResult.setAgeLimit((short) 20);
         eventDao.update(expectedResult);
 
-        Event actualResult = eventDao.read(expectedResult.getId());
+        Event actualResult = eventDao.readById(expectedResult.getId());
 
         Assert.assertEquals(expectedResult, actualResult);
     }
@@ -93,7 +91,7 @@ public class EventDaoTest {
     @Test
     public void getEventByLocationSuccess() {
         Set<Event> events = eventDao.getEventsByLocation(locationEntity.getId());
-        Event eventMock = eventDao.read(1L);
+        Event eventMock = eventDao.readById(1L);
 
         Set<Event> eventSetMock = new HashSet<>();
         eventSetMock.add(eventMock);
@@ -103,13 +101,13 @@ public class EventDaoTest {
 
     @Test
     public void getAllEventsSuccess() {
-        List<Event> actualResult = eventDao.getAll();
+        List<Event> actualResult = eventDao.getAll(new EventFilterDto().setPageSize(1));
 
         long step = 1;
         List<Event> expectedResult = new ArrayList<Event>();
 
         while (true) {
-            Event event = eventDao.read(step);
+            Event event = eventDao.readById(step);
 
             if (event == null) {
                 break;

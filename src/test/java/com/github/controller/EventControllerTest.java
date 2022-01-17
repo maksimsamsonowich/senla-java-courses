@@ -6,14 +6,7 @@ import com.github.configs.root.DatabaseConfig;
 import com.github.dto.EventArtistDto;
 import com.github.dto.EventDto;
 import com.github.dto.LocationDto;
-import com.github.dto.UserDto;
-import com.github.entity.Credential;
-import com.github.entity.Role;
-import com.github.entity.User;
 import com.github.mapper.impl.JsonMapper;
-import com.github.repository.impl.CredentialRepository;
-import com.github.repository.impl.RoleRepository;
-import com.github.repository.impl.UserRepository;
 import io.jsonwebtoken.lang.Assert;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -35,7 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.Objects;
 
 @WebAppConfiguration
@@ -67,13 +59,14 @@ public class EventControllerTest {
                 .setDescription("Desc")
                 .setAgeLimit((short) 18)
                 .setOccupiedPlace((short) 11)
-                .setDate(Date.valueOf("2021-11-29"));
+                .setDate(Date.valueOf("2021-11-29"))
+                .setEventOrganizer(new EventArtistDto().setId(1L));
 
         locationDto = new LocationDto().setId(1L);
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void createEventSuccess() throws Exception {
 
         this.jsonBody = jsonMapper.toJson(eventDto);
@@ -96,7 +89,7 @@ public class EventControllerTest {
 
     @Test
     @Transactional(readOnly = true)
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void readEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();
@@ -117,7 +110,7 @@ public class EventControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void updateEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();
@@ -136,7 +129,7 @@ public class EventControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ADMIN")
+    @WithMockUser(username = "fightingdemons@gmail.com", roles = "ARTIST")
     public void deleteEventSuccess() throws Exception {
 
         eventDto = eventController.createEvent(eventDto).getBody();

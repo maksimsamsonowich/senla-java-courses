@@ -18,7 +18,7 @@ import java.util.Set;
         name = "user-entity-graph",
         attributeNodes = {
                 @NamedAttributeNode("tickets"),
-                @NamedAttributeNode("artistCard")
+                @NamedAttributeNode("credential")
         }
 )
 public class User {
@@ -30,8 +30,10 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "firstName")
     private String firstName;
 
+    @Column(name = "surname")
     private String surname;
 
     @ToString.Exclude
@@ -44,7 +46,7 @@ public class User {
 
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE)
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "creds_id")
     private Credential credential;
 

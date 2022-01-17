@@ -1,15 +1,17 @@
 package com.github.service;
 
+import com.github.dto.ConfirmationCredentialDto;
 import com.github.dto.CredentialDto;
 
 public interface ICredentialService {
 
-    CredentialDto createCredential(CredentialDto credentialDto);
+    void createCredential(CredentialDto credentialDto);
 
     CredentialDto readCredential(Long id);
 
-    CredentialDto updateCredential(Long id, CredentialDto credentialDto);
+    void updateCredential(Long credentialId, ConfirmationCredentialDto credentialDto);
 
-    void deleteCredential(Long id);
+    void deleteCredential(Long id, ConfirmationCredentialDto credentialDto);
 
+    CredentialDto findCredentialByEmail(String email);
 }
